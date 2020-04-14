@@ -1,0 +1,13 @@
+Replace the following export variables with your own (get from your crypto-config.yaml and configtx.yaml)
+
+export RAFT_PROFILE=SampleMultiNodeEtcdRaft #PKR_DRAFT_PROFILE
+export ANCHORS_PROFILE=TwoOrgsChannel #PKR_PROFILE
+export ORG1_NAME=Org1 #PKR_ORG1
+export ORG2_NAME=Org2 #PKR_ORG2
+
+export DOMAIN_NAME=example #pkrstudio
+
+For the byfn.sh script.
+
+byfn.sh				-- brings the network up and down
+ccp-generate.sh 	-- generates the crypto connection parameters
