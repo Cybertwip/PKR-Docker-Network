@@ -1,0 +1,95 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: '2'
+
+volumes:
+  orderer.${DOMAIN_NAME}.com:
+  peer0.${ORG1_NAME}.${DOMAIN_NAME}.com:
+  peer1.${ORG1_NAME}.${DOMAIN_NAME}.com:
+  peer0.${ORG2_NAME}.${DOMAIN_NAME}.com:
+  peer1.${ORG2_NAME}.${DOMAIN_NAME}.com:
+
+networks:
+  byfn:
+
+services:
+
+  orderer.${DOMAIN_NAME}.com:
+    extends:
+      file:   base/docker-compose-base.yaml
+      service: orderer.${DOMAIN_NAME}.com
+    container_name: orderer.${DOMAIN_NAME}.com
+    networks:
+      - byfn
+
+  peer0.${ORG1_NAME}.${DOMAIN_NAME}.com:
+    container_name: peer0.${ORG1_NAME}.${DOMAIN_NAME}.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.${ORG1_NAME}.${DOMAIN_NAME}.com
+    networks:
+      - byfn
+
+  peer1.${ORG1_NAME}.${DOMAIN_NAME}.com:
+    container_name: peer1.${ORG1_NAME}.${DOMAIN_NAME}.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.${ORG1_NAME}.${DOMAIN_NAME}.com
+    networks:
+      - byfn
+
+  peer0.${ORG2_NAME}.${DOMAIN_NAME}.com:
+    container_name: peer0.${ORG2_NAME}.${DOMAIN_NAME}.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.${ORG2_NAME}.${DOMAIN_NAME}.com
+    networks:
+      - byfn
+
+  peer1.${ORG2_NAME}.${DOMAIN_NAME}.com:
+    container_name: peer1.${ORG2_NAME}.${DOMAIN_NAME}.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.${ORG2_NAME}.${DOMAIN_NAME}.com
+    networks:
+      - byfn
+
+  cli:
+    container_name: cli
+    image: hyperledger/fabric-tools:$IMAGE_TAG
+    tty: true
+    stdin_open: true
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      #- FABRIC_LOGGING_SPEC=DEBUG
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_ID=cli
+      - CORE_PEER_ADDRESS=peer0.${ORG1_NAME}.${DOMAIN_NAME}.com:7051
+      - CORE_PEER_LOCALMSPID=${ORG1_NAME}MSP
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG1_NAME}.${DOMAIN_NAME}.com/peers/peer0.${ORG1_NAME}.${DOMAIN_NAME}.com/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG1_NAME}.${DOMAIN_NAME}.com/peers/peer0.${ORG1_NAME}.${DOMAIN_NAME}.com/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG1_NAME}.${DOMAIN_NAME}.com/peers/peer0.${ORG1_NAME}.${DOMAIN_NAME}.com/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG1_NAME}.${DOMAIN_NAME}.com/users/Admin@${ORG1_NAME}.${DOMAIN_NAME}.com/msp
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: /bin/bash
+    volumes:
+        - /var/run/:/host/var/run/
+        - ./../chaincode/:/opt/gopath/src/github.com/hyperledger/fabric-samples/chaincode
+        - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+        - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
+        - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+        - ./../../fabric-chaincode-evm:/opt/gopath/src/github.com/hyperledger/fabric-chaincode-evm
+        - ./../../fabric-samples:/opt/gopath/src/github.com/hyperledger/fabric-samples
+    depends_on:
+      - orderer.${DOMAIN_NAME}.com
+      - peer0.${ORG1_NAME}.${DOMAIN_NAME}.com
+      - peer1.${ORG1_NAME}.${DOMAIN_NAME}.com
+      - peer0.${ORG2_NAME}.${DOMAIN_NAME}.com
+      - peer1.${ORG2_NAME}.${DOMAIN_NAME}.com
+    networks:
+      - byfn

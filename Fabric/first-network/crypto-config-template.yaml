@@ -11,7 +11,7 @@ OrdererOrgs:
   # Orderer
   # ---------------------------------------------------------------------------
   - Name: Orderer
-    Domain: ${DOMAIN}.com
+    Domain: ${DOMAIN_NAME}.com
     # ---------------------------------------------------------------------------
     # "Specs" - See PeerOrgs below for complete description
     # ---------------------------------------------------------------------------
@@ -30,7 +30,7 @@ PeerOrgs:
   # Org1
   # ---------------------------------------------------------------------------
   - Name: ${ORG1_NAME}
-    Domain: ${ORG1_NAME}.${DOMAIN}.com
+    Domain: ${ORG1_NAME}.${DOMAIN_NAME}.com
     EnableNodeOUs: true
     # ---------------------------------------------------------------------------
     # "Specs"
@@ -80,7 +80,7 @@ PeerOrgs:
   # Org2: See "Org1" for full specification
   # ---------------------------------------------------------------------------
   - Name: ${ORG2_NAME}
-    Domain: ${ORG2_NAME}.${DOMAIN}.com
+    Domain: ${ORG2_NAME}.${DOMAIN_NAME}.com
     EnableNodeOUs: true
     Template:
       Count: 2
