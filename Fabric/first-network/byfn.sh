@@ -39,6 +39,22 @@ export ORG2_NAME=Org2 #PKR_ORG2
 
 export DOMAIN_NAME=example #pkrstudio
 
+
+mkdir -p base
+
+function yaml_template {
+    sed -e "s/\${ORG1_NAME}/$1/g" \
+        -e "s/\${ORG2_NAME}/$2/g" \
+        -e "s/\${DOMAIN_NAME}/$3/g" \
+        $4 
+}
+
+echo "$(yaml_template $ORG1_NAME $ORG2_NAME $DOMAIN_NAME ./templates/base/docker-compose-base.yaml)" > ./base/docker-compose.yaml
+
+
+exit 1;
+
+
 # Print the usage message
 function printHelp() {
   echo "Usage: "

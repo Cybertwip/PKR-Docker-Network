@@ -1,0 +1,85 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: '2'
+
+volumes:
+  orderer2.${DOMAIN_NAME}.com:
+  orderer3.${DOMAIN_NAME}.com:
+  orderer4.${DOMAIN_NAME}.com:
+  orderer5.${DOMAIN_NAME}.com:
+
+networks:
+  byfn:
+
+services:
+
+  orderer2.${DOMAIN_NAME}.com:
+    extends:
+      file: base/peer-base.yaml
+      service: orderer-base
+    environment:
+      - ORDERER_GENERAL_LISTENPORT=8050
+    container_name: orderer2.${DOMAIN_NAME}.com
+    networks:
+      - byfn
+    volumes:
+      - ./channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ./crypto-config/ordererOrganizations/${DOMAIN_NAME}.com/orderers/orderer2.${DOMAIN_NAME}.com/msp:/var/hyperledger/orderer/msp
+      - ./crypto-config/ordererOrganizations/${DOMAIN_NAME}.com/orderers/orderer2.${DOMAIN_NAME}.com/tls/:/var/hyperledger/orderer/tls
+      - orderer2.${DOMAIN_NAME}.com:/var/hyperledger/production/orderer
+    ports:
+      - 8050:8050
+
+  orderer3.${DOMAIN_NAME}.com:
+    extends:
+      file: base/peer-base.yaml
+      service: orderer-base
+    environment:
+      - ORDERER_GENERAL_LISTENPORT=9050
+    container_name: orderer3.${DOMAIN_NAME}.com
+    networks:
+      - byfn
+    volumes:
+      - ./channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ./crypto-config/ordererOrganizations/${DOMAIN_NAME}.com/orderers/orderer3.${DOMAIN_NAME}.com/msp:/var/hyperledger/orderer/msp
+      - ./crypto-config/ordererOrganizations/${DOMAIN_NAME}.com/orderers/orderer3.${DOMAIN_NAME}.com/tls/:/var/hyperledger/orderer/tls
+      - orderer3.${DOMAIN_NAME}.com:/var/hyperledger/production/orderer
+    ports:
+      - 9050:9050
+
+  orderer4.${DOMAIN_NAME}.com:
+    extends:
+      file: base/peer-base.yaml
+      service: orderer-base
+    environment:
+      - ORDERER_GENERAL_LISTENPORT=10050
+    container_name: orderer4.${DOMAIN_NAME}.com
+    networks:
+      - byfn
+    volumes:
+      - ./channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ./crypto-config/ordererOrganizations/${DOMAIN_NAME}.com/orderers/orderer4.${DOMAIN_NAME}.com/msp:/var/hyperledger/orderer/msp
+      - ./crypto-config/ordererOrganizations/${DOMAIN_NAME}.com/orderers/orderer4.${DOMAIN_NAME}.com/tls/:/var/hyperledger/orderer/tls
+      - orderer4.${DOMAIN_NAME}.com:/var/hyperledger/production/orderer
+    ports:
+      - 10050:10050
+
+  orderer5.${DOMAIN_NAME}.com:
+    extends:
+      file: base/peer-base.yaml
+      service: orderer-base
+    environment:
+      - ORDERER_GENERAL_LISTENPORT=11050
+    container_name: orderer5.${DOMAIN_NAME}.com
+    networks:
+      - byfn
+    volumes:
+      - ./channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ./crypto-config/ordererOrganizations/${DOMAIN_NAME}.com/orderers/orderer5.${DOMAIN_NAME}.com/msp:/var/hyperledger/orderer/msp
+      - ./crypto-config/ordererOrganizations/${DOMAIN_NAME}.com/orderers/orderer5.${DOMAIN_NAME}.com/tls/:/var/hyperledger/orderer/tls
+      - orderer5.${DOMAIN_NAME}.com:/var/hyperledger/production/orderer
+    ports:
+      - 11050:11050
