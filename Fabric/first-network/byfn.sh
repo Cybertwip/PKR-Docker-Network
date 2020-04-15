@@ -28,6 +28,7 @@
 
 # prepending $PWD/../bin to PATH to ensure we are picking up the correct binaries
 # this may be commented out to resolve installed version of tools if desired
+export GOPATH=~/go
 export PATH=${PWD}/../bin:${PWD}:$PATH
 export FABRIC_CFG_PATH=${PWD}
 export VERBOSE=false
@@ -50,10 +51,12 @@ function yaml_template {
 }
 
 echo "$(yaml_template $ORG1_NAME $ORG2_NAME $DOMAIN_NAME ./templates/base/docker-compose-base.yaml)" > ./base/docker-compose.yaml
-
-
-exit 1;
-
+echo "$(yaml_template $ORG1_NAME $ORG2_NAME $DOMAIN_NAME ./templates/base/peer-base.yaml)" > ./base/peer-base.yaml
+echo "$(yaml_template $ORG1_NAME $ORG2_NAME $DOMAIN_NAME ./templates/crypto-config-template.yaml)" > ./crypto-config.yaml
+echo "$(yaml_template $ORG1_NAME $ORG2_NAME $DOMAIN_NAME ./templates/docker-compose-ca-template.yaml)" > ./docker-compose-ca.yaml
+echo "$(yaml_template $ORG1_NAME $ORG2_NAME $DOMAIN_NAME ./templates/docker-compose-cli-template.yaml)" > ./docker-compose-cli.yaml
+echo "$(yaml_template $ORG1_NAME $ORG2_NAME $DOMAIN_NAME ./templates/docker-compose-e2e-template.yaml)" > ./docker-compose-e2e.yaml
+echo "$(yaml_template $ORG1_NAME $ORG2_NAME $DOMAIN_NAME ./templates/docker-compose-etcdraft2-template.yaml)" > ./docker-compose-etcdraft2.yaml
 
 # Print the usage message
 function printHelp() {
