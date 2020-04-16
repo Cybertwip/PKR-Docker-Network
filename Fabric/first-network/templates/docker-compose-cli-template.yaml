@@ -84,7 +84,7 @@ services:
         - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
         - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
         - ./../../fabric-chaincode-evm:/opt/gopath/src/github.com/hyperledger/fabric-chaincode-evm
-        - ./../../fabric-samples:/opt/gopath/src/github.com/hyperledger/${DOMAIN_NAME}
+        - ./../../${DOMAIN_NAME}:/opt/gopath/src/github.com/hyperledger/${DOMAIN_NAME}
     depends_on:
       - orderer.${DOMAIN_NAME}.com
       - peer0.${ORG1_NAME}.${DOMAIN_NAME}.com

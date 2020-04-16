@@ -40,8 +40,9 @@ export ORG2_NAME=Org2 #PKR_ORG2
 
 export DOMAIN_NAME=example #pkrstudio
 
-
 mkdir -p base
+
+
 
 function yaml_template {
     sed -e "s/\${ORG1_NAME}/$1/g" \
@@ -50,8 +51,8 @@ function yaml_template {
         $4 
 }
 
-echo "$(yaml_template $ORG1_NAME $ORG2_NAME $DOMAIN_NAME ./templates/base/docker-compose-base.yaml)" > ./base/docker-compose.yaml
-echo "$(yaml_template $ORG1_NAME $ORG2_NAME $DOMAIN_NAME ./templates/base/peer-base.yaml)" > ./base/peer-base.yaml
+echo "$(yaml_template $ORG1_NAME $ORG2_NAME $DOMAIN_NAME ./templates/base/docker-compose-base-template.yaml)" > ./base/docker-compose-base.yaml
+echo "$(yaml_template $ORG1_NAME $ORG2_NAME $DOMAIN_NAME ./templates/base/peer-base-template.yaml)" > ./base/peer-base.yaml
 echo "$(yaml_template $ORG1_NAME $ORG2_NAME $DOMAIN_NAME ./templates/crypto-config-template.yaml)" > ./crypto-config.yaml
 echo "$(yaml_template $ORG1_NAME $ORG2_NAME $DOMAIN_NAME ./templates/docker-compose-ca-template.yaml)" > ./docker-compose-ca.yaml
 echo "$(yaml_template $ORG1_NAME $ORG2_NAME $DOMAIN_NAME ./templates/docker-compose-cli-template.yaml)" > ./docker-compose-cli.yaml

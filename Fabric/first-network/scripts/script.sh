@@ -10,6 +10,12 @@ echo
 echo "Build your first network (BYFN) end-to-end test"
 echo
 
+export ORG1_NAME=Org1 #PKR_ORG1
+export ORG2_NAME=Org2 #PKR_ORG2
+
+export DOMAIN_NAME=example #pkrstudio
+
+
 CHANNEL_NAME="$1"
 DELAY="$2"
 CC_SRC_LANGUAGE="$3"

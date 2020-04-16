@@ -6,6 +6,12 @@
 
 # This is a collection of bash functions used by different scripts
 
+export ORG1_NAME=Org1 #PKR_ORG1
+export ORG2_NAME=Org2 #PKR_ORG2
+
+export DOMAIN_NAME=example #pkrstudio
+
+
 ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/${DOMAIN_NAME}.com/orderers/orderer.${DOMAIN_NAME}.com/msp/tlscacerts/tlsca.${DOMAIN_NAME}.com-cert.pem
 PEER0_ORG1_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG1_NAME}.${DOMAIN_NAME}.com/peers/peer0.${ORG1_NAME}.${DOMAIN_NAME}.com/tls/ca.crt
 PEER0_ORG2_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG2_NAME}.${DOMAIN_NAME}.com/peers/peer0.${ORG2_NAME}.${DOMAIN_NAME}.com/tls/ca.crt
