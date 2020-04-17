@@ -1,5 +1,14 @@
 #!/bin/bash
 
+export ORG1_NAME_1=Org1 #PKR_ORG1
+export ORG2_NAME_1=Org2 #PKR_ORG2
+
+export ORG1_NAME_2=org1 #PKR_ORG1
+export ORG2_NAME_2=org2 #PKR_ORG2
+
+export DOMAIN_NAME=example #pkrstudio
+
+
 echo
 echo " ____    _____      _      ____    _____ "
 echo "/ ___|  |_   _|    / \    |  _ \  |_   _|"
@@ -9,13 +18,6 @@ echo "|____/    |_|   /_/   \_\ |_| \_\   |_|  "
 echo
 echo "Build your first network (BYFN) end-to-end test"
 echo
-
-export ORG1_NAME=Org1 #PKR_ORG1
-export ORG2_NAME=Org2 #PKR_ORG2
-
-export DOMAIN_NAME=example #pkrstudio
-
-
 CHANNEL_NAME="$1"
 DELAY="$2"
 CC_SRC_LANGUAGE="$3"
@@ -35,13 +37,13 @@ PACKAGE_ID=""
 
 if [ "$CC_SRC_LANGUAGE" = "go" -o "$CC_SRC_LANGUAGE" = "golang" ]; then
 	CC_RUNTIME_LANGUAGE=golang
-	CC_SRC_PATH="/opt/gopath/src/github.com/hyperledger/${DOMAIN_NAME}/chaincode/abstore/go/"
+	CC_SRC_PATH="github.com/hyperledger/fabric-samples/chaincode/abstore/go/"
 elif [ "$CC_SRC_LANGUAGE" = "javascript" ]; then
 	CC_RUNTIME_LANGUAGE=node # chaincode runtime language is node.js
-	CC_SRC_PATH="/opt/gopath/src/github.com/hyperledger/${DOMAIN_NAME}/chaincode/abstore/javascript/"
+	CC_SRC_PATH="/opt/gopath/src/github.com/hyperledger/fabric-samples/chaincode/abstore/javascript/"
 elif [ "$CC_SRC_LANGUAGE" = "java" ]; then
 	CC_RUNTIME_LANGUAGE=java
-	CC_SRC_PATH="/opt/gopath/src/github.com/hyperledger/${DOMAIN_NAME}/chaincode/abstore/java/"
+	CC_SRC_PATH="/opt/gopath/src/github.com/hyperledger/fabric-samples/chaincode/abstore/java/"
 else
 	echo The chaincode language ${CC_SRC_LANGUAGE} is not supported by this script
 	echo Supported chaincode languages are: go, javascript, java
@@ -118,16 +120,16 @@ if [ "${NO_CHAINCODE}" != "true" ]; then
 
 	## check whether the chaincode definition is ready to be committed
     ## expect org1 to have approved and org2 not to
-	checkCommitReadiness 1 0 1 "\"${ORG1_NAME}MSP\": true" "\"${ORG2_NAME}MSP\": false"
-	checkCommitReadiness 1 0 2 "\"${ORG1_NAME}MSP\": true" "\"${ORG2_NAME}MSP\": false"
+	checkCommitReadiness 1 0 1 "\"${ORG1_NAME_1}MSP\": true" "\"${ORG2_NAME_1}MSP\": false"
+	checkCommitReadiness 1 0 2 "\"${ORG1_NAME_1}MSP\": true" "\"${ORG2_NAME_1}MSP\": false"
 
 	## now approve also for org2
 	approveForMyOrg 1 0 2
 
 	## check whether the chaincode definition is ready to be committed
 	## expect them both to have approved
-	checkCommitReadiness 1 0 1 "\"${ORG1_NAME}MSP\": true" "\"${ORG2_NAME}MSP\": true"
-	checkCommitReadiness 1 0 2 "\"${ORG1_NAME}MSP\": true" "\"${ORG2_NAME}MSP\": true"
+	checkCommitReadiness 1 0 1 "\"${ORG1_NAME_1}MSP\": true" "\"${ORG2_NAME_1}MSP\": true"
+	checkCommitReadiness 1 0 2 "\"${ORG1_NAME_1}MSP\": true" "\"${ORG2_NAME_1}MSP\": true"
 
 	## now that we know for sure both orgs have approved, commit the definition
 	commitChaincodeDefinition 1 0 1 0 2

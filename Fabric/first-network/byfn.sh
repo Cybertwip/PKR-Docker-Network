@@ -29,6 +29,7 @@
 # prepending $PWD/../bin to PATH to ensure we are picking up the correct binaries
 # this may be commented out to resolve installed version of tools if desired
 export GOPATH=~/go
+export PATH=~/go/bin:$PATH
 export PATH=${PWD}/../bin:${PWD}:$PATH
 export FABRIC_CFG_PATH=${PWD}
 export VERBOSE=false
@@ -42,7 +43,7 @@ export ORG2_NAME_1=Org2 #PKR_ORG2
 export ORG1_NAME_2=org1 #PKR_ORG1
 export ORG2_NAME_2=org2 #PKR_ORG2
 
-export DOMAIN_NAME=example #pkrstudio
+export DOMAIN_NAME=pkrstudio #pkrstudio
 
 mkdir -p base
 
@@ -60,6 +61,7 @@ function yaml_template {
 echo "$(yaml_template $ORG1_NAME_1 $ORG2_NAME_1 $ORG1_NAME_2 $ORG2_NAME_2 $DOMAIN_NAME ./templates/base/docker-compose-base-template.yaml)" > ./base/docker-compose-base.yaml
 #echo "$(yaml_template $ORG1_NAME $ORG2_NAME $DOMAIN_NAME ./templates/base/peer-base-template.yaml)" > ./base/peer-base.yaml
 
+echo "$(yaml_template $ORG1_NAME_1 $ORG2_NAME_1 $ORG1_NAME_2 $ORG2_NAME_2 $DOMAIN_NAME ./templates/configtx-template.yaml)" > ./configtx.yaml
 echo "$(yaml_template $ORG1_NAME_1 $ORG2_NAME_1 $ORG1_NAME_2 $ORG2_NAME_2 $DOMAIN_NAME ./templates/crypto-config-template.yaml)" > ./crypto-config.yaml
 echo "$(yaml_template $ORG1_NAME_1 $ORG2_NAME_1 $ORG1_NAME_2 $ORG2_NAME_2 $DOMAIN_NAME ./templates/docker-compose-ca-template.yaml)" > ./docker-compose-ca.yaml
 echo "$(yaml_template $ORG1_NAME_1 $ORG2_NAME_1 $ORG1_NAME_2 $ORG2_NAME_2 $DOMAIN_NAME ./templates/docker-compose-cli-template.yaml)" > ./docker-compose-cli.yaml

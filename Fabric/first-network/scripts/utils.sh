@@ -6,16 +6,19 @@
 
 # This is a collection of bash functions used by different scripts
 
-export ORG1_NAME=Org1 #PKR_ORG1
-export ORG2_NAME=Org2 #PKR_ORG2
+export ORG1_NAME_1=Org1 #PKR_ORG1
+export ORG2_NAME_1=Org2 #PKR_ORG2
+
+export ORG1_NAME_2=org1 #PKR_ORG1
+export ORG2_NAME_2=org2 #PKR_ORG2
 
 export DOMAIN_NAME=example #pkrstudio
 
 
 ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/${DOMAIN_NAME}.com/orderers/orderer.${DOMAIN_NAME}.com/msp/tlscacerts/tlsca.${DOMAIN_NAME}.com-cert.pem
-PEER0_ORG1_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG1_NAME}.${DOMAIN_NAME}.com/peers/peer0.${ORG1_NAME}.${DOMAIN_NAME}.com/tls/ca.crt
-PEER0_ORG2_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG2_NAME}.${DOMAIN_NAME}.com/peers/peer0.${ORG2_NAME}.${DOMAIN_NAME}.com/tls/ca.crt
-PEER0_ORG3_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG3_NAME}.${DOMAIN_NAME}.com/peers/peer0.${ORG3_NAME}.${DOMAIN_NAME}.com/tls/ca.crt
+PEER0_ORG1_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG1_NAME_2}.${DOMAIN_NAME}.com/peers/peer0.${ORG1_NAME_2}.${DOMAIN_NAME}.com/tls/ca.crt
+PEER0_ORG2_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG2_NAME_2}.${DOMAIN_NAME}.com/peers/peer0.${ORG2_NAME_2}.${DOMAIN_NAME}.com/tls/ca.crt
+PEER0_ORG3_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org3.${DOMAIN_NAME}.com/peers/peer0.org3.${DOMAIN_NAME}.com/tls/ca.crt
 
 # verify the result of the end-to-end test
 verifyResult() {
@@ -38,32 +41,32 @@ setGlobals() {
   PEER=$1
   ORG=$2
   if [ $ORG -eq 1 ]; then
-    CORE_PEER_LOCALMSPID="${ORG1_NAME}MSP"
+    CORE_PEER_LOCALMSPID="${ORG1_NAME_1}MSP"
     CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG1_CA
-    CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG1_NAME}.${DOMAIN_NAME}.com/users/Admin@${ORG1_NAME}.${DOMAIN_NAME}.com/msp
+    CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG1_NAME_2}.${DOMAIN_NAME}.com/users/Admin@${ORG1_NAME_2}.${DOMAIN_NAME}.com/msp
     if [ $PEER -eq 0 ]; then
-      CORE_PEER_ADDRESS=peer0.${ORG1_NAME}.${DOMAIN_NAME}.com:7051
+      CORE_PEER_ADDRESS=peer0.${ORG1_NAME_2}.${DOMAIN_NAME}.com:7051
     else
-      CORE_PEER_ADDRESS=peer1.${ORG1_NAME}.${DOMAIN_NAME}.com:8051
+      CORE_PEER_ADDRESS=peer1.${ORG1_NAME_2}.${DOMAIN_NAME}.com:8051
     fi
   elif [ $ORG -eq 2 ]; then
-    CORE_PEER_LOCALMSPID="${ORG2_NAME}MSP"
+    CORE_PEER_LOCALMSPID="${ORG2_NAME_1}MSP"
     CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG2_CA
-    CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG2_NAME}.${DOMAIN_NAME}.com/users/Admin@${ORG2_NAME}.${DOMAIN_NAME}.com/msp
+    CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG2_NAME_2}.${DOMAIN_NAME}.com/users/Admin@${ORG2_NAME_2}.${DOMAIN_NAME}.com/msp
     if [ $PEER -eq 0 ]; then
-      CORE_PEER_ADDRESS=peer0.${ORG2_NAME}.${DOMAIN_NAME}.com:9051
+      CORE_PEER_ADDRESS=peer0.${ORG2_NAME_2}.${DOMAIN_NAME}.com:9051
     else
-      CORE_PEER_ADDRESS=peer1.${ORG2_NAME}.${DOMAIN_NAME}.com:10051
+      CORE_PEER_ADDRESS=peer1.${ORG2_NAME_2}.${DOMAIN_NAME}.com:10051
     fi
 
   elif [ $ORG -eq 3 ]; then
-    CORE_PEER_LOCALMSPID="${ORG3_NAME}MSP"
+    CORE_PEER_LOCALMSPID="Org3MSP"
     CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG3_CA
-    CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG3_NAME}.${DOMAIN_NAME}.com/users/Admin@${ORG3_NAME}.${DOMAIN_NAME}.com/msp
+    CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org3.${DOMAIN_NAME}.com/users/Admin@org3.${DOMAIN_NAME}.com/msp
     if [ $PEER -eq 0 ]; then
-      CORE_PEER_ADDRESS=peer0.${ORG3_NAME}.${DOMAIN_NAME}.com:11051
+      CORE_PEER_ADDRESS=peer0.org3.${DOMAIN_NAME}.com:11051
     else
-      CORE_PEER_ADDRESS=peer1.${ORG3_NAME}.${DOMAIN_NAME}.com:12051
+      CORE_PEER_ADDRESS=peer1.org3.${DOMAIN_NAME}.com:12051
     fi
   else
     echo "================== ERROR !!! ORG Unknown =================="
