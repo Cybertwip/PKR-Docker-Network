@@ -29,8 +29,8 @@ PeerOrgs:
   # ---------------------------------------------------------------------------
   # Org1
   # ---------------------------------------------------------------------------
-  - Name: ${ORG1_NAME}
-    Domain: ${ORG1_NAME}.${DOMAIN_NAME}.com
+  - Name: ${ORG1_NAME_1}
+    Domain: ${ORG1_NAME_2}.${DOMAIN_NAME}.com
     EnableNodeOUs: true
     # ---------------------------------------------------------------------------
     # "Specs"
@@ -79,8 +79,8 @@ PeerOrgs:
   # ---------------------------------------------------------------------------
   # Org2: See "Org1" for full specification
   # ---------------------------------------------------------------------------
-  - Name: ${ORG2_NAME}
-    Domain: ${ORG2_NAME}.${DOMAIN_NAME}.com
+  - Name: ${ORG2_NAME_1}
+    Domain: ${ORG2_NAME_2}.${DOMAIN_NAME}.com
     EnableNodeOUs: true
     Template:
       Count: 2

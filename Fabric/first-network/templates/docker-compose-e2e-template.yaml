@@ -7,10 +7,10 @@ version: '2'
 
 volumes:
   orderer.${DOMAIN_NAME}.com:
-  peer0.${ORG1_NAME}.${DOMAIN_NAME}.com:
-  peer1.${ORG1_NAME}.${DOMAIN_NAME}.com:
-  peer0.${ORG2_NAME}.${DOMAIN_NAME}.com:
-  peer1.${ORG2_NAME}.${DOMAIN_NAME}.com:
+  peer0.${ORG1_NAME_2}.${DOMAIN_NAME}.com:
+  peer1.${ORG1_NAME_2}.${DOMAIN_NAME}.com:
+  peer0.${ORG2_NAME_2}.${DOMAIN_NAME}.com:
+  peer1.${ORG2_NAME_2}.${DOMAIN_NAME}.com:
 
 networks:
   byfn:
@@ -19,15 +19,15 @@ services:
     image: hyperledger/fabric-ca:$IMAGE_TAG
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-      - FABRIC_CA_SERVER_CA_NAME=ca-org1
+      - FABRIC_CA_SERVER_CA_NAME=ca-${ORG1_NAME_2}
       - FABRIC_CA_SERVER_TLS_ENABLED=true
-      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.${ORG1_NAME}.${DOMAIN_NAME}.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.${ORG1_NAME_2}.${DOMAIN_NAME}.com-cert.pem
       - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA1_PRIVATE_KEY
     ports:
       - "7054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.${ORG1_NAME}.${DOMAIN_NAME}.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/CA1_PRIVATE_KEY -b admin:adminpw -d'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.${ORG1_NAME_2}.${DOMAIN_NAME}.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/CA1_PRIVATE_KEY -b admin:adminpw -d'
     volumes:
-      - ./crypto-config/peerOrganizations/${ORG1_NAME}.${DOMAIN_NAME}.com/ca/:/etc/hyperledger/fabric-ca-server-config
+      - ./crypto-config/peerOrganizations/${ORG1_NAME_2}.${DOMAIN_NAME}.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca_peerOrg1
     networks:
       - byfn
@@ -36,15 +36,15 @@ services:
     image: hyperledger/fabric-ca:$IMAGE_TAG
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-      - FABRIC_CA_SERVER_CA_NAME=ca-org2
+      - FABRIC_CA_SERVER_CA_NAME=ca-${ORG2_NAME_2}
       - FABRIC_CA_SERVER_TLS_ENABLED=true
-      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.${ORG2_NAME}.${DOMAIN_NAME}.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.${ORG2_NAME_2}.${DOMAIN_NAME}.com-cert.pem
       - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA2_PRIVATE_KEY
     ports:
       - "8054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.${ORG2_NAME}.${DOMAIN_NAME}.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/CA2_PRIVATE_KEY -b admin:adminpw -d'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.${ORG2_NAME_2}.${DOMAIN_NAME}.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/CA2_PRIVATE_KEY -b admin:adminpw -d'
     volumes:
-      - ./crypto-config/peerOrganizations/${ORG2_NAME}.${DOMAIN_NAME}.com/ca/:/etc/hyperledger/fabric-ca-server-config
+      - ./crypto-config/peerOrganizations/${ORG2_NAME_2}.${DOMAIN_NAME}.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca_peerOrg2
     networks:
       - byfn
@@ -57,34 +57,34 @@ services:
     networks:
       - byfn
 
-  peer0.${ORG1_NAME}.${DOMAIN_NAME}.com:
-    container_name: peer0.${ORG1_NAME}.${DOMAIN_NAME}.com
+  peer0.${ORG1_NAME_2}.${DOMAIN_NAME}.com:
+    container_name: peer0.${ORG1_NAME_2}.${DOMAIN_NAME}.com
     extends:
       file:  base/docker-compose-base.yaml
-      service: peer0.${ORG1_NAME}.${DOMAIN_NAME}.com
+      service: peer0.${ORG1_NAME_2}.${DOMAIN_NAME}.com
     networks:
       - byfn
 
-  peer1.${ORG1_NAME}.${DOMAIN_NAME}.com:
-    container_name: peer1.${ORG1_NAME}.${DOMAIN_NAME}.com
+  peer1.${ORG1_NAME_2}.${DOMAIN_NAME}.com:
+    container_name: peer1.${ORG1_NAME_2}.${DOMAIN_NAME}.com
     extends:
       file:  base/docker-compose-base.yaml
-      service: peer1.${ORG1_NAME}.${DOMAIN_NAME}.com
+      service: peer1.${ORG1_NAME_2}.${DOMAIN_NAME}.com
     networks:
       - byfn
 
-  peer0.${ORG2_NAME}.${DOMAIN_NAME}.com:
-    container_name: peer0.${ORG2_NAME}.${DOMAIN_NAME}.com
+  peer0.${ORG2_NAME_2}.${DOMAIN_NAME}.com:
+    container_name: peer0.${ORG2_NAME_2}.${DOMAIN_NAME}.com
     extends:
       file:  base/docker-compose-base.yaml
-      service: peer0.${ORG2_NAME}.${DOMAIN_NAME}.com
+      service: peer0.${ORG2_NAME_2}.${DOMAIN_NAME}.com
     networks:
       - byfn
 
-  peer1.${ORG2_NAME}.${DOMAIN_NAME}.com:
-    container_name: peer1.${ORG2_NAME}.${DOMAIN_NAME}.com
+  peer1.${ORG2_NAME_2}.${DOMAIN_NAME}.com:
+    container_name: peer1.${ORG2_NAME_2}.${DOMAIN_NAME}.com
     extends:
       file:  base/docker-compose-base.yaml
-      service: peer1.${ORG2_NAME}.${DOMAIN_NAME}.com
+      service: peer1.${ORG2_NAME_2}.${DOMAIN_NAME}.com
     networks:
       - byfn

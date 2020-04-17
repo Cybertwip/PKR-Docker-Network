@@ -35,8 +35,12 @@ export VERBOSE=false
 
 export RAFT_PROFILE=SampleMultiNodeEtcdRaft #PKR_DRAFT_PROFILE
 export ANCHORS_PROFILE=TwoOrgsChannel #PKR_PROFILE
-export ORG1_NAME=Org1 #PKR_ORG1
-export ORG2_NAME=Org2 #PKR_ORG2
+
+export ORG1_NAME_1=Org1 #PKR_ORG1
+export ORG2_NAME_1=Org2 #PKR_ORG2
+
+export ORG1_NAME_2=org1 #PKR_ORG1
+export ORG2_NAME_2=org2 #PKR_ORG2
 
 export DOMAIN_NAME=example #pkrstudio
 
@@ -45,19 +49,23 @@ mkdir -p base
 
 
 function yaml_template {
-    sed -e "s/\${ORG1_NAME}/$1/g" \
-        -e "s/\${ORG2_NAME}/$2/g" \
-        -e "s/\${DOMAIN_NAME}/$3/g" \
-        $4 
+    sed -e "s/\${ORG1_NAME_1}/$1/g" \
+        -e "s/\${ORG2_NAME_1}/$2/g" \
+        -e "s/\${ORG1_NAME_2}/$3/g" \
+        -e "s/\${ORG2_NAME_2}/$4/g" \
+        -e "s/\${DOMAIN_NAME}/$5/g" \
+        $6 
 }
 
-echo "$(yaml_template $ORG1_NAME $ORG2_NAME $DOMAIN_NAME ./templates/base/docker-compose-base-template.yaml)" > ./base/docker-compose-base.yaml
-echo "$(yaml_template $ORG1_NAME $ORG2_NAME $DOMAIN_NAME ./templates/base/peer-base-template.yaml)" > ./base/peer-base.yaml
-echo "$(yaml_template $ORG1_NAME $ORG2_NAME $DOMAIN_NAME ./templates/crypto-config-template.yaml)" > ./crypto-config.yaml
-echo "$(yaml_template $ORG1_NAME $ORG2_NAME $DOMAIN_NAME ./templates/docker-compose-ca-template.yaml)" > ./docker-compose-ca.yaml
-echo "$(yaml_template $ORG1_NAME $ORG2_NAME $DOMAIN_NAME ./templates/docker-compose-cli-template.yaml)" > ./docker-compose-cli.yaml
-echo "$(yaml_template $ORG1_NAME $ORG2_NAME $DOMAIN_NAME ./templates/docker-compose-e2e-template.yaml)" > ./docker-compose-e2e.yaml
-echo "$(yaml_template $ORG1_NAME $ORG2_NAME $DOMAIN_NAME ./templates/docker-compose-etcdraft2-template.yaml)" > ./docker-compose-etcdraft2.yaml
+echo "$(yaml_template $ORG1_NAME_1 $ORG2_NAME_1 $ORG1_NAME_2 $ORG2_NAME_2 $DOMAIN_NAME ./templates/base/docker-compose-base-template.yaml)" > ./base/docker-compose-base.yaml
+#echo "$(yaml_template $ORG1_NAME $ORG2_NAME $DOMAIN_NAME ./templates/base/peer-base-template.yaml)" > ./base/peer-base.yaml
+
+echo "$(yaml_template $ORG1_NAME_1 $ORG2_NAME_1 $ORG1_NAME_2 $ORG2_NAME_2 $DOMAIN_NAME ./templates/crypto-config-template.yaml)" > ./crypto-config.yaml
+echo "$(yaml_template $ORG1_NAME_1 $ORG2_NAME_1 $ORG1_NAME_2 $ORG2_NAME_2 $DOMAIN_NAME ./templates/docker-compose-ca-template.yaml)" > ./docker-compose-ca.yaml
+echo "$(yaml_template $ORG1_NAME_1 $ORG2_NAME_1 $ORG1_NAME_2 $ORG2_NAME_2 $DOMAIN_NAME ./templates/docker-compose-cli-template.yaml)" > ./docker-compose-cli.yaml
+echo "$(yaml_template $ORG1_NAME_1 $ORG2_NAME_1 $ORG1_NAME_2 $ORG2_NAME_2 $DOMAIN_NAME ./templates/docker-compose-e2e-template.yaml)" > ./docker-compose-e2e-template.yaml
+echo "$(yaml_template $ORG1_NAME_1 $ORG2_NAME_1 $ORG1_NAME_2 $ORG2_NAME_2 $DOMAIN_NAME ./templates/docker-compose-etcdraft2-template.yaml)" > ./docker-compose-etcdraft2.yaml
+
 
 # Print the usage message
 function printHelp() {
@@ -185,8 +193,8 @@ function networkUp() {
   COMPOSE_FILES="-f ${COMPOSE_FILE} -f ${COMPOSE_FILE_RAFT2}"
   if [ "${CERTIFICATE_AUTHORITIES}" == "true" ]; then
     COMPOSE_FILES="${COMPOSE_FILES} -f ${COMPOSE_FILE_CA}"
-    export BYFN_CA1_PRIVATE_KEY=$(cd crypto-config/peerOrganizations/${ORG1_NAME}.${DOMAIN_NAME}.com/ca && ls *_sk)
-    export BYFN_CA2_PRIVATE_KEY=$(cd crypto-config/peerOrganizations/${ORG2_NAME}.${DOMAIN_NAME}.com/ca && ls *_sk)
+    export BYFN_CA1_PRIVATE_KEY=$(cd crypto-config/peerOrganizations/${ORG1_NAME_1}.${DOMAIN_NAME}.com/ca && ls *_sk)
+    export BYFN_CA2_PRIVATE_KEY=$(cd crypto-config/peerOrganizations/${ORG2_NAME_1}.${DOMAIN_NAME}.com/ca && ls *_sk)
   fi
   if [ "${IF_COUCHDB}" == "couchdb" ]; then
     COMPOSE_FILES="${COMPOSE_FILES} -f ${COMPOSE_FILE_COUCH}"
@@ -237,8 +245,8 @@ function upgradeNetwork() {
     COMPOSE_FILES="-f ${COMPOSE_FILE} -f ${COMPOSE_FILE_RAFT2}"
     if [ "${CERTIFICATE_AUTHORITIES}" == "true" ]; then
       COMPOSE_FILES="${COMPOSE_FILES} -f ${COMPOSE_FILE_CA}"
-      export BYFN_CA1_PRIVATE_KEY=$(cd crypto-config/peerOrganizations/${ORG1_NAME}.${DOMAIN_NAME}.com/ca && ls *_sk)
-      export BYFN_CA2_PRIVATE_KEY=$(cd crypto-config/peerOrganizations/${ORG2_NAME}.${DOMAIN_NAME}.com/ca && ls *_sk)
+      export BYFN_CA1_PRIVATE_KEY=$(cd crypto-config/peerOrganizations/${ORG1_NAME_1}.${DOMAIN_NAME}.com/ca && ls *_sk)
+      export BYFN_CA2_PRIVATE_KEY=$(cd crypto-config/peerOrganizations/${ORG2_NAME_1}.${DOMAIN_NAME}.com/ca && ls *_sk)
     fi
     if [ "${IF_COUCHDB}" == "couchdb" ]; then
       COMPOSE_FILES="${COMPOSE_FILES} -f ${COMPOSE_FILE_COUCH}"
@@ -253,7 +261,7 @@ function upgradeNetwork() {
     docker cp -a orderer.$DOMAIN_NAME.com:/var/hyperledger/production/orderer $LEDGERS_BACKUP/orderer.$DOMAIN_NAME.com
     docker-compose $COMPOSE_FILES up -d --no-deps orderer.${DOMAIN_NAME}.com
 
-    for PEER in peer0.${ORG1_NAME}.${DOMAIN_NAME}.com peer1.${ORG1_NAME}.${DOMAIN_NAME}.com peer0.${ORG2_NAME}.${DOMAIN_NAME}.com peer1.${ORG2_NAME}.${DOMAIN_NAME}.com; do
+    for PEER in peer0.${ORG1_NAME_1}.${DOMAIN_NAME}.com peer1.${ORG1_NAME_1}.${DOMAIN_NAME}.com peer0.${ORG2_NAME_1}.${DOMAIN_NAME}.com peer1.${ORG2_NAME_1}.${DOMAIN_NAME}.com; do
       echo "Upgrading peer $PEER"
 
       # Stop the peer and backup its ledger
@@ -424,7 +432,7 @@ function generateChannelArtifacts() {
   echo "#######    Generating anchor peer update for Org1MSP   ##########"
   echo "#################################################################"
   set -x
-  configtxgen -profile $ANCHORS_PROFILE -outputAnchorPeersUpdate ./channel-artifacts/${ORG1_NAME}MSPanchors.tx -channelID $CHANNEL_NAME -asOrg ${ORG1_NAME}MSP
+  configtxgen -profile $ANCHORS_PROFILE -outputAnchorPeersUpdate ./channel-artifacts/${ORG1_NAME_1}MSPanchors.tx -channelID $CHANNEL_NAME -asOrg ${ORG1_NAME_1}MSP
   res=$?
   set +x
   if [ $res -ne 0 ]; then
@@ -438,7 +446,7 @@ function generateChannelArtifacts() {
   echo "#################################################################"
   set -x
   configtxgen -profile $ANCHORS_PROFILE -outputAnchorPeersUpdate \
-    ./channel-artifacts/${ORG2_NAME}MSPanchors.tx -channelID $CHANNEL_NAME -asOrg ${ORG2_NAME}MSP
+    ./channel-artifacts/${ORG2_NAME_1}MSPanchors.tx -channelID $CHANNEL_NAME -asOrg ${ORG2_NAME_1}MSP
   res=$?
   set +x
   if [ $res -ne 0 ]; then

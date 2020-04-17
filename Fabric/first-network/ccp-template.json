@@ -1,8 +1,8 @@
 {
-    "name": "first-network-${ORG}",
+    "name": "first-network-${ORG_NAME_2}",
     "version": "1.0.0",
     "client": {
-        "organization": "${ORG}",
+        "organization": "${ORG_NAME_1}",
         "connection": {
             "timeout": {
                 "peer": {
@@ -12,43 +12,43 @@
         }
     },
     "organizations": {
-        "${ORG}": {
-            "mspid": "${ORG}MSP",
+        "${ORG_NAME_1}": {
+            "mspid": "${ORG_NAME_1}MSP",
             "peers": [
-                "peer0.${ORG}.${DOMAIN}.com",
-                "peer1.${ORG}.${DOMAIN}.com"
+                "peer0.${ORG_NAME_2}.${DOMAIN_NAME}.com",
+                "peer1.${ORG_NAME_2}.${DOMAIN_NAME}.com"
             ],
             "certificateAuthorities": [
-                "ca.${ORG}.${DOMAIN}.com"
+                "ca.${ORG_NAME_2}.${DOMAIN_NAME}.com"
             ]
         }
     },
     "peers": {
-        "peer0.${ORG}.${DOMAIN}.com": {
+        "peer0.${ORG_NAME_2}.${DOMAIN_NAME}.com": {
             "url": "grpcs://localhost:${P0PORT}",
             "tlsCACerts": {
                 "pem": "${PEERPEM}"
             },
             "grpcOptions": {
-                "ssl-target-name-override": "peer0.${ORG}.${DOMAIN}.com",
-                "hostnameOverride": "peer0.${ORG}.${DOMAIN}.com"
+                "ssl-target-name-override": "peer0.${ORG_NAME_2}.${DOMAIN_NAME}.com",
+                "hostnameOverride": "peer0.${ORG_NAME_2}.${DOMAIN_NAME}.com"
             }
         },
-        "peer1.${ORG}.${DOMAIN}.com": {
+        "peer1.${ORG_NAME_2}.${DOMAIN_NAME}.com": {
             "url": "grpcs://localhost:${P1PORT}",
             "tlsCACerts": {
                 "pem": "${PEERPEM}"
             },
             "grpcOptions": {
-                "ssl-target-name-override": "peer1.${ORG}.${DOMAIN}.com",
-                "hostnameOverride": "peer1.${ORG}.${DOMAIN}.com"
+                "ssl-target-name-override": "peer1.${ORG_NAME_2}}.${DOMAIN_NAME}.com",
+                "hostnameOverride": "peer1.${ORG_NAME_2}.${DOMAIN_NAME}.com"
             }
         }
     },
     "certificateAuthorities": {
-        "ca.${ORG}.${DOMAIN}.com": {
+        "ca.${ORG_NAME_2}.${DOMAIN_NAME}.com": {
             "url": "https://localhost:${CAPORT}",
-            "caName": "ca-${ORG}",
+            "caName": "ca-${ORG_NAME_2}",
             "tlsCACerts": {
                 "pem": "${CAPEM}"
             },
