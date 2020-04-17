@@ -66,6 +66,7 @@ echo "$(yaml_template $ORG1_NAME_1 $ORG2_NAME_1 $ORG1_NAME_2 $ORG2_NAME_2 $DOMAI
 echo "$(yaml_template $ORG1_NAME_1 $ORG2_NAME_1 $ORG1_NAME_2 $ORG2_NAME_2 $DOMAIN_NAME ./templates/docker-compose-ca-template.yaml)" > ./docker-compose-ca.yaml
 echo "$(yaml_template $ORG1_NAME_1 $ORG2_NAME_1 $ORG1_NAME_2 $ORG2_NAME_2 $DOMAIN_NAME ./templates/docker-compose-cli-template.yaml)" > ./docker-compose-cli.yaml
 echo "$(yaml_template $ORG1_NAME_1 $ORG2_NAME_1 $ORG1_NAME_2 $ORG2_NAME_2 $DOMAIN_NAME ./templates/docker-compose-e2e-template.yaml)" > ./docker-compose-e2e-template.yaml
+echo "$(yaml_template $ORG1_NAME_1 $ORG2_NAME_1 $ORG1_NAME_2 $ORG2_NAME_2 $DOMAIN_NAME ./templates/docker-compose-couch-template.yaml)" > ./docker-compose-couch.yaml
 echo "$(yaml_template $ORG1_NAME_1 $ORG2_NAME_1 $ORG1_NAME_2 $ORG2_NAME_2 $DOMAIN_NAME ./templates/docker-compose-etcdraft2-template.yaml)" > ./docker-compose-etcdraft2.yaml
 
 
