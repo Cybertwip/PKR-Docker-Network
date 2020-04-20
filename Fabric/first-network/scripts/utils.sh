@@ -12,7 +12,7 @@ export ORG2_NAME_1=Org2 #PKR_ORG2
 export ORG1_NAME_2=org1 #PKR_ORG1
 export ORG2_NAME_2=org2 #PKR_ORG2
 
-export DOMAIN_NAME=example #pkrstudio
+export DOMAIN_NAME=pkrstudio #pkrstudio
 
 
 ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/${DOMAIN_NAME}.com/orderers/orderer.${DOMAIN_NAME}.com/msp/tlscacerts/tlsca.${DOMAIN_NAME}.com-cert.pem
