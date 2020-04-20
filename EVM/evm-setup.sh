@@ -1,35 +1,47 @@
 #!/usr/bin/env bash
 
-export VERSION=1
-export CHANNEL_NAME=evm
-export ORDERER_CA=${PWD}/../../fabric-samples/first-network/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
-export CC_SRC_PATH=github.com/hyperledger/fabric-chaincode-evm/evmcc
-export CC_RUNTIME_LANGUAGE=golang
-export CORE_PEER_TLS_ENABLED=true
+
+export ORG1_NAME_1=Org1 #PKR_ORG1
+export ORG2_NAME_1=Org2 #PKR_ORG2
+
+export ORG1_NAME_2=org1 #PKR_ORG1
+export ORG2_NAME_2=org2 #PKR_ORG2
+
+export DOMAIN_NAME=pkrstudio #pkrstudio
+
 export ORG1_MSP=Org1MSP
 export ORG2_MSP=Org2MSP
 
+
+export VERSION=1
+export CHANNEL_NAME=evm
+export ORDERER_CA=${PWD}/../../fabric-samples/first-network/crypto-config/ordererOrganizations/${DOMAIN_NAME}.com/orderers/orderer.${DOMAIN_NAME}.com/msp/tlscacerts/tlsca.${DOMAIN_NAME}.com-cert.pem
+export CC_SRC_PATH=github.com/hyperledger/fabric-chaincode-evm/evmcc
+export CC_RUNTIME_LANGUAGE=golang
+export CORE_PEER_TLS_ENABLED=true
+
+
 export SEQUENCE=1
 
-export ORG1_PEER0_CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
-export ORG1_PEER0_CORE_PEER_ADDRESS=peer0.org1.example.com:7051
-export ORG1_PEER0_CORE_PEER_LOCALMSPID="Org1MSP"
-export ORG1_PEER0_CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+export ORG1_PEER0_CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG1_NAME_2}.${DOMAIN_NAME}.com/users/Admin@${ORG1_NAME_2}.${DOMAIN_NAME}.com/msp
+export ORG1_PEER0_CORE_PEER_ADDRESS=peer0.${ORG1_NAME_2}.${DOMAIN_NAME}.com:7051
+export ORG1_PEER0_CORE_PEER_LOCALMSPID="${ORG1_MSP}"
+export ORG1_PEER0_CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG1_NAME_2}.${DOMAIN_NAME}.com/peers/peer0.${ORG1_NAME_2}.${DOMAIN_NAME}.com/tls/ca.crt
 
-export ORG1_PEER1_CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
-export ORG1_PEER1_CORE_PEER_ADDRESS=peer1.org1.example.com:8051
-export ORG1_PEER1_CORE_PEER_LOCALMSPID="Org1MSP"
-export ORG1_PEER1_CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/ca.crt
+export ORG1_PEER1_CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG1_NAME_2}.${DOMAIN_NAME}.com/users/Admin@${ORG1_NAME_2}.${DOMAIN_NAME}.com/msp
+export ORG1_PEER1_CORE_PEER_ADDRESS=peer1.${ORG1_NAME_2}.${DOMAIN_NAME}.com:8051
+export ORG1_PEER1_CORE_PEER_LOCALMSPID="${ORG1_MSP}"
+export ORG1_PEER1_CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG1_NAME_2}.${DOMAIN_NAME}.com/peers/peer1.${ORG1_NAME_2}.${DOMAIN_NAME}.com/tls/ca.crt
 
-export ORG2_PEER0_CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
-export ORG2_PEER0_CORE_PEER_ADDRESS=peer0.org2.example.com:9051
-export ORG2_PEER0_CORE_PEER_LOCALMSPID="Org2MSP"
-export ORG2_PEER0_CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
+export ORG2_PEER0_CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG2_NAME_2}.${DOMAIN_NAME}.com/users/Admin@${ORG2_NAME_2}.${DOMAIN_NAME}.com/msp
+export ORG2_PEER0_CORE_PEER_ADDRESS=peer0.${ORG2_NAME_2}.${DOMAIN_NAME}.com:9051
+export ORG2_PEER0_CORE_PEER_LOCALMSPID="${ORG2_MSP}"
+export ORG2_PEER0_CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG2_NAME_2}.${DOMAIN_NAME}.com/peers/peer0.${ORG2_NAME_2}.${DOMAIN_NAME}.com/tls/ca.crt
 
-export ORG2_PEER1_CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
-export ORG2_PEER1_CORE_PEER_ADDRESS=peer1.org2.example.com:10051
-export ORG2_PEER1_CORE_PEER_LOCALMSPID="Org2MSP"
-export ORG2_PEER1_CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls/ca.crt
+export ORG2_PEER1_CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG2_NAME_2}.${DOMAIN_NAME}.com/users/Admin@${ORG2_NAME_2}.${DOMAIN_NAME}.com/msp
+export ORG2_PEER1_CORE_PEER_ADDRESS=peer1.${ORG2_NAME_2}.${DOMAIN_NAME}.com:10051
+export ORG2_PEER1_CORE_PEER_LOCALMSPID="${ORG2_MSP}"
+export ORG2_PEER1_CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG2_NAME_2}.${DOMAIN_NAME}.com/peers/peer1.${ORG2_NAME_2}.${DOMAIN_NAME}.com/tls/ca.crt
 
 setGlobals() {
   local USING_ORG=""
@@ -110,12 +122,12 @@ echo $PACKAGE_ID
 
 setGlobals 1 0
 
-peer lifecycle chaincode approveformyorg -o orderer.example.com:7050 --ordererTLSHostnameOverride orderer.example.com --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name evmcc --version ${VERSION} --init-required --package-id ${PACKAGE_ID} --sequence ${SEQUENCE}  >&log.txt
+peer lifecycle chaincode approveformyorg -o orderer.${DOMAIN_NAME}.com:7050 --ordererTLSHostnameOverride orderer.${DOMAIN_NAME}.com --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name evmcc --version ${VERSION} --init-required --package-id ${PACKAGE_ID} --sequence ${SEQUENCE}  >&log.txt
 cat log.txt 
 
 setGlobals 2 0
 
-peer lifecycle chaincode approveformyorg -o orderer.example.com:7050 --ordererTLSHostnameOverride orderer.example.com --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name evmcc --version ${VERSION} --init-required --package-id ${PACKAGE_ID} --sequence ${SEQUENCE}  >&log.txt
+peer lifecycle chaincode approveformyorg -o orderer.${DOMAIN_NAME}.com:7050 --ordererTLSHostnameOverride orderer.${DOMAIN_NAME}.com --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name evmcc --version ${VERSION} --init-required --package-id ${PACKAGE_ID} --sequence ${SEQUENCE}  >&log.txt
 cat log.txt 
 
 
@@ -127,7 +139,7 @@ ORG2APPROVAL=$(echo $ORGAPPROVAL | jq -r --arg key "$ORG2_MSP" '.[$key]')
 
 if [ "$ORG1APPROVAL" = true ] ; then
 	if [ "$ORG2APPROVAL" = true ] ; then
-	    peer lifecycle chaincode commit -o orderer.example.com:7050 --ordererTLSHostnameOverride orderer.example.com --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name evmcc $PEER_CONN_PARMS --version ${VERSION} --sequence ${SEQUENCE} --init-required >&log.txt
+	    peer lifecycle chaincode commit -o orderer.${DOMAIN_NAME}.com:7050 --ordererTLSHostnameOverride orderer.${DOMAIN_NAME}.com --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name evmcc $PEER_CONN_PARMS --version ${VERSION} --sequence ${SEQUENCE} --init-required >&log.txt
 	    cat log.txt
 
 	fi
@@ -138,24 +150,24 @@ setGlobals 1 0
 
 #peer chaincode instantiate -o orderer.example.com:7050 --tls --cafile $ORDERER_CA -C ${CHANNEL_NAME} -n evmcc -v ${VERSION} -c '{"Args":["init"]}' -P "OR ('Org1MSP.peer','Org2MSP.peer')"
 
-peer chaincode invoke -o orderer.example.com:7050 --ordererTLSHostnameOverride orderer.example.com --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n evmcc $PEER_CONN_PARMS --isInit -c '{"function":"Init","Args":[]}' >&log.txt
+peer chaincode invoke -o orderer.${DOMAIN_NAME}.com:7050 --ordererTLSHostnameOverride orderer.${DOMAIN_NAME}.com --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n evmcc $PEER_CONN_PARMS --isInit -c '{"function":"Init","Args":[]}' >&log.txt
 cat log.txt
 
 
-setGlobals 1 1
+#setGlobals 1 1
 
-peer chaincode invoke -o orderer.example.com:7050 --ordererTLSHostnameOverride orderer.example.com --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n evmcc $PEER_CONN_PARMS --isInit -c '{"function":"Init","Args":[]}' >&log.txt
-cat log.txt
+#peer chaincode invoke -o orderer.${DOMAIN_NAME}.com:7050 --ordererTLSHostnameOverride orderer.${DOMAIN_NAME}.com --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n evmcc $PEER_CONN_PARMS --isInit -c '{"function":"Init","Args":[]}' >&log.txt
+#cat log.txt
 
-setGlobals 2 0
+#setGlobals 2 0
 
-peer chaincode invoke -o orderer.example.com:7050 --ordererTLSHostnameOverride orderer.example.com --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n evmcc $PEER_CONN_PARMS --isInit -c '{"function":"Init","Args":[]}' >&log.txt
-cat log.txt
+#peer chaincode invoke -o orderer.example.com:7050 --ordererTLSHostnameOverride orderer.example.com --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n evmcc $PEER_CONN_PARMS --isInit -c '{"function":"Init","Args":[]}' >&log.txt
+#cat log.txt
 
-setGlobals 2 1
+#setGlobals 2 1
 
-peer chaincode invoke -o orderer.example.com:7050 --ordererTLSHostnameOverride orderer.example.com --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n evmcc $PEER_CONN_PARMS --isInit -c '{"function":"Init","Args":[]}' >&log.txt
-cat log.txt
+#peer chaincode invoke -o orderer.example.com:7050 --ordererTLSHostnameOverride orderer.example.com --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n evmcc $PEER_CONN_PARMS --isInit -c '{"function":"Init","Args":[]}' >&log.txt
+#cat log.txt
 
 #peer lifecycle chaincode commit -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name evmcc $PEER_CONN_PARMS --version ${VERSION} --sequence ${SEQUENCE} --init-required >&log.txt
 

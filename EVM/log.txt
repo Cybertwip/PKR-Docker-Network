@@ -1,0 +1,1 @@
+/Users/greentwip/Documents/Source/PKR/EVM/evm-setup.sh: line 151: peer: command not found
