@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 
+# must be run from inside the peers' container directory (peer) with docker exec -it cli bash
+
 export ORG1_NAME_1=Org1 #PKR_ORG1
 export ORG2_NAME_1=Org2 #PKR_ORG2
 

@@ -2,12 +2,27 @@ Replace the following export variables with your own (get from your crypto-confi
 
 export RAFT_PROFILE=SampleMultiNodeEtcdRaft #PKR_DRAFT_PROFILE
 export ANCHORS_PROFILE=TwoOrgsChannel #PKR_PROFILE
-export ORG1_NAME=Org1 #PKR_ORG1
-export ORG2_NAME=Org2 #PKR_ORG2
 
-export DOMAIN_NAME=example #pkrstudio
+export ORG1_NAME_1=Org1 #PKR_ORG1
+export ORG2_NAME_1=Org2 #PKR_ORG2
 
-For the byfn.sh script.
+export ORG1_NAME_2=org1 #PKR_ORG1
+export ORG2_NAME_2=org2 #PKR_ORG2
+
+export DOMAIN_NAME=pkrstudio #pkrstudio
+
+For the byfn.sh, utils.sh, script.sh and ccp-generate.sh scripts.
 
 byfn.sh				-- brings the network up and down
 ccp-generate.sh 	-- generates the crypto connection parameters
+
+The evm-setup.sh script must be run from inside the peers' container directory (peer) with docker exec -it cli bash while locating the script inside fabric-chaincode-evm
+
+./../../fabric-chaincode-evm/evm-setup.sh
+
+
+For the EVM Fab3 setup (evm-fab3-setup.sh) ensure you correctly set the above export variables and also verify the hostname matches the IP your installed EVM fabric instance has, i.e.
+
+export LOCALHOST_NAME=172.31.8.177
+
+Also ensure that the first-network-sdk-config-template.yaml template is in the same directory as you run the evm-fab3-setup.sh script
