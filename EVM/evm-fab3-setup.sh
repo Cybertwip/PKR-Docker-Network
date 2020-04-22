@@ -32,6 +32,6 @@ function yaml_template {
         $7 
 }
 
-echo "$(yaml_template $ORG1_NAME_1 $ORG2_NAME_1 $ORG1_NAME_2 $ORG2_NAME_2 $LOCALHOST_NAME $DOMAIN_NAME ./first-network-sdk-config-template.yaml)" > $FAB3_CONFIG
+echo "$(yaml_template $ORG1_NAME_1 $ORG2_NAME_1 $ORG1_NAME_2 $ORG2_NAME_2 $LOCALHOST_NAME $DOMAIN_NAME ${GOPATH}/src/github.com/hyperledger/fabric-chaincode-evm/examples/first-network-sdk-config-template.yaml)" > $FAB3_CONFIG
 
 ${GOPATH}/src/github.com/hyperledger/fabric-chaincode-evm/bin/fab3
