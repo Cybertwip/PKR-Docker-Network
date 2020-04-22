@@ -40,7 +40,7 @@
                 "pem": "${PEERPEM}"
             },
             "grpcOptions": {
-                "ssl-target-name-override": "peer1.${ORG_NAME_2}}.${DOMAIN_NAME}.com",
+                "ssl-target-name-override": "peer1.${ORG_NAME_2}.${DOMAIN_NAME}.com",
                 "hostnameOverride": "peer1.${ORG_NAME_2}.${DOMAIN_NAME}.com"
             }
         }
