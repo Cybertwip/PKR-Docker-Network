@@ -16,6 +16,13 @@ For the byfn.sh, utils.sh, script.sh and ccp-generate.sh scripts.
 byfn.sh				-- brings the network up and down
 ccp-generate.sh 	-- generates the crypto connection parameters
 
+The commands of interest from byfn.sh must be called as follows
+
+./byfn.sh generate -a -n -c evm
+./byfn.sh up -a -n -c evm
+./byfn.sh down -a -n -c evm
+
+
 The evm-setup.sh script must be run from inside the peers' container directory (peer) with docker exec -it cli bash while locating the script inside fabric-chaincode-evm
 
 ./../../fabric-chaincode-evm/evm-setup.sh
