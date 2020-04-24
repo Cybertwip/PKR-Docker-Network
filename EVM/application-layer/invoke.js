@@ -11,7 +11,8 @@ const path = require('path');
 async function main() {
     try {
         // load the network configuration
-        const ccpPath = path.resolve(__dirname, '..', '..', 'test-network', 'organizations', 'peerOrganizations', 'org1.example.com', 'connection-org1.json');
+        const ccpPath = path.resolve(__dirname, '..', 'first-network', 'connection-org1.json');
+
         let ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
 
         // Create a new file system based wallet for managing identities.
@@ -27,27 +28,41 @@ async function main() {
             return;
         }
 
+	console.log(wallet);
+
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: 'appUser', discovery: { enabled: true, asLocalhost: true } });
+        await gateway.connect(ccp, { wallet: wallet, identity: 'appUser', discovery: { enabled: false, asLocalhost: false } });
 
         // Get the network (channel) our contract is deployed to.
-        const network = await gateway.getNetwork('mychannel');
+        const network = await gateway.getNetwork('evm');
 
         // Get the contract from the network.
-        const contract = network.getContract('fabcar');
+        const contract = network.getContract('evmpkr');
 
-        // Submit the specified transaction.
-        // createCar transaction - requires 5 argument, ex: ('createCar', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom')
-        // changeCarOwner transaction - requires 2 args , ex: ('changeCarOwner', 'CAR12', 'Dave')
-        await contract.submitTransaction('createCar', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom');
-        console.log('Transaction has been submitted');
+        // Submit the specified transactions.
+
+	console.log(contract);
+
+	console.log('submitting setEVMAddress');
+
+        await contract.submitTransaction('setEVMAddress', 'http://172.31.10.189:5000');
+
+        console.log('submitting setSCAddress');
+
+	await contract.submitTransaction('setSCAddress', '0x7C772aE34234B8868cafB3785D319B606851aF82');
+
+        console.log('Transactions have been submitted');
 
         // Disconnect from the gateway.
         await gateway.disconnect();
 
     } catch (error) {
-        console.error(`Failed to submit transaction: ${error}`);
+	console.log("Error is");
+	for(const innerError of error.errors){
+	    console.log(innerError);
+	}
+	//console.log(error);
         process.exit(1);
     }
 }
