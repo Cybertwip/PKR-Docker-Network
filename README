@@ -23,7 +23,11 @@ The commands of interest from byfn.sh must be called as follows
 ./byfn.sh down -a -n -c evm
 
 
-The evm-setup.sh script must be run from inside the peers' container directory (peer) with docker exec -it cli bash while locating the script inside fabric-chaincode-evm
+The evm-setup.sh script must be run from inside the peers' container directory (peer) with 
+
+docker exec -it cli bash 
+
+while locating the script inside fabric-chaincode-evm
 
 ./../../fabric-chaincode-evm/evm-setup.sh
 
@@ -33,3 +37,10 @@ For the EVM Fab3 setup (evm-fab3-setup.sh) ensure you correctly set the above ex
 export LOCALHOST_NAME=172.31.8.177
 
 Also ensure that the first-network-sdk-config-template.yaml template is in the same directory as you run the evm-fab3-setup.sh script
+
+After installing all the above, you must install the pkrevm chaincode into the Fabric machine, run with 
+
+docker exec -it cli bash
+
+./../../fabric-chaincode-evm/evm-pkr-setup.sh
+
