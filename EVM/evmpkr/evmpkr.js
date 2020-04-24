@@ -38,44 +38,6 @@ var EVMPKR = class {
     }
   }
 
-  async setSCAddress(stub, args){
-    if (args.length != 1) {
-      throw new Error('Incorrect number of arguments. Expecting 1');
-    }
-
-    const sc = {
-      address: args[0]
-    };
-
-    await stub.putState('SCADDRESS', Buffer.from(JSON.stringify(sc)));
-
-  }
-
-  async getSCAddress(stub) {
-
-    const scAsBytes = await stub.getState('SCADDRESS'); 
-    if (!scAsBytes || scAsBytes.length === 0) {
-        throw new Error(`SCADDRESS does not exist`);
-    }
-    console.log(scAsBytes.toString());
-
-      const strValue = Buffer.from(scAsBytes).toString('utf8');
-      let sc;
-      try {
-          sc = JSON.parse(strValue);
-      } catch (err) {
-          console.log(err);
-          sc = strValue;
-      }
-
-    if(sc.address){
-      return sc.address;
-    } else {
-      return sc;
-    }
-
-  }
-
   async setEVMAddress(stub, args){
     if (args.length != 1) {
       throw new Error('Incorrect number of arguments. Expecting 1');
@@ -111,6 +73,56 @@ var EVMPKR = class {
       return evm.address;
     } else {
       return evm;
+    }
+
+  }
+
+  async deploySC(stub, args){
+    const evmAsBytes = await stub.getState('EVMADDRESS'); 
+    if (!evmAsBytes || evmAsBytes.length === 0) {
+        throw new Error(`EVMADDRESS does not exist`);
+    }
+
+    if(!web3){
+        throw new Error(`Fab3 not connected`);      
+    }
+  }
+
+
+  async setSCAddress(stub, args){
+    if (args.length != 1) {
+      throw new Error('Incorrect number of arguments. Expecting 1');
+    }
+
+    const sc = {
+      address: args[0]
+    };
+
+    await stub.putState('SCADDRESS', Buffer.from(JSON.stringify(sc)));
+
+  }
+
+  async getSCAddress(stub) {
+
+    const scAsBytes = await stub.getState('SCADDRESS'); 
+    if (!scAsBytes || scAsBytes.length === 0) {
+        throw new Error(`SCADDRESS does not exist`);
+    }
+    console.log(scAsBytes.toString());
+
+      const strValue = Buffer.from(scAsBytes).toString('utf8');
+      let sc;
+      try {
+          sc = JSON.parse(strValue);
+      } catch (err) {
+          console.log(err);
+          sc = strValue;
+      }
+
+    if(sc.address){
+      return sc.address;
+    } else {
+      return sc;
     }
 
   }
