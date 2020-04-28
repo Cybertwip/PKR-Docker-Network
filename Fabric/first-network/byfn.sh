@@ -196,8 +196,8 @@ function networkUp() {
   COMPOSE_FILES="-f ${COMPOSE_FILE} -f ${COMPOSE_FILE_RAFT2}"
   if [ "${CERTIFICATE_AUTHORITIES}" == "true" ]; then
     COMPOSE_FILES="${COMPOSE_FILES} -f ${COMPOSE_FILE_CA}"
-    export BYFN_CA1_PRIVATE_KEY=$(cd crypto-config/peerOrganizations/${ORG1_NAME_1}.${DOMAIN_NAME}.com/ca && ls *_sk)
-    export BYFN_CA2_PRIVATE_KEY=$(cd crypto-config/peerOrganizations/${ORG2_NAME_1}.${DOMAIN_NAME}.com/ca && ls *_sk)
+    export BYFN_CA1_PRIVATE_KEY=$(cd crypto-config/peerOrganizations/${ORG1_NAME_2}.${DOMAIN_NAME}.com/ca && ls *_sk)
+    export BYFN_CA2_PRIVATE_KEY=$(cd crypto-config/peerOrganizations/${ORG2_NAME_2}.${DOMAIN_NAME}.com/ca && ls *_sk)
   fi
   if [ "${IF_COUCHDB}" == "couchdb" ]; then
     COMPOSE_FILES="${COMPOSE_FILES} -f ${COMPOSE_FILE_COUCH}"
@@ -248,8 +248,8 @@ function upgradeNetwork() {
     COMPOSE_FILES="-f ${COMPOSE_FILE} -f ${COMPOSE_FILE_RAFT2}"
     if [ "${CERTIFICATE_AUTHORITIES}" == "true" ]; then
       COMPOSE_FILES="${COMPOSE_FILES} -f ${COMPOSE_FILE_CA}"
-      export BYFN_CA1_PRIVATE_KEY=$(cd crypto-config/peerOrganizations/${ORG1_NAME_1}.${DOMAIN_NAME}.com/ca && ls *_sk)
-      export BYFN_CA2_PRIVATE_KEY=$(cd crypto-config/peerOrganizations/${ORG2_NAME_1}.${DOMAIN_NAME}.com/ca && ls *_sk)
+      export BYFN_CA1_PRIVATE_KEY=$(cd crypto-config/peerOrganizations/${ORG1_NAME_2}.${DOMAIN_NAME}.com/ca && ls *_sk)
+      export BYFN_CA2_PRIVATE_KEY=$(cd crypto-config/peerOrganizations/${ORG2_NAME_2}.${DOMAIN_NAME}.com/ca && ls *_sk)
     fi
     if [ "${IF_COUCHDB}" == "couchdb" ]; then
       COMPOSE_FILES="${COMPOSE_FILES} -f ${COMPOSE_FILE_COUCH}"
