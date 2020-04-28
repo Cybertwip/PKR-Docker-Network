@@ -45,11 +45,9 @@ export ORG2_NAME_2=org2 #PKR_ORG2
 
 export DOMAIN_NAME=pkrstudio #pkrstudio
 
-export FABRIC_BASE_SANS_IP=172.31.8.177 
+export FABRIC_BASE_SANS_IP=172.31.8.177
 
 mkdir -p base
-
-
 
 function yaml_template {
     sed -e "s/\${ORG1_NAME_1}/$1/g" \
