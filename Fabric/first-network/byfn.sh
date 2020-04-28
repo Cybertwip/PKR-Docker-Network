@@ -45,6 +45,8 @@ export ORG2_NAME_2=org2 #PKR_ORG2
 
 export DOMAIN_NAME=pkrstudio #pkrstudio
 
+export FABRIC_BASE_SANS_IP=172.31.8.177 
+
 mkdir -p base
 
 
@@ -55,14 +57,25 @@ function yaml_template {
         -e "s/\${ORG1_NAME_2}/$3/g" \
         -e "s/\${ORG2_NAME_2}/$4/g" \
         -e "s/\${DOMAIN_NAME}/$5/g" \
-        $6 
+        $6
+}
+
+
+function yaml_template_crypto_config {
+    sed -e "s/\${ORG1_NAME_1}/$1/g" \
+        -e "s/\${ORG2_NAME_1}/$2/g" \
+        -e "s/\${ORG1_NAME_2}/$3/g" \
+        -e "s/\${ORG2_NAME_2}/$4/g" \
+        -e "s/\${DOMAIN_NAME}/$5/g" \
+        -e "s/\${FABRIC_BASE_SANS_IP}/$6/g" \
+        $7
 }
 
 echo "$(yaml_template $ORG1_NAME_1 $ORG2_NAME_1 $ORG1_NAME_2 $ORG2_NAME_2 $DOMAIN_NAME ./templates/base/docker-compose-base-template.yaml)" > ./base/docker-compose-base.yaml
-#echo "$(yaml_template $ORG1_NAME $ORG2_NAME $DOMAIN_NAME ./templates/base/peer-base-template.yaml)" > ./base/peer-base.yaml
+echo "$(yaml_template $ORG1_NAME_1 $ORG2_NAME_1 $ORG1_NAME_2 $ORG2_NAME_2 $DOMAIN_NAME ./templates/base/peer-base-template.yaml)" > ./base/peer-base.yaml
 
 echo "$(yaml_template $ORG1_NAME_1 $ORG2_NAME_1 $ORG1_NAME_2 $ORG2_NAME_2 $DOMAIN_NAME ./templates/configtx-template.yaml)" > ./configtx.yaml
-echo "$(yaml_template $ORG1_NAME_1 $ORG2_NAME_1 $ORG1_NAME_2 $ORG2_NAME_2 $DOMAIN_NAME ./templates/crypto-config-template.yaml)" > ./crypto-config.yaml
+echo "$(yaml_template_crypto_config $ORG1_NAME_1 $ORG2_NAME_1 $ORG1_NAME_2 $ORG2_NAME_2 $DOMAIN_NAME $FABRIC_BASE_SANS_IP ./templates/crypto-config-template.yaml)" > ./crypto-config.yaml
 echo "$(yaml_template $ORG1_NAME_1 $ORG2_NAME_1 $ORG1_NAME_2 $ORG2_NAME_2 $DOMAIN_NAME ./templates/docker-compose-ca-template.yaml)" > ./docker-compose-ca.yaml
 echo "$(yaml_template $ORG1_NAME_1 $ORG2_NAME_1 $ORG1_NAME_2 $ORG2_NAME_2 $DOMAIN_NAME ./templates/docker-compose-cli-template.yaml)" > ./docker-compose-cli.yaml
 echo "$(yaml_template $ORG1_NAME_1 $ORG2_NAME_1 $ORG1_NAME_2 $ORG2_NAME_2 $DOMAIN_NAME ./templates/docker-compose-e2e-template.yaml)" > ./docker-compose-e2e-template.yaml

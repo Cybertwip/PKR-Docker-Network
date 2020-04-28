@@ -17,10 +17,20 @@ OrdererOrgs:
     # ---------------------------------------------------------------------------
     Specs:
       - Hostname: orderer
+        SANS: 
+          - "${FABRIC_BASE_SANS_IP}"
       - Hostname: orderer2
+        SANS: 
+          - "${FABRIC_BASE_SANS_IP}"
       - Hostname: orderer3
+        SANS: 
+          - "${FABRIC_BASE_SANS_IP}"
       - Hostname: orderer4
+        SANS: 
+          - "${FABRIC_BASE_SANS_IP}"      
       - Hostname: orderer5
+        SANS: 
+          - "${FABRIC_BASE_SANS_IP}"
 
 # ---------------------------------------------------------------------------
 # "PeerOrgs" - Definition of organizations managing peer nodes
@@ -67,6 +77,9 @@ PeerOrgs:
     # ---------------------------------------------------------------------------
     Template:
       Count: 2
+      SANS: 
+        - "${FABRIC_BASE_SANS_IP}"
+
       # Start: 5
       # Hostname: {{.Prefix}}{{.Index}} # default
     # ---------------------------------------------------------------------------
@@ -84,5 +97,8 @@ PeerOrgs:
     EnableNodeOUs: true
     Template:
       Count: 2
+      SANS: 
+        - "${FABRIC_BASE_SANS_IP}"
+        
     Users:
       Count: 1
