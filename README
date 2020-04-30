@@ -36,7 +36,7 @@ For the EVM Fab3 setup (evm-fab3-setup.sh) ensure you correctly set the above ex
 
 export LOCALHOST_NAME=172.31.8.177
 
-Also ensure that the first-network-sdk-config-template.yaml template is in the same directory as you run the evm-fab3-setup.sh script
+Also ensure that the first-network-sdk-config-template.yaml template is in the fabric-chaincode-evm/examples directory as you run the evm-fab3-setup.sh script, it is encouraged to run the evm-fab3-setup.sh script from the host's fabric-chaincode-evm directory
 
 After installing all the above, you must install the pkrevm chaincode into the Fabric machine, run with 
 
