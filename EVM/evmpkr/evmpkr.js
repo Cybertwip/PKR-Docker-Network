@@ -53,136 +53,126 @@ var EVMPKR = class {
 
 
   async getEVMAddress(stub) {
+    console.info('============= START : getEVMAddress ===========');
 
     const evmAsBytes = await stub.getState('EVMADDRESS'); 
     if (!evmAsBytes || evmAsBytes.length === 0) {
         throw new Error(`EVMADDRESS does not exist`);
     }
-    console.log(evmAsBytes.toString());
 
-    const strValue = Buffer.from(evmAsBytes).toString('utf8');
-    let evm;
-    try {
-        evm = JSON.parse(strValue);
-    } catch (err) {
-        console.log(err);
-        evm = strValue;
-    }
+    const evm = JSON.parse(evmAsBytes.toString());
 
-    if(evm.address){
-      return evm.address;
-    } else {
-      return evm;
-    }
+    console.info('============= END : getEVMAddress ===========');
 
-  }
-
-  async deploySC(stub, args){
-    const evmAsBytes = await stub.getState('EVMADDRESS'); 
-    if (!evmAsBytes || evmAsBytes.length === 0) {
-        throw new Error(`EVMADDRESS does not exist`);
-    }
-
-    if(!web3){
-        throw new Error(`Fab3 not connected`);      
-    }
-  }
-
-
-  async setSCAddress(stub, args){
-    if (args.length != 1) {
-      throw new Error('Incorrect number of arguments. Expecting 1');
-    }
-
-    const sc = {
-      address: args[0]
-    };
-
-    await stub.putState('SCADDRESS', Buffer.from(JSON.stringify(sc)));
-
-  }
-
-  async getSCAddress(stub) {
-
-    const scAsBytes = await stub.getState('SCADDRESS'); 
-    if (!scAsBytes || scAsBytes.length === 0) {
-        throw new Error(`SCADDRESS does not exist`);
-    }
-    console.log(scAsBytes.toString());
-
-      const strValue = Buffer.from(scAsBytes).toString('utf8');
-      let sc;
-      try {
-          sc = JSON.parse(strValue);
-      } catch (err) {
-          console.log(err);
-          sc = strValue;
-      }
-
-    if(sc.address){
-      return sc.address;
-    } else {
-      return sc;
-    }
+    return evm.address;
 
   }
 
   async connectToFab3(stub){
-    const evmAddress = await getEVMAddress(stub);
-    web3 = new Web3(evmAddress)
-  }
+    console.info('============= START : connectToFab3 ===========');
 
-  async validateRequirements(stub){
     const evmAsBytes = await stub.getState('EVMADDRESS'); 
     if (!evmAsBytes || evmAsBytes.length === 0) {
         throw new Error(`EVMADDRESS does not exist`);
-    }
+    } 
 
-    const scAsBytes = await stub.getState('SCADDRESS'); 
-    if (!scAsBytes || scAsBytes.length === 0) {
-        throw new Error(`SCADDRESS does not exist`);
+    const evmAddress = await getEVMAddress(stub);
+    web3 = new Web3(evmAddress)
+
+    console.info('============= END : connectToFab3 ===========');
+  }
+
+  async deploySC(stub, args){
+    console.info('============= START : deploySC ===========');
+
+    if (args.length != 3) {
+      throw new Error('Incorrect number of arguments. Expecting 3');
     }
 
     if(!web3){
         throw new Error(`Fab3 not connected`);      
     }
+    
+    let accounts = await web3.eth.getAccounts();
 
-    return true;
+    const contractName = args[0];
+    const contractABI = args[1];
+    const contractCode = args[2];
+
+    const newContract = new web3.eth.Contract(contractABI);
+
+    var contractInstancePromise = newContract.deploy({ data: contractCode });
+    
+    var contractInstance = await contractInstancePromise.send({
+      from: accounts[0]
+    });
+
+    await stub.putState(contractName, Buffer.from(contractInstance.options.address));
+    await stub.putState(contractName + '_ABI', Buffer.from(JSON.stringify(contractABI)));
+
+    console.info('============= END : deploySC ===========');
+
   }
 
-  async setGreeting(stub, args){
-    console.info('============= START : Set Greeting ===========');
 
-    if (args.length != 1) {
-      throw new Error('Incorrect number of arguments. Expecting 1');
+  async query(stub, args){
+    console.info('============= START : query ===========');
+
+    if(!web3){
+        throw new Error(`Fab3 not connected`);      
+    }
+    
+    let accounts = await web3.eth.getAccounts();
+
+    const contractName = args[0];
+
+    const queryMethod = args[1];
+
+    const contractAddressAsBytes = await stub.getState(contractName); 
+    if (!contractAddressAsBytes || contractAddressAsBytes.length === 0) {
+        throw new Error(`Contract address does not exist, i.e. might not be deployed yet`);
     }
 
-    await validateRequirements(stub);
+    const contractABIAsBytes = await stub.getState(contractName + '_ABI'); 
+    if (!contractABIAsBytes || contractABIAsBytes.length === 0) {
+        throw new Error(`Contract ABI does not exist, i.e. might not be deployed yet`);
+    }
 
-    const contractAddress = await getSCAddress(stub);
-    const greeterContract = new web3.eth.Contract(require(path.join(__dirname, "abi.json")), contractAddress)
+    const contractAddress = contractAddressAsBytes.toString();
 
-    await greeterContract.methods.set(args[0]).send({from: account.address});
+    const contractABI = JSON.parse(contractABIAsBytes.toString());
 
-    console.info('============= END : Set Greeting ===========');
+    const contract = new web3.eth.Contract(contractABI, contractAddress);
+
+    const prepareData = e => `${e.name}(${e.inputs.map(e => e.type)})`
+    //const encodeSelector = f => web3.sha3(f).slice(0,10)
+
+    const output = contractABI
+        .filter(e => e.type === "function" && e.name === queryMethod)
+        .flatMap(e => `${prepareData(e)}`)
+
+    if(output.length == 1){
+
+      var methodPromise = contract.methods[output[0]].apply(contract, args.slice(2, args.length));
+      var queryResult = await methodPromise.call({from: accounts[0]});
+
+      console.info('============= END : query ===========');
+
+      return queryResult;
+
+    } else {
+
+      console.info('============= END : query ===========');
+
+      throw new Error(`Called method ${queryMethod} does not exist or more than one methods found with the same name`);
+    }
   }
 
-  async getGreeting(stub){
-    console.info('============= START : Get Greeting ===========');
 
 
-    await validateRequirements(stub);
-      
-    const contractAddress = await getSCAddress(stub);
-    const greeterContract = new web3.eth.Contract(require(path.join(__dirname, "abi.json")), contractAddress)
-
-    const greet = await greeterContract.methods.greet().call({from: account.address}) //Call to greet function
 
 
-    console.info('============= END : Get Greeting ===========');
-                
-    return greet;
-  }
+
 
 };
 
