@@ -56,7 +56,7 @@ var EVMPKR = class {
         throw new Error(`EVMADDRESS does not exist`);
     }
 
-    const evmAddress = evmAsBytes.toString();
+    const evmAddress = Buffer.from(evmAsBytes).toString('utf8');
 
     console.info('============= END : getEVMAddress ===========');
 

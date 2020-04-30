@@ -28,11 +28,11 @@ async function main() {
             return;
         }
 
-	console.log(wallet);
+	    console.log(wallet);
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet: wallet, identity: 'appUser', discovery: { enabled: false, asLocalhost: false } });
+        await gateway.connect(ccp, { wallet: wallet, identity: 'appUser', discovery: { enabled: true, asLocalhost: true } });
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('evm');
@@ -51,7 +51,7 @@ async function main() {
 
         const result = await contract.evaluateTransaction('getEVMAddress');
 
-        console.log('EVMADDRESS is' + result);
+        console.log('EVMADDRESS is: ' + result);
 
         console.log('Connecting to EVM at address: ' + result);
 
