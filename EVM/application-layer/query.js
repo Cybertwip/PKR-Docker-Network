@@ -36,12 +36,12 @@ async function main() {
         const network = await gateway.getNetwork('evm');
 
         // Get the contract from the network.
-        const contract = network.getContract('evmxxx');
+        const contract = network.getContract('evmpkr');
 
         // Evaluate the specified transaction.
         // queryCar transaction - requires 1 argument, ex: ('queryCar', 'CAR4')
         // queryAllCars transaction - requires no arguments, ex: ('queryAllCars')
-        const result = await contract.submitTransaction('getEVMAddress');
+        const result = await contract.evaluateTransaction('getEVMAddress');
         console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
 
     } catch (error) {

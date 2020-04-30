@@ -96,7 +96,7 @@ var EVMPKR = class {
     let accounts = await web3.eth.getAccounts();
 
     const contractName = args[0];
-    const contractABI = args[1];
+    const contractABI  = JSON.parse(args[1]);
     const contractCode = args[2];
 
     const newContract = new web3.eth.Contract(contractABI);
