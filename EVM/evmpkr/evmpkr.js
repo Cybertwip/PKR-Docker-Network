@@ -43,7 +43,7 @@ var EVMPKR = class {
       throw new Error('Incorrect number of arguments. Expecting 1');
     }
 
-    await stub.putState('EVMADDRESS', args[0]);
+    await stub.putState('EVMADDRESS', Buffer.from(JSON.stringify(args[0])));
 
   }
 
@@ -56,11 +56,11 @@ var EVMPKR = class {
         throw new Error(`EVMADDRESS does not exist`);
     }
 
-    const evmAddress = Buffer.from(evmAsBytes).toString('utf8');
+    const evmAddress = JSON.parse(evmAsBytes);
 
     console.info('============= END : getEVMAddress ===========');
 
-    return evmAddress;
+    return JSON.stringify(evmAddress);
 
   }
 
@@ -72,7 +72,7 @@ var EVMPKR = class {
         throw new Error(`EVMADDRESS does not exist`);
     }
 
-    const evmAddress = evmAsBytes.toString();
+    const evmAddress = JSON.parse(evmAsBytes);
 
     web3 = new Web3(evmAddress);
 
