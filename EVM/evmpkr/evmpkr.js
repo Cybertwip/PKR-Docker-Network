@@ -48,16 +48,18 @@ var EVMPKR = class {
   async getEVMAddress(stub) {
     console.info('============= START : getEVMAddress ===========');
 
+
     const evmAsBytes = await stub.getState('EVMADDRESS'); 
     if (!evmAsBytes || evmAsBytes.length === 0) {
         throw new Error(`EVMADDRESS does not exist`);
     }
 
-    const evmAddress = JSON.parse(evmAsBytes);
+    var evmAddress = JSON.parse(evmAsBytes);
 
     console.info('============= END : getEVMAddress ===========');
 
     return JSON.stringify(evmAddress);
+
 
   }
 
