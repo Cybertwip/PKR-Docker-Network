@@ -1,0 +1,15 @@
+{
+    "transactionId": "someId",
+    "string": "dsfasdfasdfasdf2134234123"
+}
+
+{
+    "userId": "asdfasdf",
+    "crypto": {
+        cacert: String,
+        keystore: String,
+        signcerts: String,
+        IssuerPublicKey: String,
+        issuerRevocationPublicKey: String
+    }
+}
