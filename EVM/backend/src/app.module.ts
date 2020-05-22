@@ -12,6 +12,13 @@ import { WalletService } from './wallet/wallet.service';
 import { WalletModule } from './wallet/wallet.module';
 import { HoldEmController } from './hold-em/hold-em.controller';
 import { HoldEmModule } from './hold-em/hold-em.module';
+import { HoldEmService } from './hold-em/hold-em.service';
+
+import { AuthController } from './auth/auth.controller';
+import { AuthModule } from './auth/auth.module';
+import { AuthService } from './auth/auth.service';
+import { AuthConfig } from './auth/auth.config';
+
 import configuration from '../config'
 
 
@@ -27,6 +34,7 @@ import configuration from '../config'
     AgreementModule,
     WalletModule,
     HoldEmModule,
+    AuthModule,
   ],
   controllers: [
     AppController,
@@ -34,7 +42,8 @@ import configuration from '../config'
     DepositsController,
     DispersionsController,
     HoldEmController,
+    AuthController,
   ],
-  providers: [AppService, UsersService, WalletService, DispersionsService],
+  providers: [AppService, UsersService, HoldEmService,  AuthService, AuthConfig, WalletService, DispersionsService],
 })
 export class AppModule { }
