@@ -1,5 +1,13 @@
 import { AuthConfig } from './auth.config';
 import { Inject, Injectable } from '@nestjs/common';
+
+import Global = NodeJS.Global;
+export interface GlobalWithCognitoFix extends Global {
+    fetch: any
+}
+declare const global: GlobalWithCognitoFix;
+global.fetch = require('node-fetch');
+
 import {
   AuthenticationDetails,
   CognitoUser,

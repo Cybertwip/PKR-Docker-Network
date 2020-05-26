@@ -1,10 +1,10 @@
 export interface AuthRegisterDto {
+    name: string;
     email: string;
     password: string;
-    name: string;
   }
   
   export interface AuthCredentialsDto {
-    password: string;
     name: string;
+    password: string;
   }

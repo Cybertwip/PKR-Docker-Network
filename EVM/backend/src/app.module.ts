@@ -14,6 +14,8 @@ import { HoldEmController } from './hold-em/hold-em.controller';
 import { HoldEmModule } from './hold-em/hold-em.module';
 import { HoldEmService } from './hold-em/hold-em.service';
 
+import { JwtStrategy } from './auth/jwt.strategy';
+
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
@@ -44,6 +46,6 @@ import configuration from '../config'
     HoldEmController,
     AuthController,
   ],
-  providers: [AppService, UsersService, HoldEmService,  AuthService, AuthConfig, WalletService, DispersionsService],
+  providers: [AppService, UsersService, HoldEmService,  AuthService, AuthConfig, JwtStrategy, WalletService, DispersionsService],
 })
 export class AppModule { }

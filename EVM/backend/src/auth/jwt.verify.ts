@@ -51,7 +51,7 @@ interface Claim {
   client_id: string;
 }
 
-const cognitoPoolId = '{cognitoPoolId}';
+const cognitoPoolId = 'us-east-1_6hrF40OJv';
 if (!cognitoPoolId) {
   throw new Error('env var required for cognito pool');
 }
@@ -65,6 +65,8 @@ const getPublicKeys = async (): Promise<MapOfKidToPublicKey> => {
     cacheKeys = reduce(publicKeys.data.keys, async (agg, current) => {
       const key = await jose.JWK.asKey(current);
       const pem = key.toPEM(false);
+      console.log('Pem is:');
+      console.log(pem);
       agg[current.kid] = {instance: current, pem};
       return agg;
     }, {} as MapOfKidToPublicKey);
