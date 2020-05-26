@@ -1,4 +1,4 @@
-import * as Authority from 'fabric-ca-client';
+import { default as Authority } from 'fabric-ca-client';
 import { User } from 'fabric-common';
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Wallet, Wallets, X509Identity } from 'fabric-network';

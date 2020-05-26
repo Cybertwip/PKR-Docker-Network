@@ -8,10 +8,11 @@ import { AuthService } from '../auth/auth.service';
 import { AuthConfig } from '../auth/auth.config';
 import { JwtStrategy } from '../auth/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
+import { UsersService } from './../users/users.service';
 
 @Module({
 	imports: [ConfigModule, WalletModule, PassportModule.register({ defaultStrategy: 'jwt' })],
 	controllers: [HoldEmController],
-  	providers: [HoldEmService, WalletService, AuthService, AuthConfig, JwtStrategy]
+  	providers: [HoldEmService, WalletService, AuthService, AuthConfig, JwtStrategy, UsersService]
 })
 export class HoldEmModule {}
