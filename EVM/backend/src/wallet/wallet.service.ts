@@ -68,7 +68,7 @@ export class WalletService implements OnModuleInit {
     }
 
     const registry = {
-      role: 'client',
+      role: 'user',
       affiliation: 'org1.department1',
       attrs: attributes,
       enrollmentID: label,

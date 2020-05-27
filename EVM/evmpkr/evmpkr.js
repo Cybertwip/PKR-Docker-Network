@@ -40,7 +40,7 @@ var EVMPKR = class {
       throw new Error('Incorrect number of arguments. Expecting 1');
     }
 
-    await stub.putState('EVMADDRESS', Buffer.from(JSON.stringify(args[0])));
+    await stub.putState('EVMADDRESS', Buffer.from(JSON.stringify({address: args[0]})));
 
   }
 
@@ -56,9 +56,11 @@ var EVMPKR = class {
 
     var evmAddress = JSON.parse(evmAsBytes);
 
+    console.info(evmAddress);
+
     console.info('============= END : getEVMAddress ===========');
 
-    return JSON.stringify(evmAddress);
+    return JSON.stringify(evmAddress.address);
 
 
   }

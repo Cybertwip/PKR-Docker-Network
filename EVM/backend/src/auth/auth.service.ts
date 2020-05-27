@@ -72,7 +72,7 @@ export class AuthService {
 
           fs.writeFileSync(path.join(walletPath, crypto.username + ".json"), json);
 
-          //this.usersService.create();
+          this.usersService.create({id: crypto.username});
 
           resolve(result.user);
         }

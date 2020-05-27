@@ -12,8 +12,8 @@ export class UsersService {
   }
 
   async create(user) {
-    const { id, hash } = user
-    const properties = [{ name: 'hash', value: hash, ecert: true }]
+    const { id } = user
+    const properties = []
     await this.wallet.put(id, properties);
   }
 }
