@@ -34,16 +34,18 @@ export class HoldEmController {
 
         var gameData =  plainToClass(GameDTO, await this.holdEmService.getGame(bet.gameId));
 
+        var filteredBets = gameData.bets.filter(bet => bet.action != BetAction.Abandon);
+
         switch(bet.action){
             case BetAction.SmallBlind:{
-                if(gameData.bets.length != 0){
+                if(filteredBets.length != 0){
                     throw new NotAcceptableException();
                 }
             }
             break;
 
             case BetAction.BigBlind:{
-                var previousBet = gameData.bets[gameData.bets.length - 1];
+                var previousBet = filteredBets[filteredBets.length - 1];
                 if(previousBet.action != BetAction.SmallBlind){
                     throw new NotAcceptableException();
                 }
@@ -58,21 +60,23 @@ export class HoldEmController {
                 }
             }
             break;
+            
+            case BetAction.Normal:{
+                var previousBet = filteredBets[filteredBets.length - 1];
+                if(previousBet.action == BetAction.Rise){
+                    throw new NotAcceptableException();
+                }
+            }
+            break;
+
             case BetAction.Skip:{
-                var previousBet = gameData.bets[gameData.bets.length - 1];
+                var previousBet = filteredBets[filteredBets.length - 1];
                 if(previousBet.action == BetAction.Normal || previousBet.action == BetAction.Rise){
                     throw new NotAcceptableException();
                 }
             }
             break;
 
-            case BetAction.Normal:{
-                var previousBet = gameData.bets[gameData.bets.length - 1];
-                if(previousBet.action == BetAction.Rise){
-                    throw new NotAcceptableException();
-                }
-            }
-            break;
 
         }
 

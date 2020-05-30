@@ -39,7 +39,7 @@ export class HoldEmService {
             'createGame', 
             game.id,
             game.type
-        )
+        );
     }
 
   async getGame(id: string){
