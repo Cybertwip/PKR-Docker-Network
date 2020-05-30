@@ -45,10 +45,16 @@ export class HoldEmController {
             break;
 
             case BetAction.BigBlind:{
+                if(filteredBets.length == 0){
+                    throw new NotAcceptableException();
+                } 
+
                 var previousBet = filteredBets[filteredBets.length - 1];
                 if(previousBet.action != BetAction.SmallBlind){
                     throw new NotAcceptableException();
                 }
+
+            
             }
             break;
 
@@ -60,8 +66,12 @@ export class HoldEmController {
                 }
             }
             break;
-            
+
             case BetAction.Normal:{
+                if(filteredBets.length == 0){
+                    throw new NotAcceptableException();
+                } 
+
                 var previousBet = filteredBets[filteredBets.length - 1];
                 if(previousBet.action == BetAction.Rise){
                     throw new NotAcceptableException();
@@ -70,6 +80,10 @@ export class HoldEmController {
             break;
 
             case BetAction.Skip:{
+                if(filteredBets.length == 0){
+                    throw new NotAcceptableException();
+                } 
+
                 var previousBet = filteredBets[filteredBets.length - 1];
                 if(previousBet.action == BetAction.Normal || previousBet.action == BetAction.Rise){
                     throw new NotAcceptableException();
