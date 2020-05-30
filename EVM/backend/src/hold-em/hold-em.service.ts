@@ -36,9 +36,8 @@ export class HoldEmService {
         const contract = network.getContract("evmpkr");
     
         await contract.submitTransaction(
-            'createGame', 
-            game.id,
-            game.type
+            'createGame',
+            JSON.stringify(game)
         );
     }
 
@@ -62,10 +61,12 @@ export class HoldEmService {
     const network = await gateway.getNetwork("evm");
     const contract = network.getContract("evmpkr");
 
-    var gameString = await contract.evaluateTransaction(
+    var gameStringBuffer = await contract.evaluateTransaction(
         'getGame', 
         id
     );
+
+    var gameString = gameStringBuffer.toString();
 
     var gameObject = JSON.parse(gameString);
 
