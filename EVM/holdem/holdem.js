@@ -45,12 +45,14 @@ var EVMPKR = class {
     let id = args[0];
     let gameType = args[1];
     let gameOwner = args[2];
+    let gameSeed = args[3];
 
     var gameObject = {};
 
     gameObject.id = id;
     gameObject.type = gameType;
     gameObject.owner = gameOwner;
+    gameObject.seed = gameSeed;
 
     gameObject.bets = []
 

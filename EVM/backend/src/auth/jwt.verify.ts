@@ -83,8 +83,10 @@ const handler = async (request: ClaimVerifyRequest): Promise<ClaimVerifyResult> 
   try {
     console.log(`user claim verfiy invoked for ${JSON.stringify(request)}`);
     const token = request.token;
+    console.log(request);
     const tokenSections = (token || '').split('.');
     if (tokenSections.length < 2) {
+      console.log("Error");
       throw new Error('requested token is invalid');
     }
     const headerJSON = Buffer.from(tokenSections[0], 'base64').toString('utf8');
@@ -108,6 +110,7 @@ const handler = async (request: ClaimVerifyRequest): Promise<ClaimVerifyResult> 
     console.log(`claim confirmed for ${claim.username}`);
     result = {userName: claim.username, clientId: claim.client_id, isValid: true};
   } catch (error) {
+    console.log('Error here');
     result = {userName: '', clientId: '', error, isValid: false};
   }
   return result;

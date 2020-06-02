@@ -1,14 +1,15 @@
-import { Body, Controller, Post, Get, Res, HttpStatus, UseGuards, NotAcceptableException } from '@nestjs/common';
+import { Body, Controller, Post, Get, Res, Req, HttpStatus, UseGuards, NotAcceptableException } from '@nestjs/common';
 import { GameDTO, BetDTO } from './interfaces/game-dto.interface';
 import { HoldEmService } from './hold-em.service';
 import { Response } from 'express';
 
 import { AuthGuard } from '@nestjs/passport';
 
-
 import { IsString } from 'class-validator'
 import { BetAction, PlayerStatus } from './interfaces/game.interface';
 import { plainToClass } from 'class-transformer';
+
+import { CurrentUser } from './current-user'
 
 class TestDTO {
     @IsString()
@@ -18,7 +19,9 @@ class TestDTO {
     readonly type: string
 }
 
+import { ClaimVerifyResult } from './../auth/jwt.verify'
 
+  
 @Controller('hold-em')
 export class HoldEmController {
 
@@ -107,10 +110,16 @@ export class HoldEmController {
 
     @UseGuards(AuthGuard('jwt'))
     @Post('test')
-    async test(@Body() testDTO: TestDTO, @Res() response: Response){
+    async test(@Body() testDTO: TestDTO,  @Res() response: Response){
 
         response.status(HttpStatus.OK).json(testDTO);
 
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Get('user')
+    async username(@Req() request){
+        return request.user;
     }
 
 }

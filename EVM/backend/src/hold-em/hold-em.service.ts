@@ -6,6 +6,7 @@ import { readFileSync } from 'fs';
 import { Game, Bet } from './interfaces/game.interface';
 import { GameDTO } from './interfaces/game-dto.interface';
 
+
 @Injectable()
 export class HoldEmService {
     constructor(
@@ -14,7 +15,7 @@ export class HoldEmService {
     ) {
 
     }
-
+  
 	async create(game: GameDTO) {
         const networkConfigurationPath = this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
         const serverIdentity = this.configuration.get<string>('SERVER_IDENTITY')

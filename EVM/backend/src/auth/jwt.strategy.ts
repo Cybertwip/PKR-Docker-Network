@@ -24,15 +24,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  public async validate(
-    payload: any,
-    done: (err: Error | null, result: ClaimVerifyResult) => void,
-    ) {
-      console.log('Validating');
-    const userInfo = await handler(payload);
-    if (!userInfo) {
-      return done(new UnauthorizedException(), null);
-    }
-    done(null, userInfo);
+  async validate(payload: any) {
+    return { id: payload.sub, username: payload['cognito:username'], email: payload.email };
   }
 }
