@@ -12,6 +12,14 @@ import { plainToClass } from 'class-transformer';
 import { ClaimVerifyResult } from './../auth/jwt.verify'
 
   
+class TestDTO {
+    @IsString()
+    readonly id: string
+
+    @IsString()
+    readonly type: string
+}
+
 @Controller('hold-em')
 export class HoldEmController {
 
@@ -112,12 +120,4 @@ export class HoldEmController {
         return request.user;
     }
 
-}
-
-class TestDTO {
-    @IsString()
-    readonly id: string
-
-    @IsString()
-    readonly type: string
 }
