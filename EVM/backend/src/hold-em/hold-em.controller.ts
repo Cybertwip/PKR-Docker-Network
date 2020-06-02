@@ -9,16 +9,6 @@ import { IsString } from 'class-validator'
 import { BetAction, PlayerStatus } from './interfaces/game.interface';
 import { plainToClass } from 'class-transformer';
 
-import { CurrentUser } from './current-user'
-
-class TestDTO {
-    @IsString()
-    readonly id: string
-
-    @IsString()
-    readonly type: string
-}
-
 import { ClaimVerifyResult } from './../auth/jwt.verify'
 
   
@@ -122,4 +112,12 @@ export class HoldEmController {
         return request.user;
     }
 
+}
+
+class TestDTO {
+    @IsString()
+    readonly id: string
+
+    @IsString()
+    readonly type: string
 }
