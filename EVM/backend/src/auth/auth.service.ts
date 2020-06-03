@@ -84,40 +84,7 @@ export class AuthService {
           fs.writeFileSync(path.join(walletPath, crypto.username + ".json"), json);
 
           this.usersService.create({id: crypto.username});
-
-          const networkConfigurationPath = configPath; //this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
-          const serverIdentity = 'admin'
-    
-          const gateway = new Gateway()
-          const configuration = readFileSync(networkConfigurationPath, 'utf8')
-    
-          console.log('Connect to gateway');
-
-          gateway.connect(
-            JSON.parse(configuration),
-            {
-              identity: serverIdentity,
-              wallet: this.wallet.self,
-              discovery: { enabled: true, asLocalhost: false }
-            }
-          ).then(function(){
-            console.log('Getting network');
-
-            gateway.getNetwork("pkr").then(function(network: Network){
-              console.log('Submiting');
-              
-              const contract = network.getContract("pkrstudio");
-          
-                contract.submitTransaction(
-                    'RegisterUser',
-                    JSON.stringify(crypto)
-                ).then((result) =>{
-                  console.log('All done', JSON.parse(result.toString()));
-                });
-                
-              });
-          });
-    
+          this.usersService.enroll(crypto);
 
           resolve(result.user);
         }
