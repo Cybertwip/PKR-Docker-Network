@@ -7,7 +7,7 @@ const adminSecret = 'adminpw';
 const systemMspId = 'Org1MSP';
 const systemCaUri = 'ca.org1.pkrstudio.com';
 
-const peerConfigPath = path.resolve(__dirname, "./connection-org1.json");
+const peerConfigPath = path.resolve(__dirname, "..", "./connection-org1.json");
 const nodeUser = process.env.NODE_USER_ID;
 
 const getNetworkConfig = (nodeConfigPath) =>
