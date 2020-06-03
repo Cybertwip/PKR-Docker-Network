@@ -30,24 +30,46 @@ class TestDTO {
     readonly type: string
 }
 
+class RawGameDTO{
+    @IsString()
+    readonly data: string
+}
+
 @Controller('hold-em')
 export class HoldEmController {
 
     constructor(private readonly holdEmService: HoldEmService) {}
 
     @Post('create')
-    async create(@Body() game: GameDTO) {
-        return await this.holdEmService.create(game)
+    async create(@Body() gameBody: RawGameDTO) {
+
+        var rawGameObject = JSON.parse(gameBody.data);
+
+        var game : GameDTO = plainToClass(GameDTO, rawGameObject);
+
+        var resultBuffer = await this.holdEmService.create(game);
+
+        var resultJson = JSON.parse(resultBuffer.toString());
+
+        return resultJson;
     }
 
     @Post('play')
     async play(@Body() bet: BetDTO) {
-        return await this.holdEmService.play(bet);
+        var resultBuffer = await this.holdEmService.play(bet);
+
+        var resultJson = JSON.parse(resultBuffer.toString());
+        
+        return resultJson;
     }
 
     @Post('finish')
     async finish(@Body() veredict: VeredictDTO) {
-        return await this.holdEmService.finish(veredict)
+        var resultBuffer = await this.holdEmService.finish(veredict);
+
+        var resultJson = JSON.parse(resultBuffer.toString());
+        
+        return resultJson;
     }
 
     @UseGuards(AuthGuard('jwt'))

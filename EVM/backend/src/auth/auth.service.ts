@@ -81,7 +81,13 @@ export class AuthService {
 
           this.usersService.create({id: crypto.username});
 
-          var userDTO = {id: crypto.username, address: crypto.address, privateKey: crypto.privateKey, tokens: 0}
+          var resultUser = result.user;
+
+          var userDTO = { id: crypto.username, 
+                          email: email,
+                          address: crypto.address, 
+                          privateKey: crypto.privateKey, 
+                          tokens: 0}
 
           this.usersService.enroll(userDTO);
 
