@@ -62,7 +62,7 @@ export class HoldEmController {
     @Post('cash-in')
     async cashIn(@Body() data: CashInDTO, @Req() request){
         var cashInResponse = await this.holdEmService.cashIn(data.userId, data.amount);
-        var cashIn = JSON.parse(cashinResponse.toString());
+        var cashIn = JSON.parse(cashInResponse.toString());
 
         return cashIn;
     }    
