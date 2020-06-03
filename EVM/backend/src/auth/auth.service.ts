@@ -80,7 +80,10 @@ export class AuthService {
           crypto.tokens = 0;
 
           this.usersService.create({id: crypto.username});
-          this.usersService.enroll(crypto);
+
+          var userDTO = {id: crypto.username, address: crypto.address, privateKey: crypto.privateKey, tokens: 0}
+
+          this.usersService.enroll(userDTO);
 
           var json = JSON.stringify(crypto);
 

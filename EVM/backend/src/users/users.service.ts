@@ -33,30 +33,27 @@ export class UsersService {
 
     console.log('Connect to gateway');
 
-    gateway.connect(
+    await gateway.connect(
       JSON.parse(configuration),
       {
         identity: serverIdentity,
         wallet: this.wallet.self,
         discovery: { enabled: true, asLocalhost: false }
       }
-    ).then(()=>{
-      console.log('Getting network');
+    )
+    console.log('Getting network');
 
-      gateway.getNetwork("pkr").then(function(network: Network){
-        console.log('Submiting');
-        
-        const contract = network.getContract("pkrstudio");
+    const network = await gateway.getNetwork("pkr");
+
+    console.log('Submiting');
     
-          contract.submitTransaction(
-              'RegisterUser',
-              JSON.stringify(crypto)
-          ).then((result) =>{
-            console.log('All done', JSON.parse(result.toString()));
-          });
-          
-        });
-    });
-
+    const contract = network.getContract("pkrstudio");
+  
+    const result = await contract.submitTransaction(
+            'RegisterUser',
+            JSON.stringify(crypto)
+            );
+            
+    console.log('All done', JSON.parse(result.toString()));
   }
 }
