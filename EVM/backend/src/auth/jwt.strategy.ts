@@ -29,6 +29,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     //console.log(accessToken;
     //console.log(refreshToken);
     //console.log(payload);
+    console.log('Payload');
+    console.log(payload);
 
     return { id: payload.sub, username: payload['cognito:username'], email: payload.email };
   }
