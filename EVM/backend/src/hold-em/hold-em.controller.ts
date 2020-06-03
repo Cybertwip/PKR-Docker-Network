@@ -60,8 +60,11 @@ export class HoldEmController {
 
     @UseGuards(AuthGuard('jwt'))
     @Post('cash-in')
-    async enroll(@Body() data: CashInDTO, @Req() request){
-        return await this.holdEmService.cashIn(data.userId, data.amount);
+    async cashIn(@Body() data: CashInDTO, @Req() request){
+        var cashInResponse = await this.holdEmService.cashIn(data.userId, data.amount);
+        var cashIn = JSON.parse(cashinResponse.toString());
+
+        return cashIn;
     }    
 
     @UseGuards(AuthGuard('jwt'))
@@ -72,7 +75,7 @@ export class HoldEmController {
         const fabricUserWithTokens = JSON.parse(buffer.toString());
 
         console.log(fabricUserWithTokens);
-        
+
         var requestUser = request.user;
         
         var returnUser = {id: '', username: '', email: '', tokens: 0}
