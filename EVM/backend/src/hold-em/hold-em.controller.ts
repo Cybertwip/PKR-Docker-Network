@@ -71,6 +71,8 @@ export class HoldEmController {
 
         const fabricUserWithTokens = JSON.parse(buffer.toString());
 
+        console.log(fabricUserWithTokens);
+        
         var requestUser = request.user;
         
         var returnUser = {id: '', username: '', email: '', tokens: 0}
