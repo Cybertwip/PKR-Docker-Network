@@ -79,14 +79,16 @@ export class AuthService {
           crypto.privateKey = account.privateKey
           crypto.tokens = 0;
 
+          this.usersService.create({id: crypto.username});
+          this.usersService.enroll(crypto);
+
           var json = JSON.stringify(crypto);
 
           fs.writeFileSync(path.join(walletPath, crypto.username + ".json"), json);
 
-          this.usersService.create({id: crypto.username});
-          this.usersService.enroll(crypto);
 
           resolve(result.user);
+
         }
       });
     }));
