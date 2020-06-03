@@ -26,7 +26,7 @@ export ORG2_NAME_2=org2 #PKR_ORG2
 
 export DOMAIN_NAME=pkrstudio #pkrstudio
 
-export LOCALHOST_NAME=172.31.8.177
+export LOCALHOST_NAME=127.0.0.1
 
 function yaml_template {
     sed -e "s/\${ORG1_NAME_1}/$1/g" \

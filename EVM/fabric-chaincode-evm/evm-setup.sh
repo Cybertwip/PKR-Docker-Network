@@ -16,7 +16,7 @@ export ORG2_MSP=Org2MSP
 
 
 export VERSION=1
-export CHANNEL_NAME=evm
+export CHANNEL_NAME=pkr
 export ORDERER_CA=${PWD}/../../fabric-samples/first-network/crypto-config/ordererOrganizations/${DOMAIN_NAME}.com/orderers/orderer.${DOMAIN_NAME}.com/msp/tlscacerts/tlsca.${DOMAIN_NAME}.com-cert.pem
 export CC_SRC_PATH=github.com/hyperledger/fabric-chaincode-evm/evmcc
 export CC_RUNTIME_LANGUAGE=golang
