@@ -5,12 +5,8 @@
 */
 
 const shim = require('fabric-shim');
-const util = require('util');
 
-const Web3 = require('web3')
-const path = require('path')
-
-var EVMPKR = class {
+var HOLDEM = class {
 
   // Initialize the chaincode
   async Init(stub) {
@@ -34,7 +30,7 @@ var EVMPKR = class {
       return shim.error(err);
     }
   }
-  
+
   async Create(stub, args){
     if (args.length != 1) {
       throw new Error('Incorrect number of arguments. Expecting 1');
@@ -216,4 +212,4 @@ var EVMPKR = class {
 
 };
 
-shim.start(new EVMPKR());
+shim.start(new HOLDEM());
