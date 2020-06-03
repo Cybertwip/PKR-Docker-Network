@@ -43,7 +43,14 @@ var HOLDEM = class {
 
       gameData.playing = true;
 
-      await stub.putState("Game:" + gameData.id, Buffer.from(JSON.stringify(gameData)));
+      if(gameData.players.length >= 2){
+
+        await stub.putState("Game:" + gameData.id, Buffer.from(JSON.stringify(gameData)));
+
+      } else{
+        result.status = 'Error';
+        result.description = 'Game should have 2 or more players';
+      }
 
     } catch(err){
       console.log(err);
@@ -53,6 +60,63 @@ var HOLDEM = class {
 
     return Buffer.from(JSON.stringify(result));
     
+  }
+
+  async ValidateUser(stub, args){
+    if (args.length != 2) {
+      throw new Error('Incorrect number of arguments. Expecting 2');
+    }
+    var result = { status: 'Correct', description: 'Limited tokens' }
+
+    const gameId = args[0];
+    const userId = args[1];
+
+
+    const gameAsBytes = await stub.getState('GAME:' + gameId); 
+    if (!gameAsBytes || gameAsBytes.length === 0) {
+        result.status = "Error";
+        result.description = "Game with Id: " + gameId.toString() + " not found";
+    }      
+
+    if(result.status == "Error"){
+      return Buffer.from(JSON.stringify(result));
+    }
+
+    const gameData = JSON.parse(gameAsBytes);
+
+    var userFound = false;
+    var userPlaying = false;
+    var isCPU = false;
+    for(var i = 0; i<gameData.players.length; ++i){
+        if(gameData.players[i].id == userId){
+          userFound = true;
+
+          if(gameData.players[i].status == PlayerStatus.Left){
+            userPlaying = false;            
+          } else {
+            userPlaying = true;
+          }
+
+          if(gameData.players[i].cpu){
+            isCPU = true;
+          }
+        }
+    }
+
+    if(userFound && userPlaying && !isCPU){
+      result.description = "Limited tokens";
+    } else if(userFound && userPlaying && isCPU){
+      result.description = "Infinite tokens";
+    } else if(!userFound && !userPlaying){
+      result.status = 'Error';
+      result.description = 'User not found'
+    } else {
+      result.status = 'Error';
+      result.description = 'User no longer playing'
+    }
+
+    return Buffer.from(JSON.stringify(result));
+
   }
 
   async Play(stub, args){

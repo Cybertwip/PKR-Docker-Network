@@ -17,7 +17,7 @@ export type Bet = {
 	readonly gameId: string
 	readonly playerId: string
 	readonly action: BetAction
-	readonly amount: string
+	readonly amount: number
 }
 
 export enum PlayerStatus {
@@ -28,7 +28,8 @@ export enum PlayerStatus {
 export type Player = {
 	readonly id: string
 	readonly key: string
-	status: PlayerStatus
+	readonly status: PlayerStatus
+	readonly cpu: boolean
 }
 
 export type Veredict = {

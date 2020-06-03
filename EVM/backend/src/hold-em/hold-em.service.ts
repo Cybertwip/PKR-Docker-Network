@@ -126,6 +126,7 @@ export class HoldEmService {
         'hold-em',
         bet.amount,
         bet.playerId,
+        bet.gameId,
         JSON.stringify(bet)
     );
   }

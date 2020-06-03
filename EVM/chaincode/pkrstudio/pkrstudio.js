@@ -167,26 +167,51 @@ var EVMPKR = class {
 
     const userId = args[2];
 
-    const userAsBytes = await stub.getState('USER:' + userId); 
-    if (!userAsBytes || userAsBytes.length === 0) {
-        result.status = 'Error';
-        result.description = 'User not found';
-    } else {
-      result.status = 'Correct';
-      result.description = 'User found';
+    const gameId = args[3];
 
-      const userData = JSON.parse(userAsBytes);
-      userData.tokens = userData.tokens - tokens;
+    var subtractTokens = true;
 
-      if(userData.tokens < 0){
-        userData.tokens = 0;
-        result.status = 'Error';
-        result.description = 'User does not have enough funds to perform the game';
+    if(gameIdentifier == 'hold-em'){
+
+      const chaincodeName = gameIdentifier;
+      const functionArgs = ['ValidateUser', gameId, userId];
+      chaincodeResult = await stub.invokeChaincode(chaincodeName, functionArgs, channelName);
+      result = JSON.parse(chaincodeResult.payload.toString('utf8'));
+
+      if(result.status == 'Correct' && result.description == "Infinite tokens"){
+        subtractTokens = false;
+      } else if (result.status == 'Correct') {
+        subtractTokens = true;
+      } else {
+
+        return Buffer.from(JSON.stringify(result));
+
       }
-
-      await stub.putState('USER:' + userData.id, Buffer.from(JSON.stringify(userData)));
-
     }
+
+    if(subtractTokens){
+      const userAsBytes = await stub.getState('USER:' + userId); 
+      if (!userAsBytes || userAsBytes.length === 0) {
+          result.status = 'Error';
+          result.description = 'User not found';
+      } else {
+        result.status = 'Correct';
+        result.description = 'User found';
+
+        const userData = JSON.parse(userAsBytes);
+        userData.tokens = userData.tokens - tokens;
+
+        if(userData.tokens < 0){
+          userData.tokens = 0;
+          result.status = 'Error';
+          result.description = 'User does not have enough funds to perform the game';
+        }
+
+        await stub.putState('USER:' + userData.id, Buffer.from(JSON.stringify(userData)));
+
+      }      
+    }
+
 
     if(result.status == 'Error'){
       return Buffer.from(JSON.stringify(result));
@@ -194,7 +219,7 @@ var EVMPKR = class {
 
     if(gameIdentifier == 'hold-em'){
       const chaincodeName = gameIdentifier;
-      const functionArgs = ['Play', args[3]];
+      const functionArgs = ['Play', args[4]];
       chaincodeResult = await stub.invokeChaincode(chaincodeName, functionArgs, channelName);
       result = JSON.parse(chaincodeResult.payload.toString('utf8'));
     }
