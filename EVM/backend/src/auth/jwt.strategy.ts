@@ -32,6 +32,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     console.log('Payload');
     console.log(payload);
 
-    return { id: payload.sub, username: payload['cognito:username'], email: payload.email };
+    if(payload.token_use == 'id'){
+        return { id: payload.sub, username: payload['cognito:username'], email: payload.email };
+    } else if(payload.token_use == 'access'){
+        return { id: payload.sub, username: payload.username };
+    }
   }
 }
