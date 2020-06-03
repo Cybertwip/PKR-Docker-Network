@@ -35,10 +35,43 @@ var EVMPKR = class {
     }
   }
 
-
-  async User(stub, args){
+  async CashIn(stub, args){
     if (args.length != 2) {
       throw new Error('Incorrect number of arguments. Expecting 2');
+    }
+
+    var result = { status: 'Correct', description: 'User retrieval is successful' }
+
+    //let gameId = args[0];
+    let userId = args[0];
+    let cashedTokens = args[1];
+
+    let userData = {}
+
+    const userAsBytes = await stub.getState('USER:' + userId); 
+    if (!userAsBytes || userAsBytes.length === 0) {
+        result.status = 'Error';
+        result.description = 'User not found';
+    } else {
+      result.status = 'Correct';
+      result.description = 'User found';
+
+      userData = JSON.parse(userAsBytes);
+      userData.tokens = userData.tokens + parseInt(cashedTokens.toString());
+
+    }
+
+    if(result.status != 'Correct'){
+      return Buffer.from(JSON.stringify(result));      
+    }
+    else{
+      return Buffer.from(JSON.stringify(userData));
+    }
+  }
+
+  async User(stub, args){
+    if (args.length != 1) {
+      throw new Error('Incorrect number of arguments. Expecting 1');
     }
 
     var result = { status: 'Correct', description: 'User retrieval is successful' }
@@ -70,8 +103,8 @@ var EVMPKR = class {
 
 
   async RegisterUser(stub, args){
-    if (args.length != 2) {
-      throw new Error('Incorrect number of arguments. Expecting 2');
+    if (args.length != 1) {
+      throw new Error('Incorrect number of arguments. Expecting 1');
     }
 
     var result = { status: 'Correct', description: 'Register user is successful' }
