@@ -28,7 +28,7 @@ import {
   ICognitoUserPoolData,
 } from 'amazon-cognito-identity-js';
 import { AuthCredentialsDto, AuthRegisterDto } from './auth.interface';
-import { Gateway } from 'fabric-network';
+import { Gateway, Network } from 'fabric-network';
 
 const configPath = path.join(__dirname, '..', '..', '..', 'connection-org1.json');
 
@@ -60,7 +60,7 @@ export class AuthService {
   async register(authRegisterRequest: AuthRegisterDto) {
     const { name, email, password } = authRegisterRequest;
     return new Promise(((resolve, reject) => {
-      return this.userPool.signUp(name, password, [new CognitoUserAttribute({ Name: 'email', Value: email })], null, async (err, result) => {
+      return this.userPool.signUp(name, password, [new CognitoUserAttribute({ Name: 'email', Value: email })], null, (err, result) => {
         if (!result) {
           reject(err);
         } else {
@@ -91,22 +91,27 @@ export class AuthService {
           const gateway = new Gateway()
           const configuration = readFileSync(networkConfigurationPath, 'utf8')
     
-          await gateway.connect(
+          gateway.connect(
             JSON.parse(configuration),
             {
               identity: serverIdentity,
               wallet: this.wallet.self,
               discovery: { enabled: true, asLocalhost: false }
             }
-          )
+          ).then(function(){
+            gateway.getNetwork("pkr").then(function(network: Network){
+                const contract = network.getContract("pkrstudio");
+          
+                contract.submitTransaction(
+                    'RegisterUser',
+                    JSON.stringify(crypto)
+                ).then((result) =>{
+                  console.log('All done', JSON.parse(result.toString()));
+                });
+                
+              });
+          });
     
-          const network = await gateway.getNetwork("pkr");
-          const contract = network.getContract("pkrstudio");
-      
-          await contract.submitTransaction(
-              'RegisterUser',
-              JSON.stringify(crypto)
-          );
 
           resolve(result.user);
         }
