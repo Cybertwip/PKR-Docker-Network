@@ -25,7 +25,7 @@ export class HoldEmService {
     async tokens(userId: string){
   
       const networkConfigurationPath = configPath; //this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
-      const serverIdentity = userId
+      const serverIdentity = 'admin'
 
       console.log(serverIdentity);
 
@@ -33,6 +33,7 @@ export class HoldEmService {
   
       const gateway = new Gateway()
       const configuration = readFileSync(networkConfigurationPath, 'utf8')
+      const parsedConfig = JSON.parse(configuration);
 
       await gateway.connect(
         JSON.parse(configuration),
@@ -42,11 +43,14 @@ export class HoldEmService {
           discovery: { enabled: true, asLocalhost: false }
         }
       )
+
+      console.log(parsedConfig);
+
   
       const network = await gateway.getNetwork("pkr");
       const contract = network.getContract("pkrstudio");
   
-      return await contract.submitTransaction(
+      return await contract.evaluateTransaction(
           'User',
           userId
       );
@@ -123,7 +127,7 @@ export class HoldEmService {
       {
         identity: serverIdentity,
         wallet: this.wallet.self,
-        discovery: { enabled: true, asLocalhost: true }
+        discovery: { enabled: true, asLocalhost: false }
       }
     );
 
