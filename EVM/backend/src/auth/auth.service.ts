@@ -1,9 +1,12 @@
 import { AuthConfig } from './auth.config';
 import { UsersService } from './../users/users.service';
+import { WalletService } from './../wallet/wallet.service';
 import { Inject, Injectable } from '@nestjs/common';
 import { default as Web3 } from "web3"
 import * as path from 'path';
 import * as fs from 'fs';
+
+import { readFileSync } from 'fs';
 
 import Global = NodeJS.Global;
 export interface GlobalWithCognitoFix extends Global {
@@ -25,7 +28,9 @@ import {
   ICognitoUserPoolData,
 } from 'amazon-cognito-identity-js';
 import { AuthCredentialsDto, AuthRegisterDto } from './auth.interface';
+import { Gateway } from 'fabric-network';
 
+const configPath = path.join(__dirname, '..', '..', '..', 'connection-org1.json');
 
 
 
@@ -37,7 +42,9 @@ export class AuthService {
     @Inject('AuthConfig')
     private readonly authConfig: AuthConfig,
     @Inject('UsersService')
-    private readonly usersService: UsersService
+    private readonly usersService: UsersService, 
+    @Inject('WalletService')
+    private readonly wallet: WalletService
   ) {
       console.log(this.authConfig.UserPoolId);
       console.log(this.authConfig.ClientId);
@@ -53,7 +60,7 @@ export class AuthService {
   async register(authRegisterRequest: AuthRegisterDto) {
     const { name, email, password } = authRegisterRequest;
     return new Promise(((resolve, reject) => {
-      return this.userPool.signUp(name, password, [new CognitoUserAttribute({ Name: 'email', Value: email })], null, (err, result) => {
+      return this.userPool.signUp(name, password, [new CognitoUserAttribute({ Name: 'email', Value: email })], null, async (err, result) => {
         if (!result) {
           reject(err);
         } else {
@@ -63,19 +70,43 @@ export class AuthService {
           var crypto = {
             username: "",
             address: "",
-            privateKey: ""
+            privateKey: "",
+            tokens: 0
           }
 
           crypto.username = result.user.getUsername();
           crypto.address = account.address;
           crypto.privateKey = account.privateKey
-
+          crypto.tokens = 0;
 
           var json = JSON.stringify(crypto);
 
           fs.writeFileSync(path.join(walletPath, crypto.username + ".json"), json);
 
           this.usersService.create({id: crypto.username});
+
+          const networkConfigurationPath = configPath; //this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
+          const serverIdentity = 'admin'
+    
+          const gateway = new Gateway()
+          const configuration = readFileSync(networkConfigurationPath, 'utf8')
+    
+          await gateway.connect(
+            JSON.parse(configuration),
+            {
+              identity: serverIdentity,
+              wallet: this.wallet.self,
+              discovery: { enabled: true, asLocalhost: false }
+            }
+          )
+    
+          const network = await gateway.getNetwork("pkr");
+          const contract = network.getContract("pkrstudio");
+      
+          await contract.submitTransaction(
+              'RegisterUser',
+              JSON.stringify(crypto)
+          );
 
           resolve(result.user);
         }

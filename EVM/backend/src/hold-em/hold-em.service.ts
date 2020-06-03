@@ -2,10 +2,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { WalletService } from '../wallet/wallet.service';
 import { Gateway } from 'fabric-network';
-import { readFileSync } from 'fs';
 import { Game, Bet } from './interfaces/game.interface';
 import { GameDTO, VeredictDTO } from './interfaces/hold-em-game-dto.interface';
 
+import { readFileSync } from 'fs';
 
 import * as path from 'path';
 
@@ -27,13 +27,8 @@ export class HoldEmService {
       const networkConfigurationPath = configPath; //this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
       const serverIdentity = 'admin'
 
-      console.log(serverIdentity);
-
-      await this.wallet.get(serverIdentity)
-  
       const gateway = new Gateway()
       const configuration = readFileSync(networkConfigurationPath, 'utf8')
-      const parsedConfig = JSON.parse(configuration);
 
       await gateway.connect(
         JSON.parse(configuration),
@@ -43,8 +38,6 @@ export class HoldEmService {
           discovery: { enabled: true, asLocalhost: false }
         }
       )
-
-      console.log(parsedConfig);
 
   
       const network = await gateway.getNetwork("pkr");
@@ -58,10 +51,8 @@ export class HoldEmService {
   
     async cashIn(userId: string, amount: number){
       const networkConfigurationPath = configPath; //this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
-      const serverIdentity = userId
-  
-      await this.wallet.get(serverIdentity)
-  
+      const serverIdentity = 'admin'
+    
       const gateway = new Gateway()
       const configuration = readFileSync(networkConfigurationPath, 'utf8')
 
@@ -89,8 +80,6 @@ export class HoldEmService {
     const networkConfigurationPath = configPath; //this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
     const serverIdentity = 'admin'; //this.configuration.get<string>('SERVER_IDENTITY')
 
-    await this.wallet.get(serverIdentity)
-
     const gateway = new Gateway()
     const configuration = readFileSync(networkConfigurationPath, 'utf8')
 
@@ -116,8 +105,6 @@ export class HoldEmService {
   async play(bet: Bet) {
     const networkConfigurationPath = configPath; //this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
     const serverIdentity = bet.playerId;
-
-    await this.wallet.get(serverIdentity)
 
     const gateway = new Gateway()
     const configuration = readFileSync(networkConfigurationPath, 'utf8')
@@ -146,8 +133,6 @@ export class HoldEmService {
   async finish(veredict: VeredictDTO) {
     const networkConfigurationPath = configPath; //this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
     const serverIdentity = 'admin'; //this.configuration.get<string>('SERVER_IDENTITY')
-
-    await this.wallet.get(serverIdentity)
 
     const gateway = new Gateway()
     const configuration = readFileSync(networkConfigurationPath, 'utf8')
