@@ -69,8 +69,12 @@ export class HoldEmController {
     async username(@Body() data: UserDataDTO, @Req() request){
         var fabricUserWithTokens = await this.holdEmService.tokens(data.id);
 
+        console.log(fabricUserWithTokens);
+
         var requestUser = request.user;
         
+        console.log(requestUser);
+
         requestUser.tokens = fabricUserWithTokens.tokens;
 
         return requestUser;
