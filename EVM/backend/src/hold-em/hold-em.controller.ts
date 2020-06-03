@@ -15,6 +15,12 @@ class UserDataDTO{
     @IsString()
     readonly id: string
 }
+
+class CashInDTO{
+    @IsString()
+    readonly userId: string
+    readonly amount: number
+}
   
 class TestDTO {
     @IsString()
@@ -51,6 +57,12 @@ export class HoldEmController {
         response.status(HttpStatus.OK).json(testDTO);
 
     }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Get('cash-in')
+    async enroll(@Body() data: CashInDTO, @Req() request){
+        return await this.holdEmService.cashIn(data.userId, data.amount);
+    }    
 
     @UseGuards(AuthGuard('jwt'))
     @Get('user')

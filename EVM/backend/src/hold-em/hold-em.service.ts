@@ -16,32 +16,61 @@ export class HoldEmService {
 
     }
     
-  async tokens(userId: string){
-    const networkConfigurationPath = this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
-        const serverIdentity = this.configuration.get<string>('SERVER_IDENTITY')
+    async tokens(userId: string){
+      const networkConfigurationPath = this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
+          const serverIdentity = this.configuration.get<string>('SERVER_IDENTITY')
+      
+          await this.wallet.get(serverIdentity)
+      
+          const gateway = new Gateway()
+          const configuration = readFileSync(networkConfigurationPath, 'utf8')
+  
+          await gateway.connect(
+            JSON.parse(configuration),
+            {
+              identity: serverIdentity,
+              wallet: this.wallet.self,
+              discovery: { enabled: true, asLocalhost: false }
+            }
+          )
+      
+          const network = await gateway.getNetwork("pkr");
+          const contract = network.getContract("pkrstudio");
+      
+          return await contract.submitTransaction(
+              'User',
+              userId
+          );
+    }
+  
+    async cashIn(userId: string, amount: number){
+      const networkConfigurationPath = this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
+          const serverIdentity = this.configuration.get<string>('SERVER_IDENTITY')
+      
+          await this.wallet.get(serverIdentity)
+      
+          const gateway = new Gateway()
+          const configuration = readFileSync(networkConfigurationPath, 'utf8')
+  
+          await gateway.connect(
+            JSON.parse(configuration),
+            {
+              identity: serverIdentity,
+              wallet: this.wallet.self,
+              discovery: { enabled: true, asLocalhost: false }
+            }
+          )
+      
+          const network = await gateway.getNetwork("pkr");
+          const contract = network.getContract("pkrstudio");
+      
+          return await contract.submitTransaction(
+              'CashIn',
+              userId,
+              amount
+          );
+    }
     
-        await this.wallet.get(serverIdentity)
-    
-        const gateway = new Gateway()
-        const configuration = readFileSync(networkConfigurationPath, 'utf8')
-
-        await gateway.connect(
-          JSON.parse(configuration),
-          {
-            identity: serverIdentity,
-            wallet: this.wallet.self,
-            discovery: { enabled: true, asLocalhost: false }
-          }
-        )
-    
-        const network = await gateway.getNetwork("pkr");
-        const contract = network.getContract("pkrstudio");
-    
-        return await contract.submitTransaction(
-            'User',
-            userId
-        );
-  }
 
 	async create(game: GameDTO) {
         const networkConfigurationPath = this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
