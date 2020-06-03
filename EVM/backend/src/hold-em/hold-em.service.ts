@@ -4,7 +4,7 @@ import { WalletService } from '../wallet/wallet.service';
 import { Gateway } from 'fabric-network';
 import { readFileSync } from 'fs';
 import { Game, Bet } from './interfaces/game.interface';
-import { GameDTO } from './interfaces/game-dto.interface';
+import { GameDTO, VeredictDTO } from './interfaces/hold-em-game-dto.interface';
 
 
 @Injectable()
@@ -15,15 +15,16 @@ export class HoldEmService {
     ) {
 
     }
-  
-	async create(game: GameDTO) {
-        const networkConfigurationPath = this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
+    
+  async tokens(userId: string){
+    const networkConfigurationPath = this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
         const serverIdentity = this.configuration.get<string>('SERVER_IDENTITY')
     
         await this.wallet.get(serverIdentity)
     
         const gateway = new Gateway()
         const configuration = readFileSync(networkConfigurationPath, 'utf8')
+
         await gateway.connect(
           JSON.parse(configuration),
           {
@@ -33,79 +34,44 @@ export class HoldEmService {
           }
         )
     
-        const network = await gateway.getNetwork("evm");
-        const contract = network.getContract("evmpkr");
+        const network = await gateway.getNetwork("pkr");
+        const contract = network.getContract("pkrstudio");
     
-        await contract.submitTransaction(
-            'createGame',
+        return await contract.submitTransaction(
+            'User',
+            userId
+        );
+  }
+
+	async create(game: GameDTO) {
+        const networkConfigurationPath = this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
+        const serverIdentity = this.configuration.get<string>('SERVER_IDENTITY')
+    
+        await this.wallet.get(serverIdentity)
+    
+        const gateway = new Gateway()
+        const configuration = readFileSync(networkConfigurationPath, 'utf8')
+
+        await gateway.connect(
+          JSON.parse(configuration),
+          {
+            identity: serverIdentity,
+            wallet: this.wallet.self,
+            discovery: { enabled: true, asLocalhost: false }
+          }
+        )
+    
+        const network = await gateway.getNetwork("pkr");
+        const contract = network.getContract("pkrstudio");
+    
+        return await contract.submitTransaction(
+            'Create',
+            'hold-em',
             JSON.stringify(game)
         );
     }
 
-  async getGame(id: string){
-    const networkConfigurationPath = this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
-    const serverIdentity = this.configuration.get<string>('SERVER_IDENTITY')
-
-    await this.wallet.get(serverIdentity)
-
-    const gateway = new Gateway()
-    const configuration = readFileSync(networkConfigurationPath, 'utf8')
-    await gateway.connect(
-      JSON.parse(configuration),
-      {
-        identity: serverIdentity,
-        wallet: this.wallet.self,
-        discovery: { enabled: true, asLocalhost: false }
-      }
-    );
-
-    const network = await gateway.getNetwork("evm");
-    const contract = network.getContract("evmpkr");
-
-    var gameStringBuffer = await contract.evaluateTransaction(
-        'getGame', 
-        id
-    );
-
-    var gameString = gameStringBuffer.toString();
-
-    var gameObject = JSON.parse(gameString);
-
-    if(gameObject.status == "found"){
-      return gameObject.data;
-    }
-    else {
-      throw new NotFoundException(gameObject, `Game with id ${id} was not found`);
-    }
-  }
-
-  async setGame(game: GameDTO){
-    const networkConfigurationPath = this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
-    const serverIdentity = this.configuration.get<string>('SERVER_IDENTITY')
-
-    await this.wallet.get(serverIdentity)
-
-    const gateway = new Gateway()
-    const configuration = readFileSync(networkConfigurationPath, 'utf8')
-    await gateway.connect(
-      JSON.parse(configuration),
-      {
-        identity: serverIdentity,
-        wallet: this.wallet.self,
-        discovery: { enabled: true, asLocalhost: false }
-      }
-    );
-
-    const network = await gateway.getNetwork("evm");
-    const contract = network.getContract("evmpkr");
-
-    await contract.submitTransaction(
-        'setGame', 
-        JSON.stringify(game)
-    );
-  }
-
-  async bet(bet: Bet) {
+  async play(bet: Bet) {
       const networkConfigurationPath = this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
       const serverIdentity = this.configuration.get<string>('SERVER_IDENTITY')
 
@@ -113,6 +79,7 @@ export class HoldEmService {
 
       const gateway = new Gateway()
       const configuration = readFileSync(networkConfigurationPath, 'utf8')
+      
       await gateway.connect(
         JSON.parse(configuration),
         {
@@ -122,18 +89,19 @@ export class HoldEmService {
         }
       );
 
-      const network = await gateway.getNetwork("evm");
-      const contract = network.getContract("evmpkr");
+      const network = await gateway.getNetwork("pkr");
+      const contract = network.getContract("pkrstudio");
 
-      await contract.submitTransaction(
-          'bet', 
-          bet.id,
+      return await contract.submitTransaction(
+          'Play', 
+          'hold-em',
+          bet.amount,
           bet.playerId,
-          bet.amount
+          JSON.stringify(bet)
       );
   }
 
-  async finish(game: Game) {
+  async finish(veredict: VeredictDTO) {
       const networkConfigurationPath = this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
       const serverIdentity = this.configuration.get<string>('SERVER_IDENTITY')
   
@@ -150,12 +118,12 @@ export class HoldEmService {
         }
       );
   
-      const network = await gateway.getNetwork("evm");
-      const contract = network.getContract("evmpkr");
+      const network = await gateway.getNetwork("pkr");
+      const contract = network.getContract("pkrstudio");
   
-      await contract.submitTransaction(
-          'finishGame', 
-          game.id
+      return await contract.submitTransaction(
+          'hold-em', 
+          JSON.stringify(veredict)
       );
   }
 

@@ -31,3 +31,6 @@ export type Player = {
 	status: PlayerStatus
 }
 
+export type Veredict = {
+	readonly gameId: string
+}

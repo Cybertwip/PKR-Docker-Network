@@ -45,7 +45,7 @@ export ORG2_NAME_2=org2 #PKR_ORG2
 
 export DOMAIN_NAME=pkrstudio #pkrstudio
 
-export FABRIC_BASE_SANS_IP=172.31.8.177
+export FABRIC_BASE_SANS_IP=127.0.0.1
 
 mkdir -p base
 

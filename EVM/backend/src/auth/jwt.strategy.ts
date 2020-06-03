@@ -4,6 +4,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ClaimVerifyResult, handler } from './jwt.verify';
 import { AuthService } from './auth.service';
 import { passportJwtSecret } from 'jwks-rsa';
+import { access } from 'fs';
 
 
 const cognitoPoolId = 'us-east-1_6hrF40OJv';
@@ -25,6 +26,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
+    //console.log(accessToken;
+    //console.log(refreshToken);
+    //console.log(payload);
+
     return { id: payload.sub, username: payload['cognito:username'], email: payload.email };
   }
 }

@@ -1,5 +1,5 @@
 import { Body, Controller, Post, Get, Res, Req, HttpStatus, UseGuards, NotAcceptableException } from '@nestjs/common';
-import { GameDTO, BetDTO } from './interfaces/game-dto.interface';
+import { GameDTO, BetDTO, VeredictDTO } from './interfaces/hold-em-game-dto.interface';
 import { HoldEmService } from './hold-em.service';
 import { Response } from 'express';
 
@@ -11,6 +11,10 @@ import { plainToClass } from 'class-transformer';
 
 import { ClaimVerifyResult } from './../auth/jwt.verify'
 
+class UserDataDTO{
+    @IsString()
+    readonly id: string
+}
   
 class TestDTO {
     @IsString()
@@ -30,81 +34,15 @@ export class HoldEmController {
         return await this.holdEmService.create(game)
     }
 
-    @Post()
-    async bet(@Body() bet: BetDTO) {
-
-        var gameData =  plainToClass(GameDTO, await this.holdEmService.getGame(bet.gameId));
-
-        var filteredBets = gameData.bets.filter(bet => bet.action != BetAction.Abandon);
-
-        switch(bet.action){
-            case BetAction.SmallBlind:{
-                if(filteredBets.length != 0){
-                    throw new NotAcceptableException();
-                }
-            }
-            break;
-
-            case BetAction.BigBlind:{
-                if(filteredBets.length == 0){
-                    throw new NotAcceptableException();
-                } 
-
-                var previousBet = filteredBets[filteredBets.length - 1];
-                if(previousBet.action != BetAction.SmallBlind){
-                    throw new NotAcceptableException();
-                }
-
-            
-            }
-            break;
-
-            case BetAction.Abandon:{
-                for(var i = 0; i<gameData.players.length; ++i){
-                    if(gameData.players[i].id == bet.playerId){
-                        gameData.players[i].status = PlayerStatus.Left;
-                    }
-                }
-            }
-            break;
-
-            case BetAction.Normal:{
-                if(filteredBets.length == 0){
-                    throw new NotAcceptableException();
-                } 
-
-                var previousBet = filteredBets[filteredBets.length - 1];
-                if(previousBet.action == BetAction.Rise){
-                    throw new NotAcceptableException();
-                }
-            }
-            break;
-
-            case BetAction.Skip:{
-                if(filteredBets.length == 0){
-                    throw new NotAcceptableException();
-                } 
-
-                var previousBet = filteredBets[filteredBets.length - 1];
-                if(previousBet.action == BetAction.Normal || previousBet.action == BetAction.Rise){
-                    throw new NotAcceptableException();
-                }
-            }
-            break;
-
-
-        }
-
-        gameData.bets.push(bet);
-
-        return await this.holdEmService.setGame(gameData);
+    @Post('play')
+    async play(@Body() bet: BetDTO) {
+        return await this.holdEmService.play(bet);
     }
 
-    @Post()
-    async finish(@Body() game: GameDTO) {
-        return await this.holdEmService.finish(game)
+    @Post('finish')
+    async finish(@Body() veredict: VeredictDTO) {
+        return await this.holdEmService.finish(veredict)
     }
-
 
     @UseGuards(AuthGuard('jwt'))
     @Post('test')
@@ -116,8 +54,14 @@ export class HoldEmController {
 
     @UseGuards(AuthGuard('jwt'))
     @Get('user')
-    async username(@Req() request){
-        return request.user;
+    async username(@Body() data: UserDataDTO, @Req() request){
+        var fabricUserWithTokens = await this.holdEmService.tokens(data.id);
+
+        var requestUser = request.user;
+        
+        requestUser.tokens = fabricUserWithTokens.tokens;
+
+        return requestUser;
     }
 
 }
