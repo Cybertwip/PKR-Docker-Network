@@ -91,6 +91,8 @@ export class AuthService {
           const gateway = new Gateway()
           const configuration = readFileSync(networkConfigurationPath, 'utf8')
     
+          console.log('Connect to gateway');
+
           gateway.connect(
             JSON.parse(configuration),
             {
@@ -99,8 +101,12 @@ export class AuthService {
               discovery: { enabled: true, asLocalhost: false }
             }
           ).then(function(){
+            console.log('Getting network');
+
             gateway.getNetwork("pkr").then(function(network: Network){
-                const contract = network.getContract("pkrstudio");
+              console.log('Submiting');
+              
+              const contract = network.getContract("pkrstudio");
           
                 contract.submitTransaction(
                     'RegisterUser',
