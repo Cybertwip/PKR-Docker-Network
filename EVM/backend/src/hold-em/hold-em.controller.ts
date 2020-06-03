@@ -67,17 +67,24 @@ export class HoldEmController {
     @UseGuards(AuthGuard('jwt'))
     @Post('user')
     async username(@Body() data: UserDataDTO, @Req() request){
-        var fabricUserWithTokens = await this.holdEmService.tokens(data.id);
+        var buffer = await this.holdEmService.tokens(data.id);
 
-        console.log(fabricUserWithTokens);
+        const fabricUserWithTokens = JSON.parse(buffer.toString());
 
         var requestUser = request.user;
         
-        console.log(requestUser);
+        var returnUser = {id: '', username: '', email: '', tokens: 0}
 
-        requestUser.tokens = fabricUserWithTokens.tokens;
+        returnUser.id = requestUser.id;
+        returnUser.username = requestUser.username;
 
-        return requestUser;
+        if(requestUser.email){
+            returnUser.email = requestUser.email;
+        }
+
+        returnUser.tokens = parseInt(fabricUserWithTokens.tokens.toString());
+
+        return returnUser;
     }
 
 }
