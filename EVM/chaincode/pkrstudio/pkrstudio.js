@@ -59,6 +59,8 @@ var EVMPKR = class {
       userData = JSON.parse(userAsBytes);
       userData.tokens = userData.tokens + parseInt(cashedTokens.toString());
 
+      await stub.putState('USER:' + userData.id, Buffer.from(JSON.stringify(userData)));
+
     }
 
     if(result.status != 'Correct'){
