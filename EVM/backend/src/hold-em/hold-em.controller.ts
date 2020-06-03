@@ -59,13 +59,13 @@ export class HoldEmController {
     }
 
     @UseGuards(AuthGuard('jwt'))
-    @Get('cash-in')
+    @Post('cash-in')
     async enroll(@Body() data: CashInDTO, @Req() request){
         return await this.holdEmService.cashIn(data.userId, data.amount);
     }    
 
     @UseGuards(AuthGuard('jwt'))
-    @Get('user')
+    @Post('user')
     async username(@Body() data: UserDataDTO, @Req() request){
         var fabricUserWithTokens = await this.holdEmService.tokens(data.id);
 
