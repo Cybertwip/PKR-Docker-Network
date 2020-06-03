@@ -1,5 +1,5 @@
 import { IsString, IsEnum, IsNumber, IsArray } from 'class-validator'
-import { Game, Bet, BetAction, Player, PlayerStatus } from './game.interface'
+import { Game, Bet, BetAction, Player, PlayerStatus, Veredict } from './game.interface'
 
 export class GameDTO implements Game {
     @IsString()
@@ -49,7 +49,7 @@ export class PlayerDTO implements Player{
     status: PlayerStatus
 }
 
-export class VeredictDTO {
+export class VeredictDTO implements Veredict {
     @IsString()
     readonly gameId: string
 

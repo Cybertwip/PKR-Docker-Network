@@ -33,7 +33,7 @@ export class WalletService implements OnModuleInit {
        */
       throw new Error(error);
     }
-
+    
     const manager = await this.self.get('admin');
     if (!manager) {
       console.log(
