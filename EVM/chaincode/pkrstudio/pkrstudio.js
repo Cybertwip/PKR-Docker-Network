@@ -144,7 +144,7 @@ var EVMPKR = class {
     if(gameIdentifier == 'hold-em'){
       const chaincodeName = gameIdentifier;
       const functionArgs = ['Create', args[1]];
-      chaincodeResult = await stub.invokeChaincode(chaincodeName, functionArgs, channelName);
+      const chaincodeResult = await stub.invokeChaincode(chaincodeName, functionArgs, channelName);
       result = JSON.parse(chaincodeResult.payload.toString('utf8'));
     }
 
@@ -175,7 +175,7 @@ var EVMPKR = class {
 
       const chaincodeName = gameIdentifier;
       const functionArgs = ['ValidateUser', gameId, userId];
-      chaincodeResult = await stub.invokeChaincode(chaincodeName, functionArgs, channelName);
+      const chaincodeResult = await stub.invokeChaincode(chaincodeName, functionArgs, channelName);
       result = JSON.parse(chaincodeResult.payload.toString('utf8'));
 
       if(result.status == 'Correct' && result.description == "Infinite tokens"){
@@ -220,7 +220,7 @@ var EVMPKR = class {
     if(gameIdentifier == 'hold-em'){
       const chaincodeName = gameIdentifier;
       const functionArgs = ['Play', args[4]];
-      chaincodeResult = await stub.invokeChaincode(chaincodeName, functionArgs, channelName);
+      const chaincodeResult = await stub.invokeChaincode(chaincodeName, functionArgs, channelName);
       result = JSON.parse(chaincodeResult.payload.toString('utf8'));
     }
 
@@ -241,7 +241,7 @@ var EVMPKR = class {
     if(gameIdentifier == 'hold-em'){
       const chaincodeName = gameIdentifier;
       const functionArgs = ['Finish', args[1]];
-      chaincodeResult = await stub.invokeChaincode(chaincodeName, functionArgs, channelName);
+      const chaincodeResult = await stub.invokeChaincode(chaincodeName, functionArgs, channelName);
       result = JSON.parse(chaincodeResult.payload.toString('utf8'));
 
       if(!result.winnerId){
