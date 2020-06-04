@@ -35,6 +35,12 @@ class RawGameDTO{
     readonly data: string
 }
 
+class RawBetDTO{
+    @IsString()
+    readonly data: string
+}
+
+
 @Controller('hold-em')
 export class HoldEmController {
 
@@ -59,12 +65,19 @@ export class HoldEmController {
 
     @UseGuards(AuthGuard('jwt'))
     @Post('play')
-    async play(@Body() bet: BetDTO) {
+    async play(@Body() betBody: RawBetDTO) {
+        var rawBetObject = JSON.parse(betBody.data);
+
+        var bet : BetDTO = plainToClass(BetDTO, rawBetObject);
+
+        console.log(bet);
+
         var resultBuffer = await this.holdEmService.play(bet);
 
         var resultJson = JSON.parse(resultBuffer.toString());
-        
+
         return resultJson;
+
     }
 
     @UseGuards(AuthGuard('jwt'))
