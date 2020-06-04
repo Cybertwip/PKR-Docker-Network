@@ -45,7 +45,7 @@ var HOLDEM = class {
 
       if(gameData.players.length >= 2){
 
-        await stub.putState("Game:" + gameData.id, Buffer.from(JSON.stringify(gameData)));
+        await stub.putState("GAME:" + gameData.id, Buffer.from(JSON.stringify(gameData)));
 
       } else{
         result.status = 'Error';
@@ -236,7 +236,7 @@ var HOLDEM = class {
       gameData.bets.push(bet);
       gameData.pot = gameData.pot + parseInt(bet.amount.toString());
 
-      await stub.putState('Game:' + bet.gameId, Buffer.from(JSON.stringify(gameData)));
+      await stub.putState('GAME:' + bet.gameId, Buffer.from(JSON.stringify(gameData)));
 
     } catch (err) {
       console.log(err);
