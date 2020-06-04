@@ -156,6 +156,7 @@ export class HoldEmService {
     const contract = network.getContract("pkrstudio");
 
     return await contract.submitTransaction(
+        'Finish',
         'hold-em', 
         JSON.stringify(veredict)
     );
