@@ -36,6 +36,9 @@ export class BetDTO implements Bet {
 
     @IsNumber()
     readonly amount: number
+
+    @IsBoolean()
+    readonly cpu: boolean
 }
 
 export class PlayerDTO implements Player{

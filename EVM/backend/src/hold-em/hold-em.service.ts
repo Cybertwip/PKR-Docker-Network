@@ -104,7 +104,13 @@ export class HoldEmService {
 
   async play(bet: Bet) {
     const networkConfigurationPath = configPath; //this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
-    const serverIdentity = bet.playerId;
+
+    var serverIdentity = bet.playerId;
+
+    if(bet.cpu){
+      serverIdentity = 'admin';
+    }
+    
 
     const gateway = new Gateway()
     const configuration = readFileSync(networkConfigurationPath, 'utf8')

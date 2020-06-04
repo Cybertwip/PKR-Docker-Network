@@ -18,6 +18,7 @@ export type Bet = {
 	readonly playerId: string
 	readonly action: BetAction
 	readonly amount: number
+	readonly cpu: boolean
 }
 
 export enum PlayerStatus {
