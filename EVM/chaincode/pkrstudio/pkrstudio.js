@@ -249,21 +249,43 @@ var EVMPKR = class {
         result.description = 'Error while processing winner';
       }
       else{
+        let gameId = result.id;
         let userId = result.winnerId;
         let pot = result.pot;
 
-        const userAsBytes = await stub.getState('USER:' + userId); 
-        if (!userAsBytes || userAsBytes.length === 0) {
-            result.status = 'Error';
-            result.description = 'User not found';
+
+        var addTokens = true;
+
+        const chaincodeName = gameIdentifier;
+        const functionArgs = ['ValidateUser', gameId, userId];
+        const chaincodeResult = await stub.invokeChaincode(chaincodeName, functionArgs, channelName);
+        const validationResult = JSON.parse(chaincodeResult.payload.toString('utf8'));
+
+        if(validationResult.status == 'Correct' && validationResult.description == "Infinite tokens"){
+          addTokens = false;
+        } else if (validationResult.status == 'Correct') {
+          addTokens = true;
         } else {
-          result.status = 'Correct';
-          result.description = 'Winner found awarded: ' + pot.toString() + ' tokens';
 
-          const userData = JSON.parse(userAsBytes);
-          userData.tokens = userData.tokens + pot;
+          return Buffer.from(JSON.stringify(validationResult));
 
-          await stub.putState('USER:' + userData.id, Buffer.from(JSON.stringify(userData)));
+        }
+
+        if(addTokens){
+          const userAsBytes = await stub.getState('USER:' + userId); 
+          if (!userAsBytes || userAsBytes.length === 0) {
+              result.status = 'Error';
+              result.description = 'User not found';
+          } else {
+            result.status = 'Correct';
+            result.description = 'Winner found awarded: ' + pot.toString() + ' tokens';
+
+            const userData = JSON.parse(userAsBytes);
+            userData.tokens = userData.tokens + pot;
+
+            await stub.putState('USER:' + userData.id, Buffer.from(JSON.stringify(userData)));
+
+          }
 
         }
 
