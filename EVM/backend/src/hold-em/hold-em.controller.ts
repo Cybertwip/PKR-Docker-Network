@@ -47,6 +47,8 @@ export class HoldEmController {
 
         var game : GameDTO = plainToClass(GameDTO, rawGameObject);
 
+        console.log(game);
+        
         var resultBuffer = await this.holdEmService.create(game);
 
         var resultJson = JSON.parse(resultBuffer.toString());
