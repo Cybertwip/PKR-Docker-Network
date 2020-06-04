@@ -40,6 +40,7 @@ export class HoldEmController {
 
     constructor(private readonly holdEmService: HoldEmService) {}
 
+    @UseGuards(AuthGuard('jwt'))
     @Post('create')
     async create(@Body() gameBody: RawGameDTO) {
 
@@ -48,7 +49,7 @@ export class HoldEmController {
         var game : GameDTO = plainToClass(GameDTO, rawGameObject);
 
         console.log(game);
-        
+
         var resultBuffer = await this.holdEmService.create(game);
 
         var resultJson = JSON.parse(resultBuffer.toString());
@@ -56,6 +57,7 @@ export class HoldEmController {
         return resultJson;
     }
 
+    @UseGuards(AuthGuard('jwt'))
     @Post('play')
     async play(@Body() bet: BetDTO) {
         var resultBuffer = await this.holdEmService.play(bet);
@@ -65,6 +67,7 @@ export class HoldEmController {
         return resultJson;
     }
 
+    @UseGuards(AuthGuard('jwt'))
     @Post('finish')
     async finish(@Body() veredict: VeredictDTO) {
         var resultBuffer = await this.holdEmService.finish(veredict);
