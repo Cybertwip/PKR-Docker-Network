@@ -262,7 +262,7 @@ var HOLDEM = class {
         throw new Error(`Game does not exist`);
     }
 
-    const gameObject = JSON.parse(gameAsBytes);
+    const gameData = JSON.parse(gameAsBytes);
 
     gameData.playing = false;
     gameData.winnerId = winnerId;
