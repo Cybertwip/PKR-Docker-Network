@@ -91,7 +91,7 @@ var HOLDEM = class {
         if(gameData.players[i].id == userId){
           userFound = true;
 
-          if(gameData.players[i].status == PlayerStatus.Left){
+          if(gameData.players[i].status == 1){
             userPlaying = false;            
           } else {
             userPlaying = true;
@@ -186,7 +186,7 @@ var HOLDEM = class {
           case 2:{ // abandon
               for(var i = 0; i<gameData.players.length; ++i){
                   if(gameData.players[i].id == bet.playerId){
-                      gameData.players[i].status = PlayerStatus.Left;
+                      gameData.players[i].status = 1;
                   }
               }
           }
