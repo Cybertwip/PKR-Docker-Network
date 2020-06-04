@@ -148,7 +148,7 @@ export class HoldEmService {
       {
         identity: serverIdentity,
         wallet: this.wallet.self,
-        discovery: { enabled: true, asLocalhost: true }
+        discovery: { enabled: true, asLocalhost: false }
       }
     );
 

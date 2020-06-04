@@ -233,10 +233,12 @@ var HOLDEM = class {
 
       }
 
-      gameData.bets.push(bet);
-      gameData.pot = gameData.pot + parseInt(bet.amount.toString());
+      if(result.status == 'Correct'){
+        gameData.bets.push(bet);
+        gameData.pot = gameData.pot + parseInt(bet.amount.toString());
 
-      await stub.putState('GAME:' + bet.gameId, Buffer.from(JSON.stringify(gameData)));
+        await stub.putState('GAME:' + bet.gameId, Buffer.from(JSON.stringify(gameData)));        
+      }
 
     } catch (err) {
       console.log(err);
