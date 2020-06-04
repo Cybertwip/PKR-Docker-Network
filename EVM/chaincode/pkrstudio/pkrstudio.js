@@ -152,8 +152,8 @@ var EVMPKR = class {
   }
 
   async Play(stub, args){
-    if (args.length != 4) {
-      throw new Error('Incorrect number of arguments. Expecting 4');
+    if (args.length != 5) {
+      throw new Error('Incorrect number of arguments. Expecting 5');
     }
 
     var result = { status: 'Error', description: "Game not found"}
