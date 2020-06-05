@@ -104,16 +104,32 @@ export class HoldEmService {
     console.log('\n# Deck shuffling\n');
     players.forEach((player) => {
       console.log('Shuffling deck');
-      board.deck = mentalPoker.encryptDeck(shuffle(board.deck), player.keyPairs[CARD_COUNT].privateKey);
+      const encryptedDeck = mentalPoker.encryptDeck(shuffle(board.deck), player.keyPairs[CARD_COUNT].privateKey);
+      board.deck = encryptedDeck;
+      
+      console.log('Encrypted deck');
+      console.log(encryptedDeck);
+
+      console.log('Board deck');
+      console.log(board.deck);
     });
 
     console.log('\n# Deck locking\n');
     players.forEach((player) => {
       console.log('Locking deck');
-      board.deck = mentalPoker.encryptDeck(
+      const encryptedDeck = mentalPoker.encryptDeck(
         mentalPoker.decryptDeck(board.deck, player.keyPairs[CARD_COUNT].privateKey),
         player.keyPairs.map(keyPair => keyPair.privateKey),
       );
+
+      board.deck = encryptedDeck;
+
+      console.log('Encrypted deck');
+      console.log(encryptedDeck);
+
+      console.log('Board deck');
+      console.log(board.deck);
+
     });
   
 
