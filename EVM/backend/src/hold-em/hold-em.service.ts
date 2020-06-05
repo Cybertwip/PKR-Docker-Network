@@ -139,14 +139,18 @@ export class HoldEmService {
       game.players[i].keyPairs = players[i].keyPairs;
     }
 
-    for(var i = 0; i<board.cardCodewords.length; ++i){
-      board.cardCodewords[i] = board.cardCodewords[i].toString();
+    for(var i = 0; i<game.board.cardCodewords.length; ++i){
+      game.board.cardCodewords[i] = game.board.cardCodewords[i].toString();
     }
 
     for(var i = 0; i<game.players.length; ++i){
       for(var j = 0; j<game.players[i].keyPairs.length; ++j){
         game.players[i].keyPairs[j] = game.players[i].keyPairs[j].toString();
       }
+    }
+
+    for(var i = 0; i<game.board.deck.length; ++i){
+      game.board.deck[i] = game.board.deck[i].toString();
     }
 
     
@@ -218,6 +222,11 @@ export class HoldEmService {
     for(var i = 0; i<board.cardCodewords.length; ++i){
       board.cardCodewords[i] = Buffer.from(board.cardCodewords[i]);
     }
+
+    for(var i = 0; i<game.board.deck.length; ++i){
+      game.board.deck[i] = Buffer.from(game.board.deck[i]);
+    }
+
 
     const cardDecrypted = mentalPoker.decryptCard(
       game.board.deck[game.board.nextCard],
