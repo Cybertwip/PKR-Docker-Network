@@ -131,7 +131,11 @@ export class HoldEmService {
       console.log(board.deck);
 
     });
-  
+
+    players.forEach((player) => {
+      console.log('Player private key');
+      console.log(player.keyPairs[CARD_COUNT].privateKey);
+    })
 
     game.board = board;
 
