@@ -77,11 +77,11 @@ export class HoldEmController {
 
         const gameId = dealBody.gameId;
 
-        let cards = [];
+        let cards = {data: []};
 
         for(var i = 0; i<parseInt(dealBody.amount); ++i){
             let card = await this.holdEmService.dealCard(parseInt(gameId));
-            cards.push(card);
+            cards.data.push(card);
         }
         return cards;
     }
