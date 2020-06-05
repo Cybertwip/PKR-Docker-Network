@@ -153,7 +153,7 @@ export class HoldEmService {
 
         game.players[i].keyPairs[j] = {}
         game.players[i].keyPairs[j].privateKey = privateKey;
-        
+
       }
     }
 
@@ -165,7 +165,7 @@ export class HoldEmService {
     console.log(game);
 
     for(var i = 0; i<game.players.length; ++i){
-      console.log(players[i].keyPairs);
+      console.log(game.players[i].keyPairs);
       
     }
 
