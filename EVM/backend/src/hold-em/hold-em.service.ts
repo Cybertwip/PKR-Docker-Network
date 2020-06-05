@@ -172,6 +172,7 @@ export class HoldEmService {
 
     var game : GameDTO = plainToClass(GameDTO, rawGameObject);
     
+    console.log(game);
 
     const cardDecrypted = mentalPoker.decryptCard(
       game.board.deck[game.board.nextCard],
