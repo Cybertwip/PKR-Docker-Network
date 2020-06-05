@@ -170,7 +170,7 @@ export class HoldEmService {
         gameId
     );
 
-    var game : GameDTO = plainToClass(GameDTO, JSON.parse(rawGameObject));
+    var game : GameDTO = plainToClass(GameDTO, JSON.parse(rawGameObject.toString()));
     
     console.log(game);
 
