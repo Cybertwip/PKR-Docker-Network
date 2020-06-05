@@ -232,6 +232,12 @@ export class HoldEmService {
     console.log('Players');
     console.log(game.players);
 
+    console.log('Keypairs');
+    
+    game.players.forEach((player) =>{
+      console.log(player.keyPairs);
+    });
+
     var board = game.board;
 
     for(var i = 0; i<game.players.length; ++i){
