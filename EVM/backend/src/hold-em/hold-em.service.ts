@@ -9,8 +9,8 @@ import { readFileSync } from 'fs';
 
 import * as path from 'path';
 
-import * as shuffle from 'lodash.shuffle';
-import * as mentalPoker from 'mental-poker';
+var shuffle = require("lodash.shuffle");
+var mentalPoker = require("mental-poker");
 
 const configPath = path.join(__dirname, '..', '..', '..', 'connection-org1.json');
 
@@ -95,7 +95,7 @@ export class HoldEmService {
     board.cardCodewords = mentalPoker.createDeck(players.map(player => player.cardCodewordFragments));
     board.deck  = board.cardCodewords;
     console.log('\n# Card codewords of the game\n');
-    console.log(board.cardCodewords);
+    //console.log(board.cardCodewords);
 
     console.log('\n# Deck shuffling\n');
     players.forEach((player) => {
