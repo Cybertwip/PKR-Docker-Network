@@ -155,7 +155,13 @@ export class HoldEmService {
 
     
     console.log(game);
-    
+
+    for(var i = 0; i<game.players.length; ++i){
+      console.log(players[i].keyPairs);
+      
+    }
+
+
     const networkConfigurationPath = configPath; //this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
     const serverIdentity = 'admin'; //this.configuration.get<string>('SERVER_IDENTITY')
 
