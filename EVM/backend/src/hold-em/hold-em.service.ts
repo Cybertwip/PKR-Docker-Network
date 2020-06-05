@@ -145,7 +145,7 @@ export class HoldEmService {
     }
 
     for(var i = 0; i<game.board.cardCodewords.length; ++i){
-      game.board.cardCodewords[i] = game.board.cardCodewords[i].toString();
+      game.board.cardCodewords[i] = game.board.cardCodewords[i].toString('base64');
     }
 
     for(var i = 0; i<game.players.length; ++i){
@@ -159,7 +159,7 @@ export class HoldEmService {
     }
 
     for(var i = 0; i<game.board.deck.length; ++i){
-      game.board.deck[i] = game.board.deck[i].toString();
+      game.board.deck[i] = game.board.deck[i].toString('base64');
     }
 
     
@@ -252,11 +252,15 @@ export class HoldEmService {
     }
 
     for(var i = 0; i<board.cardCodewords.length; ++i){
-      board.cardCodewords[i] = Buffer.from(board.cardCodewords[i]);
+      const cardCodewordBuffer = new Buffer(board.cardCodewords[i], 'base64');        
+
+      board.cardCodewords[i] = cardCodewordBuffer;
     }
 
     for(var i = 0; i<game.board.deck.length; ++i){
-      game.board.deck[i] = Buffer.from(game.board.deck[i]);
+      const deckBuffer = new Buffer(game.board.deck[i], 'base64');        
+
+      game.board.deck[i] = deckBuffer;
     }
 
     console.log('Decrypting card');
