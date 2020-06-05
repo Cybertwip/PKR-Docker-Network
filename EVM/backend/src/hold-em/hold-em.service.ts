@@ -95,6 +95,7 @@ export class HoldEmService {
     console.log(game.players);
     console.log(players);
 
+    board.nextCard = 0;
     board.cardCodewords = mentalPoker.createDeck(players.map(player => player.cardCodewordFragments));
     board.deck  = board.cardCodewords;
     
@@ -262,7 +263,7 @@ export class HoldEmService {
     console.log('Next card');
 
     console.log(game.board.nextCard);
-    
+
     const cardDecrypted = mentalPoker.decryptCard(
       game.board.deck[game.board.nextCard],
       game.players.map(player => player.keyPairs[game.board.nextCard].privateKey),
