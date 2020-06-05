@@ -94,9 +94,7 @@ export class HoldEmService {
 
     board.cardCodewords = mentalPoker.createDeck(players.map(player => player.cardCodewordFragments));
     board.deck  = [];
-
-    board.cardCodewords.forEach((cardCodeWord) => { board.deck.push(cardCodeWord.toString())});
-
+    
     console.log('\n# Card codewords of the game\n');
     //console.log(board.cardCodewords);
 
@@ -119,7 +117,18 @@ export class HoldEmService {
     for(var i = 0; i<game.players.length; ++i){
       game.players[i].keyPairs = players[i].keyPairs;
     }
-  
+
+    for(var i = 0; i<board.cardCodewords.length; ++i){
+      board.cardCodewords[i] = board.cardCodewords[i].toString();
+    }
+
+    for(var i = 0; i<game.players.length; ++i){
+      for(var j = 0; j<game.players[i].keyPairs.length; ++j){
+        game.players[i].keyPairs[j] = game.players[i].keyPairs[j].toString();
+      }
+    }
+
+    
     console.log(game);
     
     const networkConfigurationPath = configPath; //this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
@@ -176,6 +185,18 @@ export class HoldEmService {
     var game : GameDTO = plainToClass(GameDTO, JSON.parse(rawGameObject.toString()));
     
     console.log(game);
+
+    var board = game.board;
+
+    for(var i = 0; i<game.players.length; ++i){
+      for(var j = 0; j<game.players[i].keyPairs.length; ++j){
+        game.players[i].keyPairs[j] = Buffer.from(game.players[i].keyPairs[j]);
+      }
+    }
+
+    for(var i = 0; i<board.cardCodewords.length; ++i){
+      board.cardCodewords[i] = Buffer.from(board.cardCodewords[i]);
+    }
 
     const cardDecrypted = mentalPoker.decryptCard(
       game.board.deck[game.board.nextCard],
