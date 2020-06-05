@@ -36,3 +36,9 @@ export type Player = {
 export type Veredict = {
 	readonly gameId: string
 }
+
+export type Board = {
+	nextCard: number
+    cardCodewords: any[]
+    deck: any[]
+}

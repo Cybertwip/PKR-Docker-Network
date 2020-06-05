@@ -1,5 +1,5 @@
 import { Body, Controller, Post, Get, Res, Req, HttpStatus, UseGuards, NotAcceptableException } from '@nestjs/common';
-import { GameDTO, BetDTO, VeredictDTO } from './interfaces/hold-em-game-dto.interface';
+import { GameDTO, BetDTO, VeredictDTO, BoardDTO } from './interfaces/hold-em-game-dto.interface';
 import { HoldEmService } from './hold-em.service';
 import { Response } from 'express';
 

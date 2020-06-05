@@ -144,7 +144,7 @@ export class HoldEmService {
     );
   }
 
-  async deal(gameId: number){
+  async dealCard(gameId: number){
  
     const networkConfigurationPath = configPath; //this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
     const serverIdentity = 'admin'; //this.configuration.get<string>('SERVER_IDENTITY')
