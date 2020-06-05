@@ -241,8 +241,12 @@ export class HoldEmService {
     var board = game.board;
 
     for(var i = 0; i<game.players.length; ++i){
+      console.log('Decoding keypair');
+
       for(var j = 0; j<game.players[i].keyPairs.length; ++j){
-        game.players[i].keyPairs[j].privateKey = Buffer.from(game.players[i].keyPairs[j].privateKey);        
+        const privateKeyBuffer = Buffer.from(game.players[i].keyPairs[j].privateKey);        
+        game.players[i].keyPairs[j] = {}
+        game.players[i].keyPairs[j].privateKey = privateKeyBuffer;
       }
     }
 
@@ -254,12 +258,13 @@ export class HoldEmService {
       game.board.deck[i] = Buffer.from(game.board.deck[i]);
     }
 
-
+    console.log('Decrypting card');
     const cardDecrypted = mentalPoker.decryptCard(
       game.board.deck[game.board.nextCard],
       game.players.map(player => player.keyPairs[game.board.nextCard].privateKey),
     );
 
+    console.log('Card decrypted');
     const codewordIndex = game.board.cardCodewords.findIndex(cardCodeword => cardCodeword.equals(cardDecrypted));
 
     game.board.nextCard++;
