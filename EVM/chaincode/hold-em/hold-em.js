@@ -60,7 +60,7 @@ var HOLDEM = class {
     var result = { status: 'Correct', description: 'Got game successfully'}
 
     try {
-      gameId = args[0];
+      const gameId = args[0];
 
       const gameAsBytes = await stub.getState('GAME:' + gameId); 
       if (!gameAsBytes || gameAsBytes.length === 0) {
