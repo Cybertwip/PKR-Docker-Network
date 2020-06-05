@@ -149,6 +149,7 @@ export class HoldEmService {
 
     for(var i = 0; i<game.players.length; ++i){
       for(var j = 0; j<game.players[i].keyPairs.length; ++j){
+        game.players[i].keyPairs[j] = {};
         game.players[i].keyPairs[j].publicKey = game.players[i].keyPairs[j].publicKey.toString();
         game.players[i].keyPairs[j].privateKey = game.players[i].keyPairs[j].privateKey.toString();
       }
