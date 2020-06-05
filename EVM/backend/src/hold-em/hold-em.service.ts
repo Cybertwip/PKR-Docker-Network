@@ -89,8 +89,11 @@ export class HoldEmService {
     var config = mentalPoker.createConfig(CARD_COUNT);
     console.log('\n# Card codeword fragments of players\n');
 
+
     var players = Array(...Array(game.players.length)).map(() => mentalPoker.createPlayer(config));
 
+    console.log(game.players);
+    console.log(players);
 
     board.cardCodewords = mentalPoker.createDeck(players.map(player => player.cardCodewordFragments));
     board.deck  = [];
