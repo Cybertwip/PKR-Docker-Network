@@ -117,7 +117,7 @@ export class HoldEmService {
       game.players[i].keyPairs = players[i].keyPairs;
     }
   
-  
+    console.log(game);
     
     const networkConfigurationPath = configPath; //this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
     const serverIdentity = 'admin'; //this.configuration.get<string>('SERVER_IDENTITY')
