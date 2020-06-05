@@ -74,11 +74,7 @@ export class HoldEmController {
 
         const gameId = dealBody.gameId;
 
-        var resultBuffer = await this.holdEmService.dealCard(gameId);
-
-        var resultJson = JSON.parse(resultBuffer.toString());
-
-        return resultJson;
+        return await this.holdEmService.dealCard(gameId);
     }
 
 

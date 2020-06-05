@@ -278,6 +278,28 @@ export class HoldEmService {
 
     game.board.nextCard++;
 
+    // encode game
+
+    for(var i = 0; i<game.board.cardCodewords.length; ++i){
+      game.board.cardCodewords[i] = game.board.cardCodewords[i].toString('base64');
+    }
+
+    for(var i = 0; i<game.players.length; ++i){
+      for(var j = 0; j<game.players[i].keyPairs.length; ++j){
+        const privateKey = game.players[i].keyPairs[j].privateKey.toString('base64');
+
+        game.players[i].keyPairs[j] = {}
+        game.players[i].keyPairs[j].privateKey = privateKey;
+
+      }
+    }
+
+    for(var i = 0; i<game.board.deck.length; ++i){
+      game.board.deck[i] = game.board.deck[i].toString('base64');
+    }
+
+    // submit game again
+
     await contract.submitTransaction(
       'SetGame', 
       'hold-em',
