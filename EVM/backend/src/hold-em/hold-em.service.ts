@@ -169,6 +169,10 @@ export class HoldEmService {
       
     }
 
+    const gameDTO : GameDTO = JSON.parse(JSON.stringify(game));
+
+    console.log('Game DTO');
+    console.log(gameDTO);
 
     const networkConfigurationPath = configPath; //this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
     const serverIdentity = 'admin'; //this.configuration.get<string>('SERVER_IDENTITY')
