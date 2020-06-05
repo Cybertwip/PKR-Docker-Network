@@ -130,6 +130,51 @@ var EVMPKR = class {
     return Buffer.from(JSON.stringify(result));
   }
 
+  async SetGame(stub, args){
+    if (args.length != 2) {
+      throw new Error('Incorrect number of arguments. Expecting 2');
+    }
+
+    const channelName = 'pkr';
+
+    const gameIdentifier = args[0];
+
+    var result = { status: 'Error', description: "Game not found"}
+
+    if(gameIdentifier == 'hold-em'){
+      const chaincodeName = gameIdentifier;
+      const functionArgs = ['SetGame', args[1]];
+      const chaincodeResult = await stub.invokeChaincode(chaincodeName, functionArgs, channelName);
+      result = JSON.parse(chaincodeResult.payload.toString('utf8'));
+    }
+
+    return Buffer.from(JSON.stringify(result));
+  }
+
+  async GetGame(stub, args){
+    if (args.length != 2) {
+      throw new Error('Incorrect number of arguments. Expecting 2');
+    }
+
+    const channelName = 'pkr';
+
+    const gameIdentifier = args[0];
+
+    var result = { status: 'Error', description: "Game not found"}
+
+    if(gameIdentifier == 'hold-em'){
+      const chaincodeName = gameIdentifier;
+      const functionArgs = ['GetGame', args[1]];
+      const chaincodeResult = await stub.invokeChaincode(chaincodeName, functionArgs, channelName);
+      result = JSON.parse(chaincodeResult.payload.toString('utf8'));
+    }
+
+    return Buffer.from(JSON.stringify(result));
+  }
+
+
+
+
   async Create(stub, args){
     if (args.length != 2) {
       throw new Error('Incorrect number of arguments. Expecting 2');

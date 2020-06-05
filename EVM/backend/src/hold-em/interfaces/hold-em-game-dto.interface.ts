@@ -1,4 +1,4 @@
-import { IsString, IsEnum, IsNumber, IsArray, IsBoolean } from 'class-validator'
+import { IsString, IsEnum, IsNumber, IsArray, IsBoolean, IsObject } from 'class-validator'
 import { Game, Bet, BetAction, Player, PlayerStatus, Veredict } from './game.interface'
 
 export class GameDTO implements Game {
@@ -19,6 +19,11 @@ export class GameDTO implements Game {
 
     @IsArray()
     players: Player[]
+
+    @IsObject()
+    board: BoardDTO
+
+    
 }
 
 export class BetDTO implements Bet {
@@ -45,14 +50,14 @@ export class PlayerDTO implements Player{
     @IsString()
     readonly id: string
 
-    @IsString()
-    readonly key: string
-
     @IsEnum(PlayerStatus)
     status: PlayerStatus
 
     @IsBoolean()
     readonly cpu: boolean
+
+    @IsArray()
+    keyPairs: any[]
 }
 
 export class VeredictDTO implements Veredict {
@@ -61,4 +66,10 @@ export class VeredictDTO implements Veredict {
 
     @IsString()
     readonly winnerId: string
+}
+
+export class BoardDTO {
+    nextCard: number = 0
+    cardCodewords: any[]
+    deck: any[]
 }

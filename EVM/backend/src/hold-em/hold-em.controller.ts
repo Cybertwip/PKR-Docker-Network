@@ -5,7 +5,7 @@ import { Response } from 'express';
 
 import { AuthGuard } from '@nestjs/passport';
 
-import { IsString } from 'class-validator'
+import { IsString, IsNumber } from 'class-validator'
 import { BetAction, PlayerStatus } from './interfaces/game.interface';
 import { plainToClass } from 'class-transformer';
 
@@ -40,6 +40,11 @@ class RawBetDTO{
     readonly data: string
 }
 
+class RawDealDTO{
+    @IsNumber()
+    readonly gameId: number
+}
+
 
 @Controller('hold-em')
 export class HoldEmController {
@@ -62,6 +67,21 @@ export class HoldEmController {
 
         return resultJson;
     }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Post('deal-card')
+    async dealCard(@Body() dealBody: RawDealDTO) {
+
+        const gameId = dealBody.gameId;
+
+        var resultBuffer = await this.holdEmService.dealCard(gameId);
+
+        var resultJson = JSON.parse(resultBuffer.toString());
+
+        return resultJson;
+    }
+
+
 
     @UseGuards(AuthGuard('jwt'))
     @Post('play')

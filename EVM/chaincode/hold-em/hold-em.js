@@ -31,6 +31,60 @@ var HOLDEM = class {
     }
   }
 
+  async SetGame(stub, args){
+    if (args.length != 1) {
+      throw new Error('Incorrect number of arguments. Expecting 1');
+    }
+
+    var result = { status: 'Correct', description: 'Game set successfully'}
+
+    try {
+      let gameData = JSON.parse(args[0]);
+
+      await stub.putState("GAME:" + gameData.id, Buffer.from(JSON.stringify(gameData)));
+
+    } catch(err){
+      console.log(err);
+      result.status = 'Error';
+      result.description = 'Failed to parse JSON input';
+    }
+
+    return Buffer.from(JSON.stringify(result));
+  }
+
+  async GetGame(stub, args){
+    if (args.length != 1) {
+      throw new Error('Incorrect number of arguments. Expecting 1');
+    }
+
+    var result = { status: 'Correct', description: 'Got game successfully'}
+
+    try {
+      gameId = args[0];
+
+      const gameAsBytes = await stub.getState('GAME:' + gameId); 
+      if (!gameAsBytes || gameAsBytes.length === 0) {
+          result.status = "Error";
+          result.description = "Game with Id: " + gameId.toString() + " not found";
+      }      
+
+      if(result.status == "Error"){
+        return Buffer.from(JSON.stringify(result));
+      }
+
+      const gameData = JSON.parse(gameAsBytes);
+
+      result = gameData;
+
+    } catch(err){
+      console.log(err);
+      result.status = 'Error';
+      result.description = 'Failed to parse JSON input';
+    }
+
+    return Buffer.from(JSON.stringify(result));
+  }  
+
   async Create(stub, args){
     if (args.length != 1) {
       throw new Error('Incorrect number of arguments. Expecting 1');

@@ -28,9 +28,9 @@ export enum PlayerStatus {
 
 export type Player = {
 	readonly id: string
-	readonly key: string
 	readonly status: PlayerStatus
 	readonly cpu: boolean
+	keyPairs: any[]
 }
 
 export type Veredict = {
