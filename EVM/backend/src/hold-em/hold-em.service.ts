@@ -93,7 +93,10 @@ export class HoldEmService {
 
 
     board.cardCodewords = mentalPoker.createDeck(players.map(player => player.cardCodewordFragments));
-    board.deck  = board.cardCodewords;
+    board.deck  = [];
+
+    board.cardCodewords.forEach((cardCodeWord) => { board.deck.push(cardCodeWord.toString())});
+
     console.log('\n# Card codewords of the game\n');
     //console.log(board.cardCodewords);
 
