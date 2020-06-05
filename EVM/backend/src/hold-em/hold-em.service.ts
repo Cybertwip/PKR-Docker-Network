@@ -150,7 +150,7 @@ export class HoldEmService {
 
     for(var i = 0; i<game.players.length; ++i){
       for(var j = 0; j<game.players[i].keyPairs.length; ++j){
-        const privateKey = game.players[i].keyPairs[j].privateKey.toString();
+        const privateKey = game.players[i].keyPairs[j].privateKey.toString('base64');
 
         game.players[i].keyPairs[j] = {}
         game.players[i].keyPairs[j].privateKey = privateKey;
@@ -245,7 +245,7 @@ export class HoldEmService {
       console.log('Decoding keypair');
 
       for(var j = 0; j<game.players[i].keyPairs.length; ++j){
-        const privateKeyBuffer = Buffer.from(game.players[i].keyPairs[j].privateKey);        
+        const privateKeyBuffer = new Buffer(game.players[i].keyPairs[j].privateKey, 'base64');        
         game.players[i].keyPairs[j] = {}
         game.players[i].keyPairs[j].privateKey = privateKeyBuffer;
       }
