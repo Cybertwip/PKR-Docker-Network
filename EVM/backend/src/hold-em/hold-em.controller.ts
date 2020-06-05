@@ -42,6 +42,9 @@ class RawBetDTO{
 
 class RawDealDTO{
     @IsString()
+    readonly amount: string
+
+    @IsString()
     readonly gameId: string
 }
 
@@ -74,7 +77,13 @@ export class HoldEmController {
 
         const gameId = dealBody.gameId;
 
-        return await this.holdEmService.dealCard(parseInt(gameId));
+        let cards = [];
+
+        for(var i = 0; i<parseInt(dealBody.amount); ++i){
+            let card = await this.holdEmService.dealCard(parseInt(gameId));
+            cards.push(card);
+        }
+        return cards;
     }
 
 
