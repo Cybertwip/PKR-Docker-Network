@@ -229,6 +229,9 @@ export class HoldEmService {
     
     console.log(game);
 
+    console.log('Players');
+    console.log(game.players);
+
     var board = game.board;
 
     for(var i = 0; i<game.players.length; ++i){
