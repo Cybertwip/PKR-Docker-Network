@@ -154,6 +154,7 @@ var HOLDEM = class {
           if(gameData.players[i].cpu){
             isCPU = true;
           }
+          break;
         }
     }
 

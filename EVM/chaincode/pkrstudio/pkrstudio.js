@@ -67,7 +67,7 @@ var EVMPKR = class {
       return Buffer.from(JSON.stringify(result));      
     }
     else{
-      return Buffer.from(JSON.stringify(userData));
+      throw new Error('User not found');
     }
   }
 
@@ -98,7 +98,7 @@ var EVMPKR = class {
       return Buffer.from(JSON.stringify(result));      
     }
     else{
-      return Buffer.from(JSON.stringify(userData));
+      throw new Error('User not found');
     }
 
   }
@@ -120,7 +120,8 @@ var EVMPKR = class {
       console.log(err);
       result.status = 'Error';
       result.description = 'Failed to parse JSON input';
-      return Buffer.from(JSON.stringify(result));
+      throw new Error(result.description);
+;
     }
 
     userData.tokens = 1000;
@@ -146,6 +147,8 @@ var EVMPKR = class {
       const functionArgs = ['SetGame', args[1]];
       const chaincodeResult = await stub.invokeChaincode(chaincodeName, functionArgs, channelName);
       result = JSON.parse(chaincodeResult.payload.toString('utf8'));
+    } else {
+      throw new Error('Game not found');
     }
 
     return Buffer.from(JSON.stringify(result));
@@ -167,6 +170,11 @@ var EVMPKR = class {
       const functionArgs = ['GetGame', args[1]];
       const chaincodeResult = await stub.invokeChaincode(chaincodeName, functionArgs, channelName);
       result = JSON.parse(chaincodeResult.payload.toString('utf8'));
+    }
+    else{
+  
+      throw new Error('Game not found');
+
     }
 
     return Buffer.from(JSON.stringify(result));
@@ -191,6 +199,13 @@ var EVMPKR = class {
       const functionArgs = ['Create', args[1]];
       const chaincodeResult = await stub.invokeChaincode(chaincodeName, functionArgs, channelName);
       result = JSON.parse(chaincodeResult.payload.toString('utf8'));
+    }
+    else{
+      throw new Error('Game not found');
+    }
+
+    if(result.status = 'Error'){
+      throw new Error('Failed to parse JSON');
     }
 
     return Buffer.from(JSON.stringify(result));
@@ -228,9 +243,7 @@ var EVMPKR = class {
       } else if (result.status == 'Correct') {
         subtractTokens = true;
       } else {
-
-        return Buffer.from(JSON.stringify(result));
-
+        throw new Error('User not found');
       }
     }
 
@@ -239,27 +252,25 @@ var EVMPKR = class {
       if (!userAsBytes || userAsBytes.length === 0) {
           result.status = 'Error';
           result.description = 'User not found';
+          throw new Error('User not found');
+
       } else {
         result.status = 'Correct';
         result.description = 'User found';
 
-        const userData = JSON.parse(userAsBytes);
+        var userData = JSON.parse(userAsBytes);
         userData.tokens = userData.tokens - tokens;
 
         if(userData.tokens < 0){
           userData.tokens = 0;
           result.status = 'Error';
           result.description = 'User does not have enough funds to perform the game';
+          throw new Error('User does not have enough funds');
         }
 
         await stub.putState('USER:' + userData.id, Buffer.from(JSON.stringify(userData)));
 
       }      
-    }
-
-
-    if(result.status == 'Error'){
-      return Buffer.from(JSON.stringify(result));
     }
 
     if(gameIdentifier == 'hold-em'){
@@ -292,6 +303,7 @@ var EVMPKR = class {
       if(!result.winnerId){
         result.status = 'Error';
         result.description = 'Error while processing winner';
+        throw new Error(result.description);
       }
       else{
         let gameId = result.id;
@@ -312,7 +324,7 @@ var EVMPKR = class {
           addTokens = true;
         } else {
 
-          return Buffer.from(JSON.stringify(validationResult));
+          throw new Error('User not found');
 
         }
 
@@ -325,12 +337,26 @@ var EVMPKR = class {
             result.status = 'Correct';
             result.description = 'Winner found awarded: ' + pot.toString() + ' tokens';
 
-            const userData = JSON.parse(userAsBytes);
+            var userData = JSON.parse(userAsBytes);
+
             userData.tokens = userData.tokens + pot;
+            userData.cpu = false;
+            userData.awarded = pot;
 
             await stub.putState('USER:' + userData.id, Buffer.from(JSON.stringify(userData)));
 
+            result = userData;
           }
+
+        } else {
+
+            var userData = {};
+
+            userData.tokens = -1;
+            userData.cpu = true;
+            userData.awarded = pot;
+
+            result = userData;
 
         }
 
