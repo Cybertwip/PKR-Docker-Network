@@ -76,14 +76,9 @@ export class HoldEmController {
     async dealCard(@Body() dealBody: RawDealDTO) {
 
         const gameId = dealBody.gameId;
-
-        let cards = {data: []};
-
-        for(var i = 0; i<parseInt(dealBody.amount); ++i){
-            let card = await this.holdEmService.dealCard(parseInt(gameId));
-            cards.data.push(card);
-        }
-        return cards;
+        const amount = dealBody.amount;
+        
+        return await this.holdEmService.dealCard(parseInt(gameId), parseInt(amount));
     }
 
 

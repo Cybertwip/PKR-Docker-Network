@@ -44,3 +44,6 @@ docker exec -it cli bash
 
 ./../../fabric-chaincode-evm/evm-pkr-setup.sh
 
+In case of restarting containers
+docker restart $(docker ps -q)
+docker-compose restart

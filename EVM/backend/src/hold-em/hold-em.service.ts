@@ -200,7 +200,7 @@ export class HoldEmService {
     );
   }
 
-  async dealCard(gameId: number){
+  async dealCard(gameId: number, amount: number){
  
     const networkConfigurationPath = configPath; //this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
     const serverIdentity = 'admin'; //this.configuration.get<string>('SERVER_IDENTITY')
@@ -268,15 +268,34 @@ export class HoldEmService {
 
     console.log(game.board.nextCard);
 
-    const cardDecrypted = mentalPoker.decryptCard(
-      game.board.deck[game.board.nextCard],
-      game.players.map(player => player.keyPairs[game.board.nextCard].privateKey),
-    );
 
-    console.log('Card decrypted');
-    const codewordIndex = game.board.cardCodewords.findIndex(cardCodeword => cardCodeword.equals(cardDecrypted));
 
-    game.board.nextCard++;
+    let cards = {data: []};
+
+    for(var i = 0; i<amount; ++i){
+
+        const cardDecrypted = mentalPoker.decryptCard(
+          game.board.deck[game.board.nextCard],
+          game.players.map(player => player.keyPairs[game.board.nextCard].privateKey),
+        );
+    
+        console.log('Card decrypted');
+        const codewordIndex = game.board.cardCodewords.findIndex(cardCodeword => cardCodeword.equals(cardDecrypted));
+    
+        game.board.nextCard++;
+
+
+        console.log('Codeword index:', codewordIndex, '\n');
+
+        let card = {
+          "card":codewordIndex
+        }
+
+        cards.data.push(card);
+
+
+    }
+
 
     // encode game
 
@@ -306,16 +325,10 @@ export class HoldEmService {
       JSON.stringify(game)
     );
 
-
-    console.log('Codeword index:', codewordIndex, '\n');
-
-    var cardToSend = {
-      "card":codewordIndex
-    }
     
-    console.log(cardToSend);
+    console.log(cards);
 
-    return cardToSend;
+    return cards;
   }
 
   async play(bet: Bet) {
