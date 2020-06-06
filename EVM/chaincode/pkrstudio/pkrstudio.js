@@ -94,8 +94,8 @@ var EVMPKR = class {
       userData = JSON.parse(userAsBytes);
     }
 
-    if(result.status != 'Correct'){
-      return Buffer.from(JSON.stringify(result));      
+    if(result.status == 'Correct'){
+      return Buffer.from(JSON.stringify(userData));      
     }
     else{
       throw new Error('User not found');
