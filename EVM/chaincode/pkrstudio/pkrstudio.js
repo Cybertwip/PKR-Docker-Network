@@ -204,7 +204,7 @@ var EVMPKR = class {
       throw new Error('Game not found');
     }
 
-    if(result.status = 'Error'){
+    if(result.status == 'Error'){
       throw new Error('Failed to parse JSON');
     }
 
