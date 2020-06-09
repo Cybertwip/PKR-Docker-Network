@@ -58,6 +58,8 @@ export class HoldEmController {
     @Post('create')
     async create(@Body() gameBody: RawGameDTO) {
 
+        console.log('Create game');
+        
         var rawGameObject = JSON.parse(gameBody.data);
 
         var game : GameDTO = plainToClass(GameDTO, rawGameObject);
