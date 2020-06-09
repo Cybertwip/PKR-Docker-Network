@@ -28,6 +28,8 @@ export class HoldEmService {
     
     async tokens(userId: string){
   
+      console.log('Tokens called');
+      
       const networkConfigurationPath = configPath; //this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
       const serverIdentity = 'admin'
 
@@ -108,11 +110,11 @@ export class HoldEmService {
       const encryptedDeck = mentalPoker.encryptDeck(shuffle(board.deck), player.keyPairs[CARD_COUNT].privateKey);
       board.deck = encryptedDeck;
       
-      console.log('Encrypted deck');
-      console.log(encryptedDeck);
+      // console.log('Encrypted deck');
+      // console.log(encryptedDeck);
 
-      console.log('Board deck');
-      console.log(board.deck);
+      // console.log('Board deck');
+      // console.log(board.deck);
     });
 
     console.log('\n# Deck locking\n');
@@ -125,18 +127,18 @@ export class HoldEmService {
 
       board.deck = encryptedDeck;
 
-      console.log('Encrypted deck');
-      console.log(encryptedDeck);
+      // console.log('Encrypted deck');
+      // console.log(encryptedDeck);
 
-      console.log('Board deck');
-      console.log(board.deck);
+      // console.log('Board deck');
+      // console.log(board.deck);
 
     });
 
-    players.forEach((player) => {
-      console.log('Player private key');
-      console.log(player.keyPairs[CARD_COUNT].privateKey);
-    })
+    // players.forEach((player) => {
+    //   console.log('Player private key');
+    //   console.log(player.keyPairs[CARD_COUNT].privateKey);
+    // })
 
     game.board = board;
 
@@ -163,7 +165,7 @@ export class HoldEmService {
     }
 
     
-    console.log(game);
+    // console.log(game);
 
     for(var i = 0; i<game.players.length; ++i){
       console.log(game.players[i].keyPairs);
@@ -172,8 +174,8 @@ export class HoldEmService {
 
     const gameDTO : GameDTO = JSON.parse(JSON.stringify(game));
 
-    console.log('Game DTO');
-    console.log(gameDTO);
+    // console.log('Game DTO');
+    // console.log(gameDTO);
 
     const networkConfigurationPath = configPath; //this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
     const serverIdentity = 'admin'; //this.configuration.get<string>('SERVER_IDENTITY')
