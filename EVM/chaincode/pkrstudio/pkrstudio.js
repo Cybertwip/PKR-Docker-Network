@@ -124,7 +124,7 @@ var EVMPKR = class {
 ;
     }
 
-    userData.tokens = 1000;
+    userData.tokens = 10000;
 
     await stub.putState('USER:' + userData.id, Buffer.from(JSON.stringify(userData)));
 
