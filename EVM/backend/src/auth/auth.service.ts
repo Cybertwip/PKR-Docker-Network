@@ -58,7 +58,10 @@ export class AuthService {
   }
   
   async register(authRegisterRequest: AuthRegisterDto) {
-    const { name, email, password } = authRegisterRequest;
+    var { name, email, password } = authRegisterRequest;
+    
+    name = name.toLowerCase();
+
     return new Promise(((resolve, reject) => {
       return this.userPool.signUp(name, password, [new CognitoUserAttribute({ Name: 'email', Value: email })], null, (err, result) => {
         if (!result) {
@@ -74,7 +77,7 @@ export class AuthService {
             tokens: 0
           }
 
-          crypto.username = result.user.getUsername();
+          crypto.username = result.user.getUsername().toLowerCase();
           crypto.address = account.address;
           crypto.privateKey = account.privateKey
           crypto.tokens = 0;
