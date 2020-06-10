@@ -167,10 +167,10 @@ export class HoldEmService {
     
     // console.log(game);
 
-    for(var i = 0; i<game.players.length; ++i){
-      console.log(game.players[i].keyPairs);
+    // for(var i = 0; i<game.players.length; ++i){
+    //   console.log(game.players[i].keyPairs);
       
-    }
+    // }
 
     const gameDTO : GameDTO = JSON.parse(JSON.stringify(game));
 
