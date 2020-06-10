@@ -82,7 +82,7 @@ export class HoldEmController {
         const gameId = dealBody.gameId;
         const amount = dealBody.amount;
         
-        return await this.holdEmService.dealCard(parseInt(gameId), parseInt(amount));
+        return await this.holdEmService.dealCard(gameId, parseInt(amount));
     }
 
 
