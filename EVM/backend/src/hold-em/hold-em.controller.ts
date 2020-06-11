@@ -19,6 +19,8 @@ class UserDataDTO{
 class CashInDTO{
     @IsString()
     readonly userId: string
+
+    @IsString()
     readonly amount: string
 }
   
@@ -125,10 +127,25 @@ export class HoldEmController {
     @UseGuards(AuthGuard('jwt'))
     @Post('cash-in')
     async cashIn(@Body() data: CashInDTO, @Req() request){
-        var cashInResponse = await this.holdEmService.cashIn(data.userId, data.amount);
-        var cashIn = JSON.parse(cashInResponse.toString());
+        var buffer = await this.holdEmService.cashIn(data.userId, data.amount);
+        const fabricUserWithTokens = JSON.parse(buffer.toString());
 
-        return cashIn;
+        console.log(fabricUserWithTokens);
+
+        var requestUser = request.user;
+        
+        var returnUser = {id: '', username: '', email: '', tokens: 0}
+
+        returnUser.id = requestUser.id;
+        returnUser.username = requestUser.username;
+
+        if(requestUser.email){
+            returnUser.email = requestUser.email;
+        }
+
+        returnUser.tokens = parseInt(fabricUserWithTokens.tokens.toString());
+
+        return returnUser;
     }    
 
     @UseGuards(AuthGuard('jwt'))
