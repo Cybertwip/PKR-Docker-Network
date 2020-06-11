@@ -55,7 +55,7 @@ export class HoldEmService {
       );
     }
   
-    async cashIn(userId: string, amount: number){
+    async cashIn(userId: string, amount: string){
       const networkConfigurationPath = configPath; //this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
       const serverIdentity = 'admin'
     

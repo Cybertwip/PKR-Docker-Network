@@ -19,7 +19,7 @@ class UserDataDTO{
 class CashInDTO{
     @IsString()
     readonly userId: string
-    readonly amount: number
+    readonly amount: string
 }
   
 class TestDTO {
