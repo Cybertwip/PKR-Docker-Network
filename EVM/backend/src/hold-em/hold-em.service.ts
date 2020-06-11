@@ -230,16 +230,16 @@ export class HoldEmService {
 
     var game : GameDTO = plainToClass(GameDTO, JSON.parse(rawGameObject.toString()));
     
-    console.log(game);
+    // console.log(game);
 
-    console.log('Players');
-    console.log(game.players);
+    // console.log('Players');
+    // console.log(game.players);
 
-    console.log('Keypairs');
+    // console.log('Keypairs');
     
-    game.players.forEach((player) =>{
-      console.log(player.keyPairs);
-    });
+    // game.players.forEach((player) =>{
+    //   console.log(player.keyPairs);
+    // });
 
     var board = game.board;
 
