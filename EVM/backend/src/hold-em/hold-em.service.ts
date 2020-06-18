@@ -94,27 +94,17 @@ export class HoldEmService {
 
     var players = Array(...Array(game.players.length)).map(() => mentalPoker.createPlayer(config));
 
-    // console.log(game.players);
-    // console.log(players);
-
     board.nextCard = 0;
     board.cardCodewords = mentalPoker.createDeck(players.map(player => player.cardCodewordFragments));
     board.deck  = board.cardCodewords;
     
     console.log('\n# Card codewords of the game\n');
-    //console.log(board.cardCodewords);
 
     console.log('\n# Deck shuffling\n');
     players.forEach((player) => {
       console.log('Shuffling deck');
       const encryptedDeck = mentalPoker.encryptDeck(shuffle(board.deck), player.keyPairs[CARD_COUNT].privateKey);
       board.deck = encryptedDeck;
-      
-      // console.log('Encrypted deck');
-      // console.log(encryptedDeck);
-
-      // console.log('Board deck');
-      // console.log(board.deck);
     });
 
     console.log('\n# Deck locking\n');
@@ -127,18 +117,7 @@ export class HoldEmService {
 
       board.deck = encryptedDeck;
 
-      // console.log('Encrypted deck');
-      // console.log(encryptedDeck);
-
-      // console.log('Board deck');
-      // console.log(board.deck);
-
     });
-
-    // players.forEach((player) => {
-    //   console.log('Player private key');
-    //   console.log(player.keyPairs[CARD_COUNT].privateKey);
-    // })
 
     game.board = board;
 
@@ -230,17 +209,6 @@ export class HoldEmService {
 
     var game : GameDTO = plainToClass(GameDTO, JSON.parse(rawGameObject.toString()));
     
-    // console.log(game);
-
-    // console.log('Players');
-    // console.log(game.players);
-
-    // console.log('Keypairs');
-    
-    // game.players.forEach((player) =>{
-    //   console.log(player.keyPairs);
-    // });
-
     var board = game.board;
 
     for(var i = 0; i<game.players.length; ++i){

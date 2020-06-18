@@ -24,14 +24,12 @@ import {
   AuthenticationDetails,
   CognitoUser,
   CognitoUserAttribute,
-  CognitoUserPool,
-  ICognitoUserPoolData,
+  CognitoUserPool
 } from 'amazon-cognito-identity-js';
-import { AuthCredentialsDto, AuthRegisterDto } from './auth.interface';
+import { AuthCredentialsDto, AuthRegisterDto, CognitoSessionDto } from './auth.interface';
 import { Gateway, Network } from 'fabric-network';
 
 const configPath = path.join(__dirname, '..', '..', '..', 'connection-org1.json');
-
 
 
 @Injectable()
@@ -127,5 +125,21 @@ export class AuthService {
         }),
       });
     }));
+  }
+
+  async getCognitoUser(name: string){
+    const userData = {
+      Username: name,
+      Pool: this.userPool,
+    };
+
+    return new CognitoUser(userData);
+  }
+  async getTokens(session: any){
+      return {
+        accessToken: session.getAccessToken().getJwtToken(),
+        idToken: session.getIdToken().getJwtToken(),
+        refreshToken: session.getRefreshToken().getToken()
+      };
   }
 }
