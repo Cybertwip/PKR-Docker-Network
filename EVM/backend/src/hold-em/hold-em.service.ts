@@ -49,10 +49,14 @@ export class HoldEmService {
       const network = await gateway.getNetwork("pkr");
       const contract = network.getContract("pkrstudio");
   
-      return await contract.evaluateTransaction(
+      const result = await contract.evaluateTransaction(
           'User',
           userId
       );
+
+      await gateway.disconnect();
+
+      return result;
     }
   
     async cashIn(userId: string, amount: string){
@@ -74,11 +78,15 @@ export class HoldEmService {
       const network = await gateway.getNetwork("pkr");
       const contract = network.getContract("pkrstudio");
   
-      return await contract.submitTransaction(
+      const result = await contract.submitTransaction(
           'CashIn',
           userId,
           amount
       );
+
+      await gateway.disconnect();
+
+      return result;
     }
   
 	async create(game: GameDTO) {
@@ -174,11 +182,16 @@ export class HoldEmService {
     const network = await gateway.getNetwork("pkr");
     const contract = network.getContract("pkrstudio");
 
-    return await contract.submitTransaction(
+    const result = await contract.submitTransaction(
         'Create',
         'hold-em',
         JSON.stringify(game)
     );
+
+    await gateway.disconnect();
+
+    return result;
+
   }
 
   async dealCard(gameId: string, amount: number){
@@ -295,8 +308,7 @@ export class HoldEmService {
       JSON.stringify(game)
     );
 
-    
-    console.log(cards);
+    await gateway.disconnect();
 
     return cards;
   }
@@ -326,7 +338,7 @@ export class HoldEmService {
     const network = await gateway.getNetwork("pkr");
     const contract = network.getContract("pkrstudio");
 
-    return await contract.submitTransaction(
+    const result = await contract.submitTransaction(
         'Play', 
         'hold-em',
         bet.amount,
@@ -334,6 +346,10 @@ export class HoldEmService {
         bet.gameId,
         JSON.stringify(bet)
     );
+
+    await gateway.disconnect();
+
+    return result;
   }
 
   async finish(veredict: VeredictDTO) {
@@ -354,11 +370,15 @@ export class HoldEmService {
     const network = await gateway.getNetwork("pkr");
     const contract = network.getContract("pkrstudio");
 
-    return await contract.submitTransaction(
+    const result =  await contract.submitTransaction(
         'Finish',
         'hold-em', 
         JSON.stringify(veredict)
     );
+
+    await gateway.disconnect();
+
+    return result;
   }
 
 }
