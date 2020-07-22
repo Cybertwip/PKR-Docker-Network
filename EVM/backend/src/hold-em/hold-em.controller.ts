@@ -115,11 +115,13 @@ export class HoldEmController {
 
         console.log(game);
 
-        var resultBuffer = await this.holdEmService.createDeal(game, amount);
+        return await this.holdEmService.createDeal(game, amount);
 
+
+        /*
         var resultJson = JSON.parse(resultBuffer.toString());
 
-        return resultJson;
+        return resultJson;*/
     }
 
     @UseGuards(AuthGuard('jwt'))
