@@ -25,6 +25,10 @@ export class QueueProcessor {
   @Process()
   async handleSync(job: Job) {
 
+    this.logger.debug('Start job...');
+
+    this.logger.debug(job.data);
+    
     var gameData = job.data;
 
     const networkConfigurationPath = configPath; //this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
@@ -53,5 +57,8 @@ export class QueueProcessor {
     );
 
     await gateway.disconnect();
+
+    this.logger.debug('job completed');
+
   }
 }
