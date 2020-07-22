@@ -133,11 +133,7 @@ export class HoldEmController {
 
         console.log(bet);
 
-        var resultBuffer = await this.holdEmService.play(bet);
-
-        var resultJson = JSON.parse(resultBuffer.toString());
-
-        return resultJson;
+        return await this.holdEmService.play(bet);
 
     }
 
