@@ -11,6 +11,7 @@ import { plainToClass } from 'class-transformer';
 
 import { ClaimVerifyResult } from './../auth/jwt.verify'
 
+
 class UserDataDTO{
     @IsString()
     readonly id: string
@@ -37,6 +38,14 @@ class RawGameDTO{
     readonly data: string
 }
 
+class RawGameDealDTO{
+    @IsString()
+    readonly data: string
+
+    @IsString()
+    readonly amount: string
+}
+
 class RawBetDTO{
     @IsString()
     readonly data: string
@@ -50,12 +59,15 @@ class RawDealDTO{
     readonly gameId: string
 }
 
+import { QueueService } from './queue/queue.service';
 
 @Controller('hold-em')
 export class HoldEmController {
 
-    constructor(private readonly holdEmService: HoldEmService) {}
+    constructor(private readonly holdEmService: HoldEmService,
+        private readonly queue: QueueService) {}
 
+/*
     @UseGuards(AuthGuard('jwt'))
     @Post('create')
     async create(@Body() gameBody: RawGameDTO) {
@@ -86,8 +98,29 @@ export class HoldEmController {
         
         return await this.holdEmService.dealCard(gameId, parseInt(amount));
     }
+*/
+    @UseGuards(AuthGuard('jwt'))
+    @Post('create-deal')
+    async create(@Body() gameBody: RawGameDealDTO) {
 
+        console.log('Create game');
 
+        console.log('Body data' + gameBody.data);
+
+        var rawGameObject = JSON.parse(gameBody.data);
+        const amount = parseInt(gameBody.amount);
+        
+
+        var game : GameDTO = plainToClass(GameDTO, rawGameObject);
+
+        console.log(game);
+
+        var resultBuffer = await this.holdEmService.createDeal(game, amount);
+
+        var resultJson = JSON.parse(resultBuffer.toString());
+
+        return resultJson;
+    }
 
     @UseGuards(AuthGuard('jwt'))
     @Post('play')

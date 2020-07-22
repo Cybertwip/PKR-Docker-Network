@@ -212,7 +212,7 @@ var EVMPKR = class {
   }
 
   async Play(stub, args){
-    if (args.length != 5) {
+    if (args.length != 2) {
       throw new Error('Incorrect number of arguments. Expecting 5');
     }
 
@@ -221,13 +221,15 @@ var EVMPKR = class {
 
     const channelName = 'pkr';
 
+    const gameArguments = JSON.parse(args[1]);
+
     const gameIdentifier = args[0];
 
-    const tokens = parseInt(args[1].toString());
+    const tokens = parseInt(gameArguments.amount.toString());
 
-    const userId = args[2];
+    const userId = gameArguments.playerId;
 
-    const gameId = args[3];
+    const gameId = gameArguments.gameId;
 
     var subtractTokens = true;
 
@@ -275,7 +277,7 @@ var EVMPKR = class {
 
     if(gameIdentifier == 'hold-em'){
       const chaincodeName = gameIdentifier;
-      const functionArgs = ['Play', args[4]];
+      const functionArgs = ['Play', args[1]];
       const chaincodeResult = await stub.invokeChaincode(chaincodeName, functionArgs, channelName);
       result = JSON.parse(chaincodeResult.payload.toString('utf8'));
     }

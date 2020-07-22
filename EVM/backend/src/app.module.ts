@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AgreementModule } from './agreement/agreement.module';
 import { AppController } from './app.controller';
@@ -14,6 +14,11 @@ import { HoldEmController } from './hold-em/hold-em.controller';
 import { HoldEmModule } from './hold-em/hold-em.module';
 import { HoldEmService } from './hold-em/hold-em.service';
 
+import { BullModule } from '@nestjs/bull';
+
+import { QueueModule } from "./hold-em/queue/queue.module"
+import { QueueService } from "./hold-em/queue/queue.service"
+
 import { JwtStrategy } from './auth/jwt.strategy';
 
 import { AuthController } from './auth/auth.controller';
@@ -24,6 +29,7 @@ import { AuthConfig } from './auth/auth.config';
 import configuration from '../config'
 
 
+@Global()
 @Module({
   imports: [
     ConfigModule.forRoot(
@@ -33,10 +39,12 @@ import configuration from '../config'
         load: [ configuration ]
       }
     ),
+
+    QueueModule,
     AgreementModule,
     WalletModule,
     HoldEmModule,
-    AuthModule,
+    AuthModule
   ],
   controllers: [
     AppController,
@@ -46,6 +54,6 @@ import configuration from '../config'
     HoldEmController,
     AuthController,
   ],
-  providers: [AppService, UsersService, HoldEmService,  AuthService, AuthConfig, JwtStrategy, WalletService, DispersionsService],
+  providers: [AppService, UsersService, HoldEmService,  AuthService, AuthConfig, JwtStrategy, WalletService, DispersionsService]
 })
 export class AppModule { }

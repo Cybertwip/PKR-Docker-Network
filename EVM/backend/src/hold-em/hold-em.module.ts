@@ -10,8 +10,15 @@ import { JwtStrategy } from '../auth/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { UsersService } from './../users/users.service';
 
+import { QueueModule } from './queue/queue.module';
+import { QueueProcessor } from './queue/queue.processor';
+import { QueueService } from './queue/queue.service';
+
 @Module({
-	imports: [ConfigModule, WalletModule, PassportModule.register({ defaultStrategy: 'jwt' })],
+	imports: [
+		ConfigModule, 
+		WalletModule, 
+		PassportModule.register({ defaultStrategy: 'jwt' })],
 	controllers: [HoldEmController],
   	providers: [HoldEmService, WalletService, AuthService, AuthConfig, JwtStrategy, UsersService]
 })
