@@ -22,13 +22,13 @@ export class QueueProcessor {
 
   }
   
-  @Process()
+  @Process('queue')
   async handleSync(job: Job) {
 
     this.logger.debug('Start job...');
 
     this.logger.debug(job.data);
-    
+
     var gameData = job.data;
 
     const networkConfigurationPath = configPath; //this.configuration.get<string>('NETWORK_CONFIGURATION_PATH')
